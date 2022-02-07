@@ -49560,13 +49560,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1460496632}
-  m_LocalRotation: {x: 0.12886, y: -0.6952662, z: 0.12886, w: 0.6952662}
+  m_LocalRotation: {x: 0.18301274, y: -0.6830127, z: 0.18301274, w: 0.6830127}
   m_LocalPosition: {x: 38.74018, y: 11.26934, z: 14.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 20
-  m_LocalEulerAnglesHint: {x: 21, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: -90, z: 0}
 --- !u!114 &1460496636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49576,18 +49576,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1460496632}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a0c01cb13dabef4282677fac9f65115, type: 3}
+  m_Script: {fileID: 11500000, guid: cbc3817a5711e874ab1e44036d5dd914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xPos: 0.6
-  zPos: 0.6
-  rayLength: 0.63
+  xPos: 0
+  zPos: 0
+  rayLength: 0
   CameraHitLayer:
     serializedVersion: 2
-    m_Bits: 64
-  forDown: -0.22
-  scrollSpeed: 10
+    m_Bits: 0
+  forDown: 0
+  scrollSpeed: 5
   FOV: 0
+  offect: {x: 16, y: 10, z: 0}
+  rotationEuler: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &1460496637
 SphereCollider:
   m_ObjectHideFlags: 0

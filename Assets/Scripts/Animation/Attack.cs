@@ -13,6 +13,7 @@ public class Attack : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+ 
         //if (animator.GetInteger("atkCount") >= 2)
         //{         
         //    if (stateInfo.IsName("Atk1"))

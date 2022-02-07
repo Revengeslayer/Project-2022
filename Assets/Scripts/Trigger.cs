@@ -24,49 +24,45 @@ public class Trigger : MonoBehaviour
         Viking_Tower = GameObject.Find("Viking_Tower");
         Tree = GameObject.Find("tree03(4)");
     }
-    void Update()
-    {
-
-    }
     void OnTriggerEnter(Collider other)
     {
         YT = 0;
         colliderTag = other.tag;
-        Debug.Log(other.tag+ "enter");
+        //Debug.Log(other.tag+ "enter");
 
         if (colliderTag == "Village")
         {
-            if (FlowPlayer.offect.x > 0)
-            {
-                Camera.main.transform.position = gameObject.transform.position + new Vector3(-20f, 8.5f, 0);
-                Camera.main.transform.forward = CMRotateBattle01;
-                GameObject.Find("MiniMapCamera").transform.Rotate(0, 0, 180);
-            }
+            //if (FlowPlayer.offect.x > 0)
+            //{
+            //    Camera.main.transform.position = gameObject.transform.position + new Vector3(-20f, 8.5f, 0);
+            //    Camera.main.transform.forward = CMRotateBattle01;
+            //    GameObject.Find("MiniMapCamera").transform.Rotate(0, 0, 180);
+            //}
 
-            FlowPlayer.offect = new Vector3(-20f, 8.5f, 0);
-            FlowPlayer.CMRotate = CMRotateBattle01;
-            FlowPlayer.smoothTime = 0.25f;
+            //FlowPlayer.offect = new Vector3(-20f, 8.5f, 0);
+            //FlowPlayer.CMRotate = CMRotateBattle01;
+            //FlowPlayer.smoothTime = 0.25f;
             Viking_Tower.SetActive(true);
             Tree.SetActive(true);
         }
-        else if (colliderTag == "Village01")
-        {
-            FlowPlayer.CARotate = true;
-            FlowPlayer.offect = new Vector3(-8.5f, 7.5f, 0);
-            FlowPlayer.CMRotate = CMRotateBattle01;
-            FlowPlayer.smoothTime = 1;
-        }
+        //else if (colliderTag == "Village01")
+        //{
+        //    FlowPlayer.CARotate = true;
+        //    FlowPlayer.offect = new Vector3(-8.5f, 7.5f, 0);
+        //    FlowPlayer.CMRotate = CMRotateBattle01;
+        //    FlowPlayer.smoothTime = 1;
+        //}
         else if (colliderTag == "Battle01")
         {
-            if (FlowPlayer.offect.x < 0)
-            {
-                Camera.main.transform.position = gameObject.transform.position + new Vector3(20f, 8.5f, 0);
-                Camera.main.transform.forward = CMRotateVillage;
-                GameObject.Find("MiniMapCamera").transform.Rotate(0,0,-180);
-            }
-            FlowPlayer.offect = new Vector3(20f, 8.5f, 0);
-            FlowPlayer.CMRotate = CMRotateVillage;
-            FlowPlayer.smoothTime = 0.25f;
+            //if (FlowPlayer.offect.x < 0)
+            //{
+            //    Camera.main.transform.position = gameObject.transform.position + new Vector3(20f, 8.5f, 0);
+            //    Camera.main.transform.forward = CMRotateVillage;
+            //    GameObject.Find("MiniMapCamera").transform.Rotate(0,0,-180);
+            //}
+            //FlowPlayer.offect = new Vector3(20f, 8.5f, 0);
+            //FlowPlayer.CMRotate = CMRotateVillage;
+            //FlowPlayer.smoothTime = 0.25f;
             
             Viking_Tower.SetActive(false);
             Tree.SetActive(false);

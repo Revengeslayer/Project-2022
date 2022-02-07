@@ -72,35 +72,44 @@ public class Main : MonoBehaviour
             playerAnimator.SetInteger("atkCount", playerAnimator.GetInteger("atkCount") + 1);
             if(playerAnimator.GetInteger("atkCount") ==1)
             {
-                playerAnimator.SetBool("hit1", true);
+                //playerAnimator.SetBool("hit1", true);
+                playerAnimator.Play("Atk1");
+                //playerAnimator.SetBool("hit2", true);
                 atkLastTime = Time.time;
+                Debug.Log(1);
             }
             if (playerAnimator.GetInteger("atkCount") == 2 )
             {
-
-                playerAnimator.SetBool("hit2", true);
-                playerAnimator.SetBool("hit1", false);
+                if (Time.time - atkLastTime < 1.2f)
+                {
+                    Debug.Log("Áp¶°");
+                    //playerAnimator.SetBool("hit2", true);
+                    playerAnimator.Play("Atk2");
+                }
+                //playerAnimator.SetBool("hit2", true);
+                //playerAnimator.SetBool("hit1", false);
+                
+                atkLastTime = Time.time;
+                Debug.Log(2);
             }
 
-            if (playerAnimator.GetInteger("atkCount") == 3)
+            if (playerAnimator.GetInteger("atkCount") == 3 )
             {
-                playerAnimator.SetBool("hit3", true);
-                playerAnimator.SetBool("hit2", false);
+                //playerAnimator.SetBool("hit3", true);
+                //playerAnimator.SetBool("hit2", false);
+                playerAnimator.Play("Atk3");
+                Debug.Log(3);
                 playerAnimator.SetInteger("atkCount", 0);
             }
 
-            if (playerAnimator.GetInteger("atkCount")==3 || Time.time-atkLastTime>0.7f)
-            {
-                playerAnimator.SetInteger("atkCount", 0);
-            }
-            
 
+          
             playerAnimator.SetInteger("atkCount", Mathf.Clamp(playerAnimator.GetInteger("atkCount"), 0, 3));
             //playerAnimator.applyRootMotion = (true);
             player.transform.position += player.transform.forward * Time.deltaTime * speed;
         }
 
-        if (Time.time - atkLastTime > 0.5f)
+        if (Time.time - atkLastTime > 1.2f)
         {
             playerAnimator.SetInteger("atkCount", 0);
         }

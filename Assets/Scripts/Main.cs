@@ -68,7 +68,7 @@ public class Main : MonoBehaviour
         {
             //playerAnimator.SetTrigger("Attack");
             //playerAnimator.SetBool("isAttack", true);
-
+            PlayerAttack();
             playerAnimator.SetInteger("atkCount", playerAnimator.GetInteger("atkCount") + 1);
             if(playerAnimator.GetInteger("atkCount") ==1)
             {
@@ -289,6 +289,18 @@ public class Main : MonoBehaviour
     {
         float move = Mathf.Lerp(0, speed, 0.3f);
         return move;
+    }
+
+    void PlayerAttack()
+    {
+        float a;
+        float b;
+        float c;
+        a= Vector3.Dot((GameObject.Find("Character(Clone)").transform.position-GameObject.Find("FreeLichHP").transform.position), GameObject.Find("Character(Clone)").transform.forward);
+        b = Vector3.Distance(GameObject.Find("Character(Clone)").transform.position, GameObject.Find("FreeLichHP").transform.position)* (GameObject.Find("Character(Clone)").transform.forward).magnitude;
+        c = a / b;
+        Debug.Log("------" + GameObject.Find("Character(Clone)").transform.forward);
+        Debug.Log("+++++" + c);
     }
     
 }

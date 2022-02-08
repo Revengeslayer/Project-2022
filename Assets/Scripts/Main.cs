@@ -29,6 +29,7 @@ public class Main : MonoBehaviour
     private float atkLastTime;
     private float NextDash;
     
+    public static int zAtack;
     private void Awake()
     {
         canMove = true;
@@ -48,7 +49,7 @@ public class Main : MonoBehaviour
         isAttack = playerAnimator.GetBool("isAttack");
         isJump = playerAnimator.GetBool("isJump");
         isRun = playerAnimator.GetBool("isRun");
-
+        zAtack = 0;
 
         if (Input.GetKeyDown(KeyCode.LeftControl) && !isRun)
         {
@@ -68,7 +69,7 @@ public class Main : MonoBehaviour
         {
             //playerAnimator.SetTrigger("Attack");
             //playerAnimator.SetBool("isAttack", true);
-            PlayerAttack();
+
             playerAnimator.SetInteger("atkCount", playerAnimator.GetInteger("atkCount") + 1);
             if(playerAnimator.GetInteger("atkCount") ==1)
             {
@@ -77,6 +78,8 @@ public class Main : MonoBehaviour
                 //playerAnimator.SetBool("hit2", true);
                 atkLastTime = Time.time;
                 Debug.Log(1);
+                
+                zAtack = 1;
             }
             if (playerAnimator.GetInteger("atkCount") == 2 )
             {
@@ -85,6 +88,8 @@ public class Main : MonoBehaviour
                     Debug.Log("Áp¶°");
                     //playerAnimator.SetBool("hit2", true);
                     playerAnimator.Play("Atk2");
+                   
+                    zAtack = 2;
                 }
                 //playerAnimator.SetBool("hit2", true);
                 //playerAnimator.SetBool("hit1", false);
@@ -100,6 +105,8 @@ public class Main : MonoBehaviour
                 playerAnimator.Play("Atk3");
                 Debug.Log(3);
                 playerAnimator.SetInteger("atkCount", 0);
+                
+                zAtack = 3;
             }
 
 
@@ -108,6 +115,8 @@ public class Main : MonoBehaviour
             //playerAnimator.applyRootMotion = (true);
             player.transform.position += player.transform.forward * Time.deltaTime * speed;
         }
+
+       
 
         if (Time.time - atkLastTime > 1.2f)
         {
@@ -134,11 +143,12 @@ public class Main : MonoBehaviour
             NextDash = Time.time + 2f;
         }*/
 
-
-
-
     }
 
+    //private void LateUpdate()
+    //{
+    //    zAtack = 0;
+    //}
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -300,16 +310,6 @@ public class Main : MonoBehaviour
         return move;
     }
 
-    void PlayerAttack()
-    {
-        float a;
-        float b;
-        float c;
-        a= Vector3.Dot((GameObject.Find("Character(Clone)").transform.position-GameObject.Find("FreeLichHP").transform.position), GameObject.Find("Character(Clone)").transform.forward);
-        b = Vector3.Distance(GameObject.Find("Character(Clone)").transform.position, GameObject.Find("FreeLichHP").transform.position)* (GameObject.Find("Character(Clone)").transform.forward).magnitude;
-        c = a / b;
-        Debug.Log("------" + GameObject.Find("Character(Clone)").transform.forward);
-        Debug.Log("+++++" + c);
-    }
     
 }
+

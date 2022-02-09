@@ -9,7 +9,6 @@ public class MonsterDmg : MonoBehaviour
     // Start is called before the first frame update
     private  int zAtack;
 
-    public static int mDogAtk; 
 
     public  GameObject objPlayer;
     public  GameObject objMonster;
@@ -18,7 +17,7 @@ public class MonsterDmg : MonoBehaviour
     float monsterHp;
     float monsterDistance;//人物與怪物的距離
 
-   // float hitPerSecond = 0;
+    float hitPerSecond = 0;
     private Animator dogAnimator;
     void Start()
     {
@@ -32,7 +31,7 @@ public class MonsterDmg : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mDogAtk = 0;
+        
         zAtack = Main.zAtack;
        
 
@@ -41,24 +40,26 @@ public class MonsterDmg : MonoBehaviour
 
         if (monsterDistance <= 6.0f && hpImage.fillAmount > 0)
         {
+            hitPerSecond += Time.deltaTime;
             gameObject.transform.LookAt(objPlayer.transform.position);
             if (monsterDistance >= 2.0f)
             {  
                 gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;                  
                 dogAnimator.SetBool("Attack01", false);
                 dogAnimator.SetBool("chase", true);
-
             }
-            else if (monsterDistance < 2.2f)
+            else if (monsterDistance < 2.0f && hitPerSecond > 0.7f)
             {               
-                mDogAtk = 1;
+                PlayerInfo.PlayerHpCal();
                 dogAnimator.SetBool("chase", false);
                 dogAnimator.SetBool("Attack01", true);
+                hitPerSecond = 0;
             }
         }
         else if(monsterDistance >= 6.0f && hpImage.fillAmount > 0)
         {
-            dogAnimator.SetBool("chase", false);          
+            dogAnimator.SetBool("chase", false);
+            
         }
 
         if (zAtack != 0)

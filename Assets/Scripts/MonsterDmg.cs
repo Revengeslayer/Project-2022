@@ -53,10 +53,9 @@ public class MonsterDmg : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
         zAtack = Main.zAtack;
        
-
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
 
         
@@ -69,7 +68,7 @@ public class MonsterDmg : MonoBehaviour
                 nowTimeAtk = Time.time;
                 atkStatus = true;              
             }
-            atkCd = Timer(2.0f,nowTimeAtk);
+            atkCd = Timer(5.0f,nowTimeAtk);
             //攻擊間隔判斷
 
             gameObject.transform.LookAt(objPlayer.transform.position);//面向主角

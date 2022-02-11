@@ -38,8 +38,10 @@ public class MonsterDmg : MonoBehaviour
     /// getHit動畫計時用
     /// </summary>
     private float hitAnimTime = 0;
+    private bool attackHertGet = false;
     private bool hertAnimDelay = false;
     private bool hertAnimWait = false;
+
 
     void Start()
     {
@@ -68,7 +70,7 @@ public class MonsterDmg : MonoBehaviour
                 nowTimeAtk = Time.time;
                 atkStatus = true;              
             }
-            atkCd = Timer(5.0f,nowTimeAtk);
+            atkCd = Timer(1.5f,nowTimeAtk);
             //攻擊間隔判斷
 
             gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
@@ -121,8 +123,31 @@ public class MonsterDmg : MonoBehaviour
 
         if (zAtack != 0)
         {
-            PlayerAttack(monsterDistance);
+            attackHertGet = PlayerAttack(monsterDistance);
         }
+        //getHit動畫停止判斷
+        if(attackHertGet)
+        {
+            hitAnimTime = Time.time;
+            attackHertGet = false;
+            hertAnimDelay = true;
+        }
+
+        if (hertAnimDelay)
+        {
+            hertAnimWait = Timer(0.5f, hitAnimTime);
+        }
+
+        if (hertAnimWait)
+        {
+            dogAnimator.SetBool("gethit", false);
+            hertAnimDelay = false;
+            hertAnimWait = false;
+        }
+       
+
+       
+        //getHit動畫停止判斷
 
         monsterHpbar.transform.forward = GameObject.Find("Main Camera").transform.forward * -1; //怪物Hp條面向攝影機
         if(hpImage.fillAmount<=0)
@@ -131,7 +156,7 @@ public class MonsterDmg : MonoBehaviour
         }
     }
 
-    public void PlayerAttack(float monsterDistance)
+    public bool PlayerAttack(float monsterDistance)
     {
         
         float a;//算角度分子
@@ -155,13 +180,13 @@ public class MonsterDmg : MonoBehaviour
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
                 Debug.Log("造成傷害 40");
+                return true;
                 //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
             }
-            //else if (cosValue < 0.7 || monsterDistance > 2.3f)
-            //{
-            //    Debug.Log("沒打到");
-            //    dogAnimator.SetBool("gethit", false);
-            //}
+            else //if (cosValue < 0.7 || monsterDistance > 2.3f)
+            {
+                return false;
+            }
         }
         else if (zAtack == 2)
         {
@@ -173,12 +198,12 @@ public class MonsterDmg : MonoBehaviour
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
                 Debug.Log("造成傷害 60");
+                return true;
             }
-            //else if (cosValue < 0.7 || monsterDistance > 2.3f)
-            //{
-            //    Debug.Log("沒打到");
-            //    dogAnimator.SetBool("gethit", false);
-            //}
+            else //if (cosValue < 0.7 || monsterDistance > 2.3f)
+            {
+                return false;
+            }
         }
         else if (zAtack == 3)
         {
@@ -190,17 +215,17 @@ public class MonsterDmg : MonoBehaviour
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
                 Debug.Log("造成傷害 20");
+                return true;
                 //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
             }
-            //else if (monsterDistance > 2.3f)
-            //{
-            //    Debug.Log("沒打到");
-            //    dogAnimator.SetBool("gethit", false);
-            //}
+            else //if (monsterDistance > 2.3f)
+            {
+                return false;
+            }
         }
-        if(hpImage.fillAmount<0.3)
+        else
         {
-            hpImage.fillAmount = 1;
+            return false;
         }
     }
 

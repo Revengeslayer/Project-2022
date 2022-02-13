@@ -50,8 +50,6 @@ public class FSM : MonoBehaviour
 	#region check
 	private void CheckIdleState()
 	{
-		anim.SetInteger("combo2", 0);
-		anim.SetInteger("combo3", 0);
 		if (Input.GetKeyDown(KeyCode.Z))
 		{ 
 			isAttack = true;
@@ -83,10 +81,20 @@ public class FSM : MonoBehaviour
 		//	mCheckState = CheckBattleIdleState;
 		//	mDoState = DoBattleIdleState;
 		//}
-		
 	}
 	private void CheckBattleIdleState()
 	{
+		
+		if (Input.GetKeyDown(KeyCode.Z))
+		{
+			isAttack = true;
+			atkCount = 1;
+			anim.SetBool("isAttack", true);
+			mCurrentState = FSMState.Attack;
+			mCheckState = CheckAttackState;
+			mDoState = DoAttackState;
+		}
+		
 		//if (isAttack)
 		//{
 
@@ -137,13 +145,37 @@ public class FSM : MonoBehaviour
 	#region Do
 	private void DoIdleState()
 	{
-		
+		anim.SetInteger("combo2", 0);
+		anim.SetInteger("combo3", 0);
+		if (Input.GetKeyDown(KeyCode.B))
+		{
+			//anim.SetBool("isAttack", false);
+			anim.SetBool("isBattle", true);
+			isBattle = true;
+			atkCount = 0;
+			mCurrentState = FSMState.BattleIdle;
+			mCheckState = CheckBattleIdleState;
+			mDoState = DoBattleIdleState;
+		}
 	}
 	private void DoBattleIdleState()
 	{
+		anim.SetInteger("combo2", 0);
+		anim.SetInteger("combo3", 0);
+		if (Input.GetKeyDown(KeyCode.B))
+		{
+			//anim.SetBool("isAttack", false);
+			anim.SetBool("isBattle", false);
+			isBattle = false;
+			atkCount = 0;
+			mCurrentState = FSMState.Idle;
+			mCheckState = CheckIdleState;
+			mDoState = DoIdleState;
+		}
 	}
 	private void DoAttackState()
 	{
+		//判斷第二下
         if (atkCount == 1
             && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
             && anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
@@ -152,6 +184,7 @@ public class FSM : MonoBehaviour
 			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
 			atkCount = 2;
 		}
+		//判斷第三下
 		if (atkCount == 2
 			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
 			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
@@ -161,38 +194,68 @@ public class FSM : MonoBehaviour
 			atkCount = 3;
 		}
 		//攻擊清除回歸
+		//第一下清除
 		if (atkCount == 1
             && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
             && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         {
 			atkCount = 0;
 			anim.SetBool("isAttack", false);
-            mCurrentState = FSMState.Idle;
-            mCheckState = CheckIdleState;
-            mDoState = DoIdleState;
+			if (isBattle)
+			{
+				mCurrentState = FSMState.BattleIdle;
+				mCheckState = CheckBattleIdleState;
+				mDoState = DoBattleIdleState;
+			}
+            else
+            {
+				mCurrentState = FSMState.Idle;
+				mCheckState = CheckIdleState;
+				mDoState = DoIdleState;
+			}
         }
-        if (atkCount == 2
+		//第二下清除
+		if (atkCount == 2
             && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
             && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         {
 			atkCount = 0;
 			anim.SetInteger("combo2", 0);
 			anim.SetBool("isAttack", false);
-            mCurrentState = FSMState.Idle;
-            mCheckState = CheckIdleState;
-            mDoState = DoIdleState;
-        }
-        if (atkCount == 3
+			if (isBattle)
+			{
+				mCurrentState = FSMState.BattleIdle;
+				mCheckState = CheckBattleIdleState;
+				mDoState = DoBattleIdleState;
+			}
+			else
+			{
+				mCurrentState = FSMState.Idle;
+				mCheckState = CheckIdleState;
+				mDoState = DoIdleState;
+			}
+		}
+		//第三下清除
+		if (atkCount == 3
             && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK03")
             && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         {
 			atkCount = 0;
 			anim.SetInteger("combo3", 0);
 			anim.SetBool("isAttack", false);
-            mCurrentState = FSMState.Idle;
-            mCheckState = CheckIdleState;
-            mDoState = DoIdleState;
-        }
+			if (isBattle)
+			{
+				mCurrentState = FSMState.BattleIdle;
+				mCheckState = CheckBattleIdleState;
+				mDoState = DoBattleIdleState;
+			}
+			else
+			{
+				mCurrentState = FSMState.Idle;
+				mCheckState = CheckIdleState;
+				mDoState = DoIdleState;
+			}
+		}
     }
 	private void DoDodgeState()
 	{
@@ -209,26 +272,11 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//Debug.Log("目前狀態          " + mCurrentState);
-		//Debug.Log("atkCount          " + atkCount);
-
 		//偵測狀態
 		mCheckState();
 
 		//狀態做甚麼
 		mDoState();
 	}
-	public static bool Timer(float cdTime, float nowTime)
-	{
-
-		if (Time.time - nowTime >= cdTime)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 }
 

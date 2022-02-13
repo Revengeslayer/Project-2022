@@ -15,6 +15,17 @@ public class FSM : MonoBehaviour
 	//角色動作
 	private Animator anim;
 
+	//is Battle?
+	bool isBattle;
+	//is Attack?
+	bool isAttack;
+	//Attack Count
+	int atkCount;
+	//is Dodge?
+	bool isDodge;
+	//is Move?
+	bool isMove;
+
 
 	private FSMState mCurrentState;
 	// Start is called before the first frame update
@@ -22,9 +33,12 @@ public class FSM : MonoBehaviour
 	{
 		NONE = -1,
 		Idle,
-		Chase,
+		BattleIdle,
+		Move,
 		Attack,
+		Dodge
 	}
+
 	private void Start()
 	{
 		mCurrentState = FSMState.Idle;
@@ -36,98 +50,185 @@ public class FSM : MonoBehaviour
 	#region check
 	private void CheckIdleState()
 	{
-		anim.SetBool("Attack", false);
-		anim.SetBool("Chase", false);
-
-		if (Input.GetKeyDown(KeyCode.A))
-		{
-			anim.SetBool("Attack", true);
-
+		anim.SetInteger("combo2", 0);
+		anim.SetInteger("combo3", 0);
+		if (Input.GetKeyDown(KeyCode.Z))
+		{ 
+			isAttack = true;
+			atkCount = 1;
+			anim.SetBool("isAttack", true);
 			mCurrentState = FSMState.Attack;
 			mCheckState = CheckAttackState;
 			mDoState = DoAttackState;
 		}
-		if(Input.GetKeyDown(KeyCode.D))
-		{
-			anim.SetBool("Chase", true);
+		//if(isDodge)
+		//{
 
-			mCurrentState = FSMState.Chase;
-			mCheckState = CheckChaseState;
-			mDoState = DoChaseState;
-		}
+		//}
+		//if(isMove)
+		//{
+		//	mCurrentState = FSMState.Move;
+		//	mCheckState = CheckMoveState;
+		//	mDoState = DoMoveState;
+		//}
+		//if(!isBattle)
+		//{
+		//	mCurrentState = FSMState.Idle;
+		//	mCheckState = CheckIdleState; 
+		//	mDoState = DoIdleState;
+		//}
+		//else
+		//{
+		//	mCurrentState = FSMState.BattleIdle;
+		//	mCheckState = CheckBattleIdleState;
+		//	mDoState = DoBattleIdleState;
+		//}
 		
-		Debug.Log("CheckIdleState()");
 	}
-	private void CheckAttackState()
+	private void CheckBattleIdleState()
 	{
-		if (Input.GetKeyDown(KeyCode.S))
-		{
-			anim.SetBool("Attack", false);
+		//if (isAttack)
+		//{
 
+		//}
+		//if (isDodge)
+		//{
 
+		//}
+		//if (isMove)
+		//{
+		//	mCurrentState = FSMState.Move;
+		//	mCheckState = CheckMoveState;
+		//	mDoState = DoMoveState;
+		//}
+		//if (!isBattle)
+		//{
+		//	mCurrentState = FSMState.Idle;
+		//	mCheckState = CheckIdleState;
+		//	mDoState = DoIdleState;
+		//}
+		//else
+		//{
+		//	mCurrentState = FSMState.BattleIdle;
+		//	mCheckState = CheckBattleIdleState;
+		//	mDoState = DoBattleIdleState;
+		//}
+	}
+	private void CheckMoveState()
+	{
+	}
+    private void CheckAttackState()
+    {
+		if (Input.GetKeyDown(KeyCode.Q))
+		{ 
+			anim.SetBool("isAttack", false);
+			atkCount = 0;
 			mCurrentState = FSMState.Idle;
 			mCheckState = CheckIdleState;
 			mDoState = DoIdleState;
 		}
-		if (Input.GetKeyDown(KeyCode.D))
-		{
-			anim.SetBool("Attack", false);
-			anim.SetBool("Chase", true);
-
-			mCurrentState = FSMState.Chase;
-			mCheckState = CheckChaseState;
-			mDoState = DoChaseState;
-		}
-		Debug.Log("CheckAttackState()");
 	}
-	private void CheckChaseState()
+    private void CheckDodgeState()
 	{
-		if (Input.GetKeyDown(KeyCode.A))
-		{
-			anim.SetBool("Chase", false);
-			anim.SetBool("Attack", true);
-			
-			mCurrentState = FSMState.Attack;
-			mCheckState = CheckAttackState;
-			mDoState = DoAttackState;
-		}
-		if (Input.GetKeyDown(KeyCode.S))
-		{
-			anim.SetBool("Chase", false);
-
-			mCurrentState = FSMState.Idle;
-			mCheckState = CheckIdleState;
-			mDoState = DoIdleState;
-		}
-		Debug.Log("CheckChaseState()");
+		
 	}
 	#endregion
 
 	#region Do
 	private void DoIdleState()
 	{
-		//anim.Play("Idle_Battle");
+		
+	}
+	private void DoBattleIdleState()
+	{
 	}
 	private void DoAttackState()
 	{
-		//anim.Play("Attack01");
-	}
-	private void DoChaseState()
+        if (atkCount == 1
+            && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
+            && anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
+			&& Input.GetKeyDown(KeyCode.Z))
+        {
+			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
+			atkCount = 2;
+		}
+		if (atkCount == 2
+			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
+			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
+			&& Input.GetKeyDown(KeyCode.Z))
+		{
+			anim.SetInteger("combo3", anim.GetInteger("combo3") + 1);
+			atkCount = 3;
+		}
+		//攻擊清除回歸
+		if (atkCount == 1
+            && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
+            && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        {
+			atkCount = 0;
+			anim.SetBool("isAttack", false);
+            mCurrentState = FSMState.Idle;
+            mCheckState = CheckIdleState;
+            mDoState = DoIdleState;
+        }
+        if (atkCount == 2
+            && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
+            && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        {
+			atkCount = 0;
+			anim.SetInteger("combo2", 0);
+			anim.SetBool("isAttack", false);
+            mCurrentState = FSMState.Idle;
+            mCheckState = CheckIdleState;
+            mDoState = DoIdleState;
+        }
+        if (atkCount == 3
+            && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK03")
+            && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        {
+			atkCount = 0;
+			anim.SetInteger("combo3", 0);
+			anim.SetBool("isAttack", false);
+            mCurrentState = FSMState.Idle;
+            mCheckState = CheckIdleState;
+            mDoState = DoIdleState;
+        }
+    }
+	private void DoDodgeState()
 	{
-		//anim.Play("WalkForwardBattle");
+
+	}
+	private void DoMoveState()
+	{
+		
 	}
 	#endregion
 
-	
+
 	// Update is called once per frame
 	void Update()
-    {
+	{
+		//Debug.Log("目前狀態          " + mCurrentState);
+		//Debug.Log("atkCount          " + atkCount);
+
 		//偵測狀態
 		mCheckState();
 
 		//狀態做甚麼
 		mDoState();
-    }
+	}
+	public static bool Timer(float cdTime, float nowTime)
+	{
 
-	
+		if (Time.time - nowTime >= cdTime)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 }
+

@@ -119,7 +119,7 @@ public class Main : MonoBehaviour
 
                 playerAnimator.SetInteger("atkCount", Mathf.Clamp(playerAnimator.GetInteger("atkCount"), 0, 3));
                 //playerAnimator.applyRootMotion = (true);
-                player.transform.position += player.transform.forward * Time.deltaTime * speed;
+                //player.transform.position += player.transform.forward * Time.deltaTime * speed;
             }
         }
 
@@ -169,7 +169,7 @@ public class Main : MonoBehaviour
         //}
         if (playerHp >0)
         {
-            MoveFunc(isAttack, isJump, isRun);
+            //MoveFunc(isAttack, isJump, isRun);
         }        
     }
 

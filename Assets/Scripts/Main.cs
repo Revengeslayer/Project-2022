@@ -71,56 +71,56 @@ public class Main : MonoBehaviour
             }
 
 
-            if (Input.GetKeyDown(KeyCode.Z) && !isJump)
-            {
-                //playerAnimator.SetTrigger("Attack");
-                //playerAnimator.SetBool("isAttack", true);
+            //if (Input.GetKeyDown(KeyCode.Z) && !isJump)
+            //{
+            //    //playerAnimator.SetTrigger("Attack");
+            //    //playerAnimator.SetBool("isAttack", true);
 
-                playerAnimator.SetInteger("atkCount", playerAnimator.GetInteger("atkCount") + 1);
-                if (playerAnimator.GetInteger("atkCount") == 1)
-                {
-                    //playerAnimator.SetBool("hit1", true);
-                    playerAnimator.Play("Atk1");
-                    //playerAnimator.SetBool("hit2", true);
-                    atkLastTime = Time.time;
-                    Debug.Log(1);
+            //    playerAnimator.SetInteger("atkCount", playerAnimator.GetInteger("atkCount") + 1);
+            //    if (playerAnimator.GetInteger("atkCount") == 1)
+            //    {
+            //        //playerAnimator.SetBool("hit1", true);
+            //        playerAnimator.Play("Atk1");
+            //        //playerAnimator.SetBool("hit2", true);
+            //        atkLastTime = Time.time;
+            //        Debug.Log(1);
 
-                    zAtack = 1;
-                }
-                if (playerAnimator.GetInteger("atkCount") == 2)
-                {
-                    if (Time.time - atkLastTime < 1.2f)
-                    {
-                        Debug.Log("햜떠");
-                        //playerAnimator.SetBool("hit2", true);
-                        playerAnimator.Play("Atk2");
+            //        zAtack = 1;
+            //    }
+            //    if (playerAnimator.GetInteger("atkCount") == 2)
+            //    {
+            //        if (Time.time - atkLastTime < 1.2f)
+            //        {
+            //            Debug.Log("햜떠");
+            //            //playerAnimator.SetBool("hit2", true);
+            //            playerAnimator.Play("Atk2");
 
-                        zAtack = 2;
-                    }
-                    //playerAnimator.SetBool("hit2", true);
-                    //playerAnimator.SetBool("hit1", false);
+            //            zAtack = 2;
+            //        }
+            //        //playerAnimator.SetBool("hit2", true);
+            //        //playerAnimator.SetBool("hit1", false);
 
-                    atkLastTime = Time.time;
-                    Debug.Log(2);
-                }
+            //        atkLastTime = Time.time;
+            //        Debug.Log(2);
+            //    }
 
-                if (playerAnimator.GetInteger("atkCount") == 3)
-                {
-                    //playerAnimator.SetBool("hit3", true);
-                    //playerAnimator.SetBool("hit2", false);
-                    playerAnimator.Play("Atk3");
-                    Debug.Log(3);
-                    playerAnimator.SetInteger("atkCount", 0);
+            //    if (playerAnimator.GetInteger("atkCount") == 3)
+            //    {
+            //        //playerAnimator.SetBool("hit3", true);
+            //        //playerAnimator.SetBool("hit2", false);
+            //        playerAnimator.Play("Atk3");
+            //        Debug.Log(3);
+            //        playerAnimator.SetInteger("atkCount", 0);
 
-                    zAtack = 3;
-                }
+            //        zAtack = 3;
+            //    }
 
 
 
-                playerAnimator.SetInteger("atkCount", Mathf.Clamp(playerAnimator.GetInteger("atkCount"), 0, 3));
-                //playerAnimator.applyRootMotion = (true);
-                //player.transform.position += player.transform.forward * Time.deltaTime * speed;
-            }
+            //    playerAnimator.SetInteger("atkCount", Mathf.Clamp(playerAnimator.GetInteger("atkCount"), 0, 3));
+            //    //playerAnimator.applyRootMotion = (true);
+            //    //player.transform.position += player.transform.forward * Time.deltaTime * speed;
+            //}
         }
 
         if (Input.GetKeyDown(KeyCode.H))

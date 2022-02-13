@@ -70,7 +70,7 @@ public class MonsterDmg : MonoBehaviour
     {
         playerHp = PlayerInfo.playerHp;//¬ö¿ýª±®a¦å¶q
 
-        zAtack = Main.zAtack;
+        zAtack = FSM.zAtack;
        
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
 

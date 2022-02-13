@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayControl : MonoBehaviour
 {
-    public float speed;
+    public static float speed=4;
     public static bool canMove;
     bool isAttack;
     bool isJump;
     bool isRun;
 
     public static GameObject player;
-    private Animator playerAnimator;
+    private static Animator playerAnimator;
 
 
     // Start is called before the first frame update
@@ -40,12 +40,12 @@ public class PlayControl : MonoBehaviour
 
     }
     #region Move
-    float Accel()
+    static float Accel()
     {
         float move = Mathf.Lerp(0, speed, 0.3f);
         return move;
     }
-    Vector3 CheckForWard()
+    static Vector3 CheckForWard()
     {
         var x = -Input.GetAxis("Vertical");
         var z = Input.GetAxis("Horizontal");
@@ -77,7 +77,7 @@ public class PlayControl : MonoBehaviour
         }
         return player.transform.forward;
     }
-    void Move(float n)
+    static void Move(float n)
     {
 
         if (n != 0)
@@ -86,7 +86,7 @@ public class PlayControl : MonoBehaviour
             //playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, -9.8f, playerRigidbody.velocity.z);
         }
     }
-    void DirControl(bool isAttack, float speed)
+    public static void DirControl(bool isAttack, float speed)
     {
         float moveSpeed;
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
@@ -109,7 +109,7 @@ public class PlayControl : MonoBehaviour
             MoveFunc(moveSpeed);
         }
     }
-    void MoveFunc(float moveSpeed)
+    public static void MoveFunc(float moveSpeed)
     {
         if (canMove)
         {

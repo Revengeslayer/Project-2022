@@ -19,6 +19,8 @@ public class FSM : MonoBehaviour
 	bool isBattle;
 	//is Attack?
 	bool isAttack;
+	//回傳
+	public static int zAtack;
 	//Attack Count
 	int atkCount;
 	//is Dodge?
@@ -53,12 +55,14 @@ public class FSM : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Z))
 		{ 
 			isAttack = true;
+			zAtack = 1;
 			atkCount = 1;
 			anim.SetBool("isAttack", true);
 			mCurrentState = FSMState.Attack;
 			mCheckState = CheckAttackState;
 			mDoState = DoAttackState;
 		}
+		//PlayControl.DirControl(isAttack, 4);
 		//if(isDodge)
 		//{
 
@@ -88,6 +92,7 @@ public class FSM : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Z))
 		{
 			isAttack = true;
+			zAtack = 1;
 			atkCount = 1;
 			anim.SetBool("isAttack", true);
 			mCurrentState = FSMState.Attack;
@@ -182,6 +187,7 @@ public class FSM : MonoBehaviour
 			&& Input.GetKeyDown(KeyCode.Z))
         {
 			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
+			zAtack = 2;
 			atkCount = 2;
 		}
 		//判斷第三下
@@ -191,6 +197,7 @@ public class FSM : MonoBehaviour
 			&& Input.GetKeyDown(KeyCode.Z))
 		{
 			anim.SetInteger("combo3", anim.GetInteger("combo3") + 1);
+			zAtack = 3;
 			atkCount = 3;
 		}
 		//攻擊清除回歸
@@ -273,6 +280,7 @@ public class FSM : MonoBehaviour
 	{
 		//Debug.Log("目前狀態          " + mCurrentState);
 		//偵測狀態
+		zAtack = 0;
 		mCheckState();
 
 		//狀態做甚麼

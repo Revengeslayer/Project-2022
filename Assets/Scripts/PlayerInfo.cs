@@ -9,17 +9,20 @@ public class PlayerInfo : MonoBehaviour
     private static  GameObject playerHpbar;
     
     private int[] getHit;
+    private static Animator playerAnimator;
 
-    private List<GameObject> dogMonsters; 
+    private List<GameObject> dogMonsters;
     //public Image hpImage;
-    static float playerHp;
+    static float playerMaxHp = 300;
+    public static float playerHp;
     float playerDistance;//人物與怪物的距離
-
+    //public int reBirth;
 
     void Start()
     {
         dogMonsters = new List<GameObject>();
-        
+        playerAnimator = GetComponent<Animator>();
+        playerHp = playerMaxHp;
 
         playerHpbar = GameObject.Find("PlayerHpBar");
         //foreach (var a in GameObject.FindGameObjectsWithTag("Monster"))
@@ -32,7 +35,12 @@ public class PlayerInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //reBirth = Main.reBirth;
+        //if(reBirth ==1)
+        //{
+        //    playerHp = playerMaxHp;
+        //    reBirth = 0;
+        //}
         //for (int a = 0; a < dogMonsters.Count; a++)
         //{
         //    getHit[a] = MonsterDmg.mDogAtk;
@@ -42,7 +50,7 @@ public class PlayerInfo : MonoBehaviour
         //        Debug.Log(i + "    "+ getHit[i]);
         //    }
         //}
-      // Debug.Log("QQQQQQQQQQQQ" + getHit);
+        // Debug.Log("QQQQQQQQQQQQ" + getHit);
     }
 
     //public void MonsterAtack(GameObject objMonster,int i)
@@ -66,10 +74,11 @@ public class PlayerInfo : MonoBehaviour
     //}
     public static void PlayerHpCal()
     {
-        playerHpbar.GetComponent<Image>().fillAmount = playerHpbar.GetComponent<Image>().fillAmount - 0.03f;
-        if(playerHpbar.GetComponent<Image>().fillAmount < 0.3)
+        playerHpbar.GetComponent<Image>().fillAmount = (playerHp-10)/playerMaxHp;
+        playerHp = playerHp - 10;
+        if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
-            playerHpbar.GetComponent<Image>().fillAmount = 1;
+            playerAnimator.Play("Die");
         }
     }
 }

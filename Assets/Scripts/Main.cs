@@ -28,8 +28,11 @@ public class Main : MonoBehaviour
 
     private float atkLastTime;
     private float NextDash;
-    
+
+    public float playerHp; 
     public static int zAtack;
+
+    //public static int reBirth = 0;
     private void Awake()
     {
         canMove = true;
@@ -46,83 +49,90 @@ public class Main : MonoBehaviour
     }
     void Update()
     {
+        playerHp = PlayerInfo.playerHp;//紀錄玩家血量
+
         isAttack = playerAnimator.GetBool("isAttack");
         isJump = playerAnimator.GetBool("isJump");
         isRun = playerAnimator.GetBool("isRun");
         zAtack = 0;
-
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isRun)
+        if (playerHp > 0)
         {
-            playerAnimator.SetBool("isRun", true);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftControl) && isRun)
-        {
-            playerAnimator.SetBool("isRun", false);
-        }
-        if (!playerAnimator.GetBool("isWalkF") && !playerAnimator.GetBool("isWalkB") && !playerAnimator.GetBool("isWalkL") && !playerAnimator.GetBool("isWalkR"))
-        {
-            playerAnimator.SetBool("isRun", false);
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Z) && !isJump)
-        {
-            //playerAnimator.SetTrigger("Attack");
-            //playerAnimator.SetBool("isAttack", true);
-
-            playerAnimator.SetInteger("atkCount", playerAnimator.GetInteger("atkCount") + 1);
-            if(playerAnimator.GetInteger("atkCount") ==1)
+            if (Input.GetKeyDown(KeyCode.LeftControl) && !isRun)
             {
-                //playerAnimator.SetBool("hit1", true);
-                playerAnimator.Play("Atk1");
-                //playerAnimator.SetBool("hit2", true);
-                atkLastTime = Time.time;
-                Debug.Log(1);
-                
-                zAtack = 1;
+                playerAnimator.SetBool("isRun", true);
             }
-            if (playerAnimator.GetInteger("atkCount") == 2 )
+            if (Input.GetKeyDown(KeyCode.LeftControl) && isRun)
             {
-                if (Time.time - atkLastTime < 1.2f)
+                playerAnimator.SetBool("isRun", false);
+            }
+            if (!playerAnimator.GetBool("isWalkF") && !playerAnimator.GetBool("isWalkB") && !playerAnimator.GetBool("isWalkL") && !playerAnimator.GetBool("isWalkR"))
+            {
+                playerAnimator.SetBool("isRun", false);
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.Z) && !isJump)
+            {
+                //playerAnimator.SetTrigger("Attack");
+                //playerAnimator.SetBool("isAttack", true);
+
+                playerAnimator.SetInteger("atkCount", playerAnimator.GetInteger("atkCount") + 1);
+                if (playerAnimator.GetInteger("atkCount") == 1)
                 {
-                    Debug.Log("聯集");
+                    //playerAnimator.SetBool("hit1", true);
+                    playerAnimator.Play("Atk1");
                     //playerAnimator.SetBool("hit2", true);
-                    playerAnimator.Play("Atk2");
-                   
-                    zAtack = 2;
+                    atkLastTime = Time.time;
+                    Debug.Log(1);
+
+                    zAtack = 1;
                 }
-                //playerAnimator.SetBool("hit2", true);
-                //playerAnimator.SetBool("hit1", false);
-                
-                atkLastTime = Time.time;
-                Debug.Log(2);
+                if (playerAnimator.GetInteger("atkCount") == 2)
+                {
+                    if (Time.time - atkLastTime < 1.2f)
+                    {
+                        Debug.Log("聯集");
+                        //playerAnimator.SetBool("hit2", true);
+                        playerAnimator.Play("Atk2");
+
+                        zAtack = 2;
+                    }
+                    //playerAnimator.SetBool("hit2", true);
+                    //playerAnimator.SetBool("hit1", false);
+
+                    atkLastTime = Time.time;
+                    Debug.Log(2);
+                }
+
+                if (playerAnimator.GetInteger("atkCount") == 3)
+                {
+                    //playerAnimator.SetBool("hit3", true);
+                    //playerAnimator.SetBool("hit2", false);
+                    playerAnimator.Play("Atk3");
+                    Debug.Log(3);
+                    playerAnimator.SetInteger("atkCount", 0);
+
+                    zAtack = 3;
+                }
+
+
+
+                playerAnimator.SetInteger("atkCount", Mathf.Clamp(playerAnimator.GetInteger("atkCount"), 0, 3));
+                //playerAnimator.applyRootMotion = (true);
+                player.transform.position += player.transform.forward * Time.deltaTime * speed;
             }
-
-            if (playerAnimator.GetInteger("atkCount") == 3 )
-            {
-                //playerAnimator.SetBool("hit3", true);
-                //playerAnimator.SetBool("hit2", false);
-                playerAnimator.Play("Atk3");
-                Debug.Log(3);
-                playerAnimator.SetInteger("atkCount", 0);
-                
-                zAtack = 3;
-            }
-
-
-          
-            playerAnimator.SetInteger("atkCount", Mathf.Clamp(playerAnimator.GetInteger("atkCount"), 0, 3));
-            //playerAnimator.applyRootMotion = (true);
-            player.transform.position += player.transform.forward * Time.deltaTime * speed;
         }
 
-       
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Application.LoadLevel(0);
+        }
 
         if (Time.time - atkLastTime > 1.2f)
         {
             playerAnimator.SetInteger("atkCount", 0);
         }
-
+        
         /*
         if (Input.GetButtonDown("Jump") && Time.time > canJump)
         {
@@ -157,8 +167,10 @@ public class Main : MonoBehaviour
         //{
         //    playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, -9.8f, playerRigidbody.velocity.z);
         //}
-        MoveFunc(isAttack, isJump, isRun);
-        
+        if (playerHp >0)
+        {
+            MoveFunc(isAttack, isJump, isRun);
+        }        
     }
 
     void MoveFunc(bool isAttack, bool isJump , bool isRun)

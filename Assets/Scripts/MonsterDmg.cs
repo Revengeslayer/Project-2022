@@ -6,14 +6,16 @@ using UnityEngine.UI;
 public class MonsterDmg : MonoBehaviour
 {
     public GameObject monsterHpbar;
+
     // Start is called before the first frame update
     private  int zAtack;
 
-
+    static float playerHp;
     public  GameObject objPlayer;
     public  GameObject objMonster;
 
     public  Image hpImage;
+    public Image hpImage0;
     float monsterHp;
     float monsterDistance;//人物與怪物的距離
 
@@ -42,6 +44,11 @@ public class MonsterDmg : MonoBehaviour
     private bool hertAnimDelay = false;
     private bool hertAnimWait = false;
 
+    /// <summary>
+    /// 怪物間的行為- 碰撞重疊避免
+    /// </summary>
+    private List<GameObject> dogMonsters;
+    private bool monsterCollision;
 
     void Start()
     {
@@ -49,30 +56,32 @@ public class MonsterDmg : MonoBehaviour
         objPlayer = GameObject.Find("Character(Clone)");
         objMonster = this.gameObject;
         dogAnimator = gameObject.GetComponent<Animator>();
-    //Debug.Log(objPlayer.transform.position);
-}
+        
+        
+        dogMonsters = new List<GameObject>();
+        foreach (var a in GameObject.FindGameObjectsWithTag("Monster"))
+        {
+            dogMonsters.Add(a);
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
-       
+        playerHp = PlayerInfo.playerHp;//紀錄玩家血量
+
         zAtack = Main.zAtack;
        
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
 
-        
-        if (monsterDistance <= 6.0f && hpImage.fillAmount > 0)
-        {
-            //攻擊間隔判斷
-            if (atkStatus == false)
-            {
-                dogAnimator.SetBool("Attack01", false);
-                nowTimeAtk = Time.time;
-                atkStatus = true;              
-            }
-            atkCd = Timer(1.5f,nowTimeAtk);
-            //攻擊間隔判斷
-
+        //if(hpImage.fillAmount <= 0)
+        //{
+        //   hpImage0.fillAmount = 0;
+        //}
+        //MonsterDis(); 
+        if (monsterDistance <= 6.0f && hpImage.fillAmount > 0 && playerHp >0)
+        {   
+            
             gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
 
             if (monsterDistance >= 2.0f)
@@ -80,9 +89,20 @@ public class MonsterDmg : MonoBehaviour
                 gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;                  
                 dogAnimator.SetBool("Attack01", false);
                 dogAnimator.SetBool("chase", true);
+                nowTimeAtk = Time.time;
             }
             else if (monsterDistance < 2.0f)
             {   
+                //攻擊間隔判斷
+                if (atkStatus == false)
+                {
+                    dogAnimator.SetBool("Attack01", false);
+                    nowTimeAtk = Time.time;
+                    atkStatus = true;              
+                }
+                atkCd = Timer(0.8f,nowTimeAtk);
+                //攻擊間隔判斷
+
                 dogAnimator.SetBool("chase", false);
                 if (atkCd)
                 {
@@ -241,5 +261,36 @@ public class MonsterDmg : MonoBehaviour
             return false;
         }
     }
+
+    //public void MonsterDis()
+    //{
+    //    float a;//算角度分子
+
+    //    float b;//算角度分母
+
+    //    float cosValue;//cos值
+
+    //    float monsterDis;
+    //    float forwardDis;
+
+    //    for (int i =0; i< dogMonsters.Count; i++)
+    //    { 
+    //        a = Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward);
+    //        b = Vector3.Distance(dogMonsters[i].transform.position, this.transform.position) * (this.transform.forward).magnitude;
+    //        cosValue = a / b;
+    //        monsterDis = Vector3.Distance(this.transform.position, dogMonsters[i].transform.position);
+    //        forwardDis = monsterDis * cosValue;
+    //        if (Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) < 5.0f && Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) != 0
+    //            && Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward) > 0 && Mathf.Sqrt(monsterDis * monsterDis - forwardDis * forwardDis) < 4.0f)
+    //        {
+    //            Debug.Log("該轉彎");
+    //            gameObject.transform.Rotate(new Vector3(0, 30 * Time.deltaTime, 0));
+    //        }
+    //        //else
+    //        //{
+    //        //    gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
+    //        //}
+    //    }
+    //}
 
 }

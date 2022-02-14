@@ -56,6 +56,10 @@ public class Main : MonoBehaviour
         isJump = playerAnimator.GetBool("isJump");
         isRun = playerAnimator.GetBool("isRun");
         zAtack = 0;
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            playerAnimator.Play("X");
+        }
         if (playerHp > 0)
         {
             if (Input.GetKeyDown(KeyCode.LeftControl) && !isRun)

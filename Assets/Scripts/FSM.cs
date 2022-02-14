@@ -216,6 +216,7 @@ public class FSM : MonoBehaviour
 	}
 	private void DoBattleIdleState()
 	{
+		
 		anim.SetInteger("combo2", 0);
 		anim.SetInteger("combo3", 0);
 		if (Input.GetKeyDown(KeyCode.B))
@@ -239,7 +240,8 @@ public class FSM : MonoBehaviour
 		}
 	}
 	private void DoAttackState()
-	{	
+	{
+		isGitHit = false;
 		//攻擊清除回歸
 		//第一下清除
 		if (atkCount == 1
@@ -345,7 +347,7 @@ public class FSM : MonoBehaviour
 	}
 	private void DoMoveState()
 	{
-		
+		isGitHit = false;
 	}
 	private void DoGetHitState()
 	{
@@ -361,7 +363,7 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckBattleIdleState;
 			mDoState = DoBattleIdleState;
 		}
-		//判斷有沒有攻擊中按住方向鍵
+		////判斷有沒有攻擊中按住方向鍵
 		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
 		{
 			isMove = true;
@@ -380,7 +382,7 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		Debug.Log("目前狀態          " + mCurrentState);		
+		//Debug.Log("目前狀態          " + mCurrentState);		
 		//判斷哪一個Attack
 		zAtack = 0;
 		//是否受到傷害

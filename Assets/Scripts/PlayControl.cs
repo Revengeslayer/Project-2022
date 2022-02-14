@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayControl : MonoBehaviour
 {
-    public static float speed=4;
-    public static bool canMove;
+    private static float speed = 4;
     bool isAttack;
     bool isJump;
     bool isRun;
@@ -17,7 +16,6 @@ public class PlayControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        canMove = true;
         player = this.gameObject;
         playerAnimator = player.GetComponent<Animator>();      
     }
@@ -35,9 +33,6 @@ public class PlayControl : MonoBehaviour
         //{
         //    playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, -9.8f, playerRigidbody.velocity.z);
         //}
-        //MoveFunc(isAttack, isJump, isRun);
-        DirControl(isAttack, speed);
-
     }
     #region Move
     static float Accel()
@@ -73,47 +68,19 @@ public class PlayControl : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftArrow))
             {
                 player.transform.forward = Vector3.Lerp(player.transform.forward, new Vector3(a.x, 0, -b.z), 1f);
+                
             }
         }
         return player.transform.forward;
     }
-    static void Move(float n)
+    public static void Move(float n)
     {
 
         if (n != 0)
         {
+           
             player.transform.position += CheckForWard() * Time.deltaTime * Accel() * n;
             //playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, -9.8f, playerRigidbody.velocity.z);
-        }
-    }
-    public static void DirControl(bool isAttack, float speed)
-    {
-        float moveSpeed;
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
-        {
-            if (isAttack)
-            {
-                return;
-            }
-            else
-            {
-                playerAnimator.SetBool("isWalkF", true);
-                moveSpeed = speed;
-                MoveFunc(moveSpeed);
-            }
-        }
-        else
-        {
-            playerAnimator.SetBool("isWalkF", false);
-            moveSpeed = 0;
-            MoveFunc(moveSpeed);
-        }
-    }
-    public static void MoveFunc(float moveSpeed)
-    {
-        if (canMove)
-        {
-            Move(moveSpeed);
         }
     }
     #endregion

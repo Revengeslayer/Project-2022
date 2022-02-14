@@ -147,10 +147,27 @@ public class FSM : MonoBehaviour
 		//	mDoState = DoBattleIdleState;
 		//}
 	}
+	
+	private void CheckAttackState()
+    {
+		if (Input.GetKeyDown(KeyCode.Q))
+		{ 
+			anim.SetBool("isAttack", false);
+			atkCount = 0;
+			mCurrentState = FSMState.Idle;
+			mCheckState = CheckIdleState;
+			mDoState = DoIdleState;
+		}
+		
+	}
+    private void CheckDodgeState()
+	{
+		
+	}
 	private void CheckMoveState()
 	{
-		if(!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
-		{			
+		if (!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
+		{
 			if (isBattle)
 			{
 				isMove = false;
@@ -168,26 +185,30 @@ public class FSM : MonoBehaviour
 				mDoState = DoIdleState;
 			}
 		}
-		
-	}
-	private void CheckAttackState()
-    {
-		if (Input.GetKeyDown(KeyCode.Q))
-		{ 
-			anim.SetBool("isAttack", false);
-			atkCount = 0;
-			mCurrentState = FSMState.Idle;
-			mCheckState = CheckIdleState;
-			mDoState = DoIdleState;
+		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+		{
+			if (Input.GetKeyDown(KeyCode.Z))
+			{
+				isMove = false;
+				isAttack = true;
+				zAtack = 1;
+				atkCount = 1;
+				anim.SetBool("isAttack", true);
+				anim.SetBool("isWalkF", false);
+				mCurrentState = FSMState.Attack;
+				mCheckState = CheckAttackState;
+				mDoState = DoAttackState;
+			}
 		}
 	}
-    private void CheckDodgeState()
+	private void CheckGetHitState()
 	{
-		
+
 	}
 	#endregion
 
 	#region Do
+	
 	private void DoIdleState()
 	{
 		anim.SetInteger("combo2", 0);
@@ -260,7 +281,16 @@ public class FSM : MonoBehaviour
 				mCheckState = CheckIdleState;
 				mDoState = DoIdleState;
 			}
-        }
+			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+			{
+				isMove = true;
+				anim.SetBool("isAttack", false);
+				anim.SetBool("isWalkF", true);
+				mCurrentState = FSMState.Move;
+				mCheckState = CheckMoveState;
+				mDoState = DoMoveState;
+			}
+		}
 		//第二下清除
 		if (atkCount == 2
             && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
@@ -280,6 +310,15 @@ public class FSM : MonoBehaviour
 				mCurrentState = FSMState.Idle;
 				mCheckState = CheckIdleState;
 				mDoState = DoIdleState;
+			}
+			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+			{
+				isMove = true;
+				anim.SetBool("isAttack", false);
+				anim.SetBool("isWalkF", true);
+				mCurrentState = FSMState.Move;
+				mCheckState = CheckMoveState;
+				mDoState = DoMoveState;
 			}
 		}
 		//第三下清除
@@ -302,8 +341,20 @@ public class FSM : MonoBehaviour
 				mCheckState = CheckIdleState;
 				mDoState = DoIdleState;
 			}
+
+			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+			{
+				isMove = true;
+				anim.SetBool("isAttack", false);
+				anim.SetBool("isWalkF", true);
+				mCurrentState = FSMState.Move;
+				mCheckState = CheckMoveState;
+				mDoState = DoMoveState;
+			}
 		}
-    }
+
+		
+	}
 	private void DoDodgeState()
 	{
 
@@ -311,6 +362,10 @@ public class FSM : MonoBehaviour
 	private void DoMoveState()
 	{
 		
+	}
+	private void DoGetHitState()
+	{
+
 	}
 	#endregion
 

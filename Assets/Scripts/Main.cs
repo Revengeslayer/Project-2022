@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour
 {
@@ -125,7 +126,7 @@ public class Main : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            Application.LoadLevel(0);
+            SceneManager.LoadScene(0);
         }
 
         if (Time.time - atkLastTime > 1.2f)

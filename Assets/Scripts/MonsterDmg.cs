@@ -74,10 +74,10 @@ public class MonsterDmg : MonoBehaviour
        
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
 
-        //if(hpImage.fillAmount <= 0)
-        //{
-        //   hpImage0.fillAmount = 0;
-        //}
+        if (hpImage.fillAmount <= 0)
+        {
+            hpImage0.fillAmount = 0;
+        }
         //MonsterDis(); 
         if (monsterDistance <= 6.0f && hpImage.fillAmount > 0 && playerHp >0)
         {   
@@ -208,29 +208,13 @@ public class MonsterDmg : MonoBehaviour
                 return false;
             }
         }
+        
         else if (zAtack == 2)
         {
-          
+           
             if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
-                dogAnimator.SetBool("gethit", true);
-                //dogAnimator.SetBool("Attack01", false);
-                //dogAnimator.SetBool("chase", false);
-                Debug.Log("造成傷害 60");
-                return true;
-            }
-            else //if (cosValue < 0.7 || monsterDistance > 2.3f)
-            {
-                return false;
-            }
-        }
-        else if (zAtack == 3)
-        {
-           
-            if (monsterDistance <= 2.3f && hpImage.fillAmount > 0)
-            {
-                hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
@@ -239,6 +223,24 @@ public class MonsterDmg : MonoBehaviour
                 //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
             }
             else //if (monsterDistance > 2.3f)
+            {
+                return false;
+            }
+        }
+
+        else if (zAtack == 3)
+        {
+
+            if ( monsterDistance <= 2.3f && hpImage.fillAmount > 0)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
+                dogAnimator.SetBool("gethit", true);
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                Debug.Log("造成傷害 60");
+                return true;
+            }
+            else //if (cosValue < 0.7 || monsterDistance > 2.3f)
             {
                 return false;
             }

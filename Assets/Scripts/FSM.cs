@@ -361,17 +361,17 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckBattleIdleState;
 			mDoState = DoBattleIdleState;
 		}
-		////判斷有沒有攻擊中按住方向鍵
-		//if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
-		//{
-		//	isMove = true;
-		//	isGetHit = false;
-		//	anim.SetBool("isGetHit", false);
-		//	anim.SetBool("isWalkF", true);
-		//	mCurrentState = FSMState.Move;
-		//	mCheckState = CheckMoveState;
-		//	mDoState = DoMoveState;
-		//}
+		//判斷有沒有攻擊中按住方向鍵
+		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+		{
+			isMove = true;
+			isGetHit = false;
+			anim.SetBool("isGetHit", false);
+			anim.SetBool("isWalkF", true);
+			mCurrentState = FSMState.Move;
+			mCheckState = CheckMoveState;
+			mDoState = DoMoveState;
+		}
 	}
 	#endregion
 

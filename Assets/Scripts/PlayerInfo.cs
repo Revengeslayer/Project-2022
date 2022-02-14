@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class PlayerInfo : MonoBehaviour
 {
     private static  GameObject playerHpbar;
-    public static bool isGitHit;
     private int[] getHit;
     private static Animator playerAnimator;
 
@@ -20,7 +19,6 @@ public class PlayerInfo : MonoBehaviour
 
     void Start()
     {
-        isGitHit = false;
         dogMonsters = new List<GameObject>();
         playerAnimator = GetComponent<Animator>();
         playerHp = playerMaxHp;
@@ -75,12 +73,13 @@ public class PlayerInfo : MonoBehaviour
     //}
     public static void PlayerHpCal()
     {
-        isGitHit = true;
         playerHpbar.GetComponent<Image>().fillAmount = (playerHp-10)/playerMaxHp;
         playerHp = playerHp - 10;
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
+
             playerAnimator.Play("Die");
+            playerAnimator.SetBool("isGetHit", false);
         }
     }
 }

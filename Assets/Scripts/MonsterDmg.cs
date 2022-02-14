@@ -9,7 +9,7 @@ public class MonsterDmg : MonoBehaviour
 
     // Start is called before the first frame update
     private  int zAtack;
-
+    public static bool isGitHit;
     static float playerHp;
     public  GameObject objPlayer;
     public  GameObject objMonster;
@@ -71,7 +71,7 @@ public class MonsterDmg : MonoBehaviour
         playerHp = PlayerInfo.playerHp;//紀錄玩家血量
 
         zAtack = FSM.zAtack;
-       
+        isGitHit = false;
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
 
         if (hpImage.fillAmount <= 0)
@@ -109,6 +109,7 @@ public class MonsterDmg : MonoBehaviour
                     gameObject.transform.position += gameObject.transform.forward * 2.0f * Time.deltaTime; //攻擊往前移動
                     dogAnimator.SetBool("Attack01", true);
 
+
                     //讓傷害延遲計算 與動畫動作合拍
                     if (hertDelay == false)
                     {
@@ -125,15 +126,23 @@ public class MonsterDmg : MonoBehaviour
                 {
                     hertWait = Timer(0.3f, nowTimeHurt);
                 }
+                
+                if (Time.time-nowTimeHurt > 0.4f)
+                {
+                    hertWait = false;
+                    hertDelay = false;
+                }
+               
                 if (hertWait)
                 {
+                    FSM.isGitHit = true;
                     PlayerInfo.PlayerHpCal();
                     hertDelay = false;
                     hertWait = false;
                     nowTimeHurt = 0;
                 }
                 //讓傷害延遲計算 與動畫動作合拍
-               
+                
             }
         }
         else if(monsterDistance >= 6.0f && hpImage.fillAmount > 0)

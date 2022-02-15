@@ -9,7 +9,6 @@ public class MonsterDmg : MonoBehaviour
 
     // Start is called before the first frame update
     private  int zAtack;
-    public static bool isGitHit;
     static float playerHp;
     public  GameObject objPlayer;
     public  GameObject objMonster;
@@ -71,7 +70,6 @@ public class MonsterDmg : MonoBehaviour
         playerHp = PlayerInfo.playerHp;//¬ö¿ýª±®a¦å¶q
 
         zAtack = FSM.zAtack;
-        isGitHit = false;
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
 
         if (hpImage.fillAmount <= 0)

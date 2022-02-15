@@ -41,9 +41,6 @@ public class Main : MonoBehaviour
         //Mobs();
         Player();
         SetCamera();
-       
-
-
     }
     void Start()
     {

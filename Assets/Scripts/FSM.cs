@@ -14,11 +14,13 @@ public class FSM : MonoBehaviour
 
 	//角色動作
 	private Animator anim;
+	//
+	private GameObject katana;
 	#region 攻擊相關
 	//is Battle?
-	bool isBattle;
+	public bool isBattle;
     //is Attack?
-    bool isAttack;
+    public bool isAttack;
 	//回傳
 	public static int zAtack;
 	#region 傷害相關
@@ -30,10 +32,10 @@ public class FSM : MonoBehaviour
 
     #region 移動相關
     //is Move?
-    bool isMove;
+    public bool isMove;
 	public float moveSpeed;
 	//is Dodge?
-	bool isDodge;
+	public bool isDodge;
 	#endregion
 
 	#region 死亡相關
@@ -59,6 +61,8 @@ public class FSM : MonoBehaviour
 	private void Start()
 	{
 		isGitHit = false;
+		isDeath = false;
+		katana = GameObject.Find("katanaA");
 		mCurrentState = FSMState.Idle;
 		mCheckState = CheckIdleState;
 		mDoState = DoIdleState;
@@ -412,7 +416,6 @@ public class FSM : MonoBehaviour
 		//是否受到傷害
 		//Debug.Log(MonsterDmg.isGitHit);
 		mCheckState();
-
 		//狀態做甚麼
 		mDoState();
 	}

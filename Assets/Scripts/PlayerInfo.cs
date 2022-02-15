@@ -77,9 +77,7 @@ public class PlayerInfo : MonoBehaviour
         playerHp = playerHp - 10;
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
-
-            playerAnimator.Play("Die");
-            playerAnimator.SetBool("isGetHit", false);
+            FSM.isDeath = true;
         }
     }
 }

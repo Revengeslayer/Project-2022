@@ -55,14 +55,16 @@ public class FSM : MonoBehaviour
 		Move,
 		Attack,
 		Dodge,
-		GetHit
+		GetHit,
+		Die
 	}
 
 	private void Start()
 	{
 		isGitHit = false;
 		isDeath = false;
-		katana = GameObject.Find("katanaA");
+		katana = GameObject.Find("Hoshi_katana");
+		katana.SetActive(false);
 		mCurrentState = FSMState.Idle;
 		mCheckState = CheckIdleState;
 		mDoState = DoIdleState;
@@ -141,6 +143,7 @@ public class FSM : MonoBehaviour
 		if(isAttack==false && isBattle==true)
         {
 			anim.SetBool("isAttack", false);
+			anim.SetBool("isBattle", true);
 			mCurrentState = FSMState.BattleIdle;
 			mCheckState = CheckBattleIdleState;
 			mDoState = DoBattleIdleState;
@@ -149,6 +152,7 @@ public class FSM : MonoBehaviour
 		if (isAttack == false && isBattle == false)
 		{
 			anim.SetBool("isAttack", false);
+			anim.SetBool("isBattle", false);
 			mCurrentState = FSMState.Idle;
 			mCheckState = CheckIdleState;
 			mDoState = DoIdleState;
@@ -173,6 +177,7 @@ public class FSM : MonoBehaviour
 		if(isMove==false && isBattle == true)
 		{
 			anim.SetBool("isWalkF", false);
+			anim.SetBool("isBattle", true);
 			mCurrentState = FSMState.BattleIdle;
 			mCheckState = CheckBattleIdleState;
 			mDoState = DoBattleIdleState;
@@ -181,6 +186,7 @@ public class FSM : MonoBehaviour
 		if (isMove == false && isBattle == false)
 		{
 			anim.SetBool("isWalkF", false);
+			anim.SetBool("isBattle", false);
 			mCurrentState = FSMState.Idle;
 			mCheckState = CheckIdleState;
 			mDoState = DoIdleState;
@@ -231,7 +237,7 @@ public class FSM : MonoBehaviour
 		//強切BI
 		if (Input.GetKeyDown(KeyCode.B))
 		{
-			//anim.SetBool("isAttack", false);
+			isBattle = true;
 			anim.SetBool("isBattle", true);
 			isBattle = true;
 			atkCount = 0;
@@ -243,6 +249,7 @@ public class FSM : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Z))
 		{
 			isAttack = true;
+			isBattle = true;
 			zAtack = 1;
 			atkCount = 1;
 		}
@@ -263,7 +270,7 @@ public class FSM : MonoBehaviour
 		//強切Idle
 		if (Input.GetKeyDown(KeyCode.B))
 		{
-			//anim.SetBool("isAttack", false);
+			isBattle = false;
 			anim.SetBool("isBattle", false);
 			isBattle = false;
 			atkCount = 0;
@@ -274,6 +281,7 @@ public class FSM : MonoBehaviour
 		//按下攻擊
 		if (Input.GetKeyDown(KeyCode.Z))
 		{
+			isBattle = true;
 			isAttack = true;
 			zAtack = 1;
 			atkCount = 1;
@@ -378,6 +386,7 @@ public class FSM : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.Z))
 			{				
 				isAttack = true;
+				isBattle = true;
 				zAtack = 1;
 				atkCount = 1;
 			}
@@ -401,7 +410,8 @@ public class FSM : MonoBehaviour
 	}
 	private void DoDieState()
 	{
-
+		isDeath = false;
+		anim.Play("Die");
 	}
 	#endregion
 
@@ -413,8 +423,22 @@ public class FSM : MonoBehaviour
 		Debug.Log("目前狀態          " + mCurrentState);		
 		//判斷哪一個Attack
 		zAtack = 0;
-		//是否受到傷害
-		//Debug.Log(MonsterDmg.isGitHit);
+		//如果死亡了
+		if(isDeath)
+        {
+			mCurrentState = FSMState.Die;
+			mCheckState = CheckDieState;
+			mDoState = DoDieState;
+		}
+		//要不要拔刀
+		if (isBattle || isAttack)
+		{
+			katana.SetActive(true);
+		}
+        else 
+		{
+			katana.SetActive(false);
+		}
 		mCheckState();
 		//狀態做甚麼
 		mDoState();

@@ -3715,11 +3715,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ca4ae5aeec4cdc4fa3fa473ae609e15, type: 3}
---- !u!4 &59292786 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6590074633648741691, guid: 80407b82a30f6b1459a2a047aa704ee0, type: 3}
-  m_PrefabInstance: {fileID: 953658079}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &61464131
 GameObject:
   m_ObjectHideFlags: 0
@@ -29281,6 +29276,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010376938618, guid: 8f9905bf996cdc74cb9766b8781e580e, type: 3}
   m_PrefabInstance: {fileID: 515814715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &516692313 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6590074633648741691, guid: 80407b82a30f6b1459a2a047aa704ee0, type: 3}
+  m_PrefabInstance: {fileID: 953658079}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &518779386
 PrefabInstance:
@@ -58787,6 +58787,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4820834563289665812, guid: 80407b82a30f6b1459a2a047aa704ee0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6590074633648741691, guid: 80407b82a30f6b1459a2a047aa704ee0, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -58831,9 +58835,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7161655133897282234, guid: 80407b82a30f6b1459a2a047aa704ee0, type: 3}
+      propertyPath: m_Name
+      value: Hoshi_katanaA
+      objectReference: {fileID: 0}
     - target: {fileID: 7588482908323481748, guid: 80407b82a30f6b1459a2a047aa704ee0, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614283885409971661, guid: 80407b82a30f6b1459a2a047aa704ee0, type: 3}
+      propertyPath: m_Name
+      value: Hoshi_katanaA
       objectReference: {fileID: 0}
     - target: {fileID: 9057870666470374846, guid: 80407b82a30f6b1459a2a047aa704ee0, type: 3}
       propertyPath: m_Name
@@ -98081,7 +98093,7 @@ Transform:
   m_LocalPosition: {x: 130.78, y: 85.978676, z: 384.9764}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 59292786}
+  - {fileID: 516692313}
   - {fileID: 642156557}
   - {fileID: 1281555639}
   - {fileID: 371403112}

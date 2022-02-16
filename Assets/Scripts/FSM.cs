@@ -5,42 +5,51 @@ using UnityEngine;
 
 public class FSM : MonoBehaviour
 {
-	//檢查狀態的delegate
+	/// <summary>
+	/// 檢查狀態的delegate
+	/// </summary>
 	private delegate void CheckState();
 	private CheckState mCheckState;
-	//做狀態的delegate
+	/// <summary>
+	/// 做狀態的delegate
+	/// </summary>
 	private delegate void DoState();
 	private CheckState mDoState;
-
+	/// <summary>
+	/// 角色相關
+	/// </summary>
 	//角色動作
 	private Animator anim;
-	//
+	//角色的武士刀
 	private GameObject katana;
-	#region 攻擊相關
+	/// <summary>
+	/// 攻擊相關
+	/// </summary>
 	//is Battle?
 	public bool isBattle;
     //is Attack?
     public bool isAttack;
-	//回傳
-	public static int zAtack;
-	#region 傷害相關
-	public static bool isGitHit;
-	#endregion
 	//Attack Count
 	int atkCount;
-    #endregion
-
-    #region 移動相關
-    //is Move?
-    public bool isMove;
+	//回傳
+	public static int zAtack;
+	/// <summary>
+	/// 受傷相關
+	/// </summary>
+	public static bool isGitHit;
+	public static int gitHitCount;
+	/// <summary>
+	/// 移動相關
+	/// </summary>
+	//is Move?
+	public bool isMove;
 	public float moveSpeed;
 	//is Dodge?
 	public bool isDodge;
-	#endregion
-
-	#region 死亡相關
+	/// <summary>
+	/// 死亡相關
+	/// </summary>
 	public static bool isDeath;
-    #endregion
 
     
 
@@ -54,6 +63,7 @@ public class FSM : MonoBehaviour
 		BattleIdle,
 		Move,
 		Attack,
+		Skill,
 		Dodge,
 		GetHit,
 		Die
@@ -166,6 +176,11 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckMoveState;
 			mDoState = DoMoveState;
 		}	
+	}
+
+	private void CheckSkillState()
+	{
+
 	}
 	private void CheckDodgeState()
 	{
@@ -299,25 +314,54 @@ public class FSM : MonoBehaviour
 	{
 		isGitHit = false;
 		//判斷第二下
-		if (atkCount == 1
-			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
-			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
-			&& Input.GetKeyDown(KeyCode.Z))
+		//if (atkCount == 1
+		//	&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
+		//	&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
+		//	)
+		//{
+
+		//	if (Input.GetKeyDown(KeyCode.Z))
+		//	{
+		//		Debug.Log("第二下");
+		//		anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
+		//		zAtack = 2;
+		//		atkCount = 2;
+		//	}
+		//}
+		if (Input.GetKeyDown(KeyCode.Z)  && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01"))
 		{
 			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
 			zAtack = 2;
 			atkCount = 2;
 		}
 		//判斷第三下
-		if (atkCount == 2
-			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
-			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
-			&& Input.GetKeyDown(KeyCode.Z))
+		//if (atkCount == 2
+		//	&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
+		//	&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
+		//	)
+		//{
+		//	if (Input.GetKeyDown(KeyCode.Z))
+		//	{
+		//		anim.SetInteger("combo3", anim.GetInteger("combo3") + 1);
+		//		zAtack = 3;
+		//		atkCount = 3;
+		//	}
+		//}
+		if (Input.GetKeyDown(KeyCode.Z) && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02"))
 		{
+			Debug.Log("第三下");
 			anim.SetInteger("combo3", anim.GetInteger("combo3") + 1);
 			zAtack = 3;
 			atkCount = 3;
 		}
+		if (Input.GetKeyDown(KeyCode.Z) && atkCount==1)
+		{
+			Debug.Log("第二下");
+			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
+			zAtack = 2;
+			atkCount = 2;
+		}
+
 		//攻擊清除回歸
 		//第一下清除
 		if (atkCount == 1
@@ -360,6 +404,10 @@ public class FSM : MonoBehaviour
 				isMove = true;
 			}
 		}
+	}
+	private void DoSkillState()
+	{
+
 	}
 	private void DoDodgeState()
 	{
@@ -420,7 +468,8 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		Debug.Log("目前狀態          " + mCurrentState);		
+		Debug.Log("目前狀態          " + mCurrentState);
+		//
 		//判斷哪一個Attack
 		zAtack = 0;
 		//如果死亡了

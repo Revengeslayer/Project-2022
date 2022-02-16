@@ -98,7 +98,7 @@ public class MonsterDmg : MonoBehaviour
                     nowTimeAtk = Time.time;
                     atkStatus = true;              
                 }
-                atkCd = Timer(0.8f,nowTimeAtk);
+                atkCd = Timer(1.4f,nowTimeAtk);
                 //§ðÀ»¶¡¹j§PÂ_
 
                 dogAnimator.SetBool("chase", false);

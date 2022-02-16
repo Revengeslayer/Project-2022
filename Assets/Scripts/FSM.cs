@@ -29,8 +29,12 @@ public class FSM : MonoBehaviour
 	public bool isBattle;
     //is Attack?
     public bool isAttack;
+	//is Skill?
+	public bool isSkill;
 	//Attack Count
 	int atkCount;
+	//最後按下時間
+	private float lastClick;
 	//回傳
 	public static int zAtack;
 	/// <summary>
@@ -84,8 +88,16 @@ public class FSM : MonoBehaviour
 	#region check
 	private void CheckIdleState()
 	{
+		//Idle->Skill
+		if (isSkill ==true)
+		{
+			anim.SetBool("isSkill", true);
+			mCurrentState = FSMState.Skill;
+			mCheckState = CheckSkillState;
+			mDoState = DoSkillState;
+		}
 		//Idle->Attack
-		if(isAttack == true)
+		if (isAttack == true)
 		{
 			anim.SetBool("isAttack", true);
 			mCurrentState = FSMState.Attack;
@@ -104,16 +116,24 @@ public class FSM : MonoBehaviour
 		if (isGitHit == true)
 		{
 			anim.Play("GetHit");
+			isGitHit = false;
 			anim.SetBool("isGetHit", true);
 			mCurrentState = FSMState.GetHit;
 			mCheckState = CheckGetHitState;
 			mDoState = DoGetHitState;
 		}
-
 	}
 	private void CheckBattleIdleState()
 	{
-		//Idle->Attack
+		//BIdle->Skill
+		if (isSkill == true)
+		{
+			anim.SetBool("isSkill", true);
+			mCurrentState = FSMState.Skill;
+			mCheckState = CheckSkillState;
+			mDoState = DoSkillState;
+		}
+		//BIdle->Attack
 		if (isAttack == true)
 		{
 			anim.SetBool("isAttack", true);
@@ -121,7 +141,7 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckAttackState;
 			mDoState = DoAttackState;
 		}
-		//Idle->Move
+		//BIdle->Move
 		if (isMove == true)
 		{
 			anim.SetBool("isWalkF", true);
@@ -129,10 +149,11 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckMoveState;
 			mDoState = DoMoveState;
 		}
-		//Idle ->GetHit
+		//BIdle ->GetHit
 		if (isGitHit == true)
 		{
 			anim.Play("GetHit");
+			isGitHit = false;
 			anim.SetBool("isGetHit", true);
 			mCurrentState = FSMState.GetHit;
 			mCheckState = CheckGetHitState;
@@ -175,12 +196,49 @@ public class FSM : MonoBehaviour
 			mCurrentState = FSMState.Move;
 			mCheckState = CheckMoveState;
 			mDoState = DoMoveState;
-		}	
+		}
+		////攻擊中轉Skill
+		//if (isAttack = true && isSkill == true)
+		//{
+		//	anim.SetBool("isAttack", false);
+		//	anim.SetBool("isSkill", true);
+		//	mCurrentState = FSMState.Skill;
+		//	mCheckState = CheckSkillState;
+		//	mDoState = DoSkillState;
+		//}
 	}
-
 	private void CheckSkillState()
 	{
-
+		if(isSkill==false &&isAttack ==true)
+		{
+			anim.SetBool("isSkill", false);
+			anim.SetBool("Skill1", false);
+			anim.SetBool("Skill2", false);
+			anim.SetBool("isAttack", true);
+			mCurrentState = FSMState.Attack;
+			mCheckState = CheckAttackState;
+			mDoState = DoAttackState;
+		}
+		if (isSkill == false && isMove ==true)
+		{
+			anim.SetBool("isSkill", false);
+			anim.SetBool("Skill1", false);
+			anim.SetBool("Skill2", false);
+			anim.SetBool("isWalkF", true);
+			mCurrentState = FSMState.Move;
+			mCheckState = CheckMoveState;
+			mDoState = DoMoveState;
+		}
+		if (isSkill == false)
+		{
+			anim.SetBool("isSkill", false);
+			anim.SetBool("Skill1", false);
+			anim.SetBool("Skill2", false);
+			anim.SetBool("isBattle", true);
+			mCurrentState = FSMState.BattleIdle;
+			mCheckState = CheckBattleIdleState;
+			mDoState = DoBattleIdleState;
+		}
 	}
 	private void CheckDodgeState()
 	{
@@ -206,7 +264,7 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckIdleState;
 			mDoState = DoIdleState;
 		}
-		//從移動下轉攻擊
+		//從移動中轉攻擊
 		if(isMove==true && isAttack==true)
         {
 			anim.SetBool("isAttack", true);
@@ -215,6 +273,15 @@ public class FSM : MonoBehaviour
 			mCurrentState = FSMState.Attack;
 			mCheckState = CheckAttackState;
 			mDoState = DoAttackState;
+		}
+		//從移動中轉技能
+		if (isMove==true && isSkill==true)
+		{
+			isMove = false;
+			anim.SetBool("isSkill", true);
+			mCurrentState = FSMState.Skill;
+			mCheckState = CheckSkillState;
+			mDoState = DoSkillState;
 		}
 		
 	}
@@ -263,6 +330,7 @@ public class FSM : MonoBehaviour
 		//按下攻擊
 		if (Input.GetKeyDown(KeyCode.Z))
 		{
+			//var lastClick = Time.time;
 			isAttack = true;
 			isBattle = true;
 			zAtack = 1;
@@ -275,6 +343,22 @@ public class FSM : MonoBehaviour
 			isAttack = false;
 			zAtack = 0;
 			atkCount = 0;
+		}
+		//觸發Skill
+		if(Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		{
+			isBattle = true;
+			isSkill = true;
+			if(Input.GetKey(KeyCode.X))
+			{
+				isAttack = false;
+				anim.SetBool("Skill1", true);
+			}
+			if (Input.GetKey(KeyCode.C))
+			{
+				isAttack = false;
+				anim.SetBool("Skill2", true);
+			}
 		}
 	}
 	private void DoBattleIdleState()
@@ -309,44 +393,36 @@ public class FSM : MonoBehaviour
 			zAtack = 0;
 			atkCount = 0;
 		}
+		//觸發Skill
+		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		{
+			isBattle = true;
+			isSkill = true;
+			if (Input.GetKey(KeyCode.X))
+			{
+				isAttack = false;
+				anim.SetBool("Skill1", true);
+			}
+			if (Input.GetKey(KeyCode.C))
+			{
+				isAttack = false;
+				anim.SetBool("Skill2", true);
+			}
+		}
 	}
 	private void DoAttackState()
 	{
 		isGitHit = false;
+		#region 先不用
 		//判斷第二下
-		//if (atkCount == 1
-		//	&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
-		//	&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
-		//	)
-		//{
-
-		//	if (Input.GetKeyDown(KeyCode.Z))
-		//	{
-		//		Debug.Log("第二下");
-		//		anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
-		//		zAtack = 2;
-		//		atkCount = 2;
-		//	}
-		//}
-		if (Input.GetKeyDown(KeyCode.Z)  && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01"))
+		if (Input.GetKeyDown(KeyCode.Z) && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01"))
 		{
+			Debug.Log("第二下");
 			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
 			zAtack = 2;
 			atkCount = 2;
 		}
 		//判斷第三下
-		//if (atkCount == 2
-		//	&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
-		//	&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1
-		//	)
-		//{
-		//	if (Input.GetKeyDown(KeyCode.Z))
-		//	{
-		//		anim.SetInteger("combo3", anim.GetInteger("combo3") + 1);
-		//		zAtack = 3;
-		//		atkCount = 3;
-		//	}
-		//}
 		if (Input.GetKeyDown(KeyCode.Z) && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02"))
 		{
 			Debug.Log("第三下");
@@ -354,20 +430,13 @@ public class FSM : MonoBehaviour
 			zAtack = 3;
 			atkCount = 3;
 		}
-		if (Input.GetKeyDown(KeyCode.Z) && atkCount==1)
-		{
-			Debug.Log("第二下");
-			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
-			zAtack = 2;
-			atkCount = 2;
-		}
-
 		//攻擊清除回歸
 		//第一下清除
 		if (atkCount == 1
 			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
-			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
 		{
+			Debug.Log("第一下清除");
 			atkCount = 0;
 			isAttack = false;
 			//判斷有沒有攻擊中按住方向鍵
@@ -379,8 +448,9 @@ public class FSM : MonoBehaviour
 		//第二下清除
 		if (atkCount == 2
 			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
-			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
 		{
+			Debug.Log("第二下清除");
 			atkCount = 0;
 			anim.SetInteger("combo2", 0);
 			isAttack = false;
@@ -393,8 +463,9 @@ public class FSM : MonoBehaviour
 		//第三下清除
 		if (atkCount == 3
 			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK03")
-			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
 		{
+			Debug.Log("第三下清除");
 			atkCount = 0;
 			anim.SetInteger("combo3", 0);
 			isAttack = false;
@@ -404,10 +475,39 @@ public class FSM : MonoBehaviour
 				isMove = true;
 			}
 		}
+		////觸發Skill
+		//if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		//{
+		//	isBattle = true;
+		//	isSkill = true;
+		//	if (Input.GetKey(KeyCode.X))
+		//	{
+		//		isAttack = false;
+		//		anim.SetBool("Skill1", true);
+		//	}
+		//	if (Input.GetKey(KeyCode.C))
+		//	{
+		//		isAttack = false;
+		//		anim.SetBool("Skill2", true);
+		//	}
+		//}
+		#endregion
+		#region 測試
+		//if (Input.GetKeyDown(KeyCode.Z) && CheckCombo(1, lastClick))
+		//{
+		//	lastClick = Time.time;
+		//	Debug.Log("連及觸發");
+		//}
+		//Debug.Log("atkCount               "+ atkCount);
+		//Debug.Log("zAtack                 "+ zAtack);
+		#endregion
 	}
-	private void DoSkillState()
+    private void DoSkillState()
 	{
-
+		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1 &&(anim.GetCurrentAnimatorStateInfo(0).IsName("Skill1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Skill2")))
+		{
+			isSkill = false;			
+		}
 	}
 	private void DoDodgeState()
 	{
@@ -419,14 +519,7 @@ public class FSM : MonoBehaviour
 		//都不按方向鍵
 		if (!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
 		{
-			if (isBattle)
-			{
-				isMove = false;
-			}
-			else
-			{
-				isMove = false;
-			}
+			isMove = false;
 		}
 		//移動中觸發攻擊
 		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
@@ -437,6 +530,22 @@ public class FSM : MonoBehaviour
 				isBattle = true;
 				zAtack = 1;
 				atkCount = 1;
+			}
+		}
+		//觸發Skill
+		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		{
+			isBattle = true;
+			isSkill = true;
+			if (Input.GetKey(KeyCode.X))
+			{
+				isAttack = false;
+				anim.SetBool("Skill1", true);
+			}
+			if (Input.GetKey(KeyCode.C))
+			{
+				isAttack = false;
+				anim.SetBool("Skill2", true);
 			}
 		}
 	}
@@ -468,8 +577,7 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		Debug.Log("目前狀態          " + mCurrentState);
-		//
+		//Debug.Log("目前狀態          " + mCurrentState);
 		//判斷哪一個Attack
 		zAtack = 0;
 		//如果死亡了
@@ -498,6 +606,19 @@ public class FSM : MonoBehaviour
 		if (isMove == true)
 		{
 			PlayControl.Move(moveSpeed);
+		}
+	}
+
+	private bool CheckCombo(float cdTime, float lastClickTime)
+	{
+
+		if (Time.time - lastClickTime < cdTime)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 }

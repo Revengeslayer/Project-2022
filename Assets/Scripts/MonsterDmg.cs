@@ -42,7 +42,10 @@ public class MonsterDmg : MonoBehaviour
     private bool attackHertGet = false;
     private bool hertAnimDelay = false;
     private bool hertAnimWait = false;
-
+    /// <summary>
+    /// 怪物掉落物
+    /// </summary>
+    public GameObject dropItem;
     /// <summary>
     /// 怪物間的行為- 碰撞重疊避免
     /// </summary>
@@ -179,7 +182,7 @@ public class MonsterDmg : MonoBehaviour
         monsterHpbar.transform.forward = GameObject.Find("Main Camera").transform.forward * -1; //怪物Hp條面向攝影機
         if(hpImage.fillAmount<=0)
         {
-            dogAnimator.Play("Die");
+            StartCoroutine(Die());         
         }
     }
 
@@ -269,6 +272,20 @@ public class MonsterDmg : MonoBehaviour
         {
             return false;
         }
+    }
+
+    //Die觸發的相關函式
+    IEnumerator Die()
+    {     
+        dogAnimator.Play("Die");
+        yield return new WaitForSeconds(2.0f);
+
+        //掉落道具為怪物位置
+        Vector3 itemPosition = this.transform.position;
+        itemPosition += new Vector3(Random.Range(-2, 2),0.2f, Random.Range(-2, 2));
+
+        Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
+        Destroy(this.gameObject);
     }
 
     //public void MonsterDis()

@@ -17,6 +17,7 @@ TagManager:
   - Village01
   - ClipNear01
   - Monster
+  - rabaSpawn
   layers:
   - Default
   - TransparentFX

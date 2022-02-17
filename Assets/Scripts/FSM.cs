@@ -198,6 +198,16 @@ public class FSM : MonoBehaviour
 			mDoState = DoMoveState;
 		}
 		////攻擊中轉Skill
+		if(isSkill==true)
+		{
+			Debug.Log("in");
+			//isAttack = false;
+			anim.SetBool("isAttack", false);
+			anim.SetBool("isSkill", true);
+			mCurrentState = FSMState.Skill;
+			mCheckState = CheckSkillState;
+			mDoState = DoSkillState;
+		}
 		//if (isAttack = true && isSkill == true)
 		//{
 		//	anim.SetBool("isAttack", false);
@@ -476,21 +486,21 @@ public class FSM : MonoBehaviour
 			}
 		}
 		////觸發Skill
-		//if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
-		//{
-		//	isBattle = true;
-		//	isSkill = true;
-		//	if (Input.GetKey(KeyCode.X))
-		//	{
-		//		isAttack = false;
-		//		anim.SetBool("Skill1", true);
-		//	}
-		//	if (Input.GetKey(KeyCode.C))
-		//	{
-		//		isAttack = false;
-		//		anim.SetBool("Skill2", true);
-		//	}
-		//}
+		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		{
+			isBattle = true;
+			isSkill = true;
+			if (Input.GetKey(KeyCode.X))
+			{
+				isAttack = false;
+				anim.SetBool("Skill1", true);
+			}
+			if (Input.GetKey(KeyCode.C))
+			{
+				isAttack = false;
+				anim.SetBool("Skill2", true);
+			}
+		}
 		#endregion
 		#region 測試
 		//if (Input.GetKeyDown(KeyCode.Z) && CheckCombo(1, lastClick))
@@ -577,7 +587,7 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		//Debug.Log("目前狀態          " + mCurrentState);
+		Debug.Log("目前狀態          " + mCurrentState);
 		//判斷哪一個Attack
 		zAtack = 0;
 		//如果死亡了

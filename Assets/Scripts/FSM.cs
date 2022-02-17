@@ -518,6 +518,17 @@ public class FSM : MonoBehaviour
 		{
 			isSkill = false;			
 		}
+
+		//«ö¤U§ðÀ»
+		if (Input.GetKeyDown(KeyCode.Z))
+		{
+			//var lastClick = Time.time;
+			isAttack = true;
+			isBattle = true;
+			zAtack = 1;
+			atkCount = 1;
+		}
+
 	}
 	private void DoDodgeState()
 	{

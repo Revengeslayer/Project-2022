@@ -229,7 +229,7 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckAttackState;
 			mDoState = DoAttackState;
 		}
-		if (isSkill == false && isMove ==true)
+		if (isMove ==true)
 		{
 			anim.SetBool("isSkill", false);
 			anim.SetBool("Skill1", false);
@@ -241,6 +241,7 @@ public class FSM : MonoBehaviour
 		}
 		if (isSkill == false)
 		{
+
 			anim.SetBool("isSkill", false);
 			anim.SetBool("Skill1", false);
 			anim.SetBool("Skill2", false);
@@ -427,17 +428,22 @@ public class FSM : MonoBehaviour
 		//判斷第二下
 		if (Input.GetKeyDown(KeyCode.Z) && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01"))
 		{
-			Debug.Log("第二下");
 			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
-			zAtack = 2;
+			if (anim.GetInteger("combo2") <= 1)
+			{
+				zAtack = 2;
+			}
 			atkCount = 2;
 		}
 		//判斷第三下
 		if (Input.GetKeyDown(KeyCode.Z) && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02"))
 		{
-			Debug.Log("第三下");
 			anim.SetInteger("combo3", anim.GetInteger("combo3") + 1);
-			zAtack = 3;
+
+			if (anim.GetInteger("combo3") <= 1)
+			{
+				zAtack = 3;
+			}
 			atkCount = 3;
 		}
 		//攻擊清除回歸
@@ -446,7 +452,6 @@ public class FSM : MonoBehaviour
 			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01")
 			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
 		{
-			Debug.Log("第一下清除");
 			atkCount = 0;
 			isAttack = false;
 			//判斷有沒有攻擊中按住方向鍵
@@ -460,7 +465,6 @@ public class FSM : MonoBehaviour
 			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK02")
 			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
 		{
-			Debug.Log("第二下清除");
 			atkCount = 0;
 			anim.SetInteger("combo2", 0);
 			isAttack = false;
@@ -475,7 +479,6 @@ public class FSM : MonoBehaviour
 			&& anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK03")
 			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
 		{
-			Debug.Log("第三下清除");
 			atkCount = 0;
 			anim.SetInteger("combo3", 0);
 			isAttack = false;
@@ -528,6 +531,14 @@ public class FSM : MonoBehaviour
 			zAtack = 1;
 			atkCount = 1;
 		}
+		////按下方向鍵
+		//if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+		//{
+		//	isMove = true;
+		//	isAttack = false;
+		//	zAtack = 0;
+		//	atkCount = 0;
+		//}
 
 	}
 	private void DoDodgeState()

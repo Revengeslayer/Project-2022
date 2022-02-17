@@ -7,7 +7,8 @@ public class InstantiateManager : MonoBehaviour
     public Object Target;
     public Object prefab;
     public int Nums;
-    //private List<GameObject> SpawnPosContainer;
+    private List<SpawnData> SpawnPosList;
+    private List<SpawnData> SpawnedList;
     private GameObject[] SpawnPosContainer;
     private Vector3 rabaSpawn;
 
@@ -105,12 +106,58 @@ public class InstantiateManager : MonoBehaviour
     //    }
     //    return SpawnPosContainer;
     //}
+    public class SpawnData
+    {
+        public GameObject Pos = null;
+        public bool Spwaned;
+    }
+    private void SpawnPosInitializer()
+    {
+        SpawnPosContainer = GameObject.FindGameObjectsWithTag("rabaSpawn");
+        foreach(GameObject SpawnPos in SpawnPosContainer)
+        {
+            //for(int i = 0; i < SpawnPosContainer.Length; i ++)
+            {
+                SpawnData SD = new SpawnData();
+                SD.Pos = SpawnPos;
+                SpawnPosList.Add(SD);
+                Debug.Log(SpawnPosList.Count+"count");
+            }
+        }
+    }
+    private Vector3 SetSpawnPos()
+    {
+        //SpawnData SD = new SpawnData();
+        GameObject a;
+        //for (int i = 0; i < SpawnPosList.Count; i ++)
+        foreach(SpawnData SD in SpawnPosList)
+        {
+            //SD = SpawnPosList[i];
+            if(!SD.Spwaned)
+            {
+                a = SD.Pos;
+                rabaSpawn = a.transform.position;
+                SD.Spwaned = true;
+                SpawnedList.Add(SD);
+                SD.Pos.SetActive(false);
+                //SpawnPosList.RemoveAt(i);
+                break;
+            }
+        }
+        return rabaSpawn;
+    }
     private void Awake()
     {
         InitGoData(prefab, Nums);
         LoadedGo = new List<GameObject>();
-        SpawnPosContainer = GameObject.FindGameObjectsWithTag("rabaSpawn");
+        SpawnPosList = new List<SpawnData>();
+        SpawnedList = new List<SpawnData>();
+        //SpawnPosContainer = GameObject.FindGameObjectsWithTag("rabaSpawn");
+        SpawnPosInitializer();
         //rabaSpawn = GameObject.FindGameObjectWithTag("rabaSpawn").transform.position;
+        Debug.Log(SpawnPosList.ToString());
+        Debug.Log(SpawnPosContainer.Length);
+        
     }
     void Update()
     {
@@ -119,11 +166,21 @@ public class InstantiateManager : MonoBehaviour
             int iCount = InsGoDataContainer.Count;
             if (Nums > LoadedGo.Count)
             {
-                int SpawnNum = Random.Range(0, 7);
+                //for (int i = 0; i < SpawnPosList.Count; i++)
+                //{
+                int SpawnNum = Random.Range(0, SpawnPosList.Count);
                 var go = LoadGoData();
                 go.SetActive(true);
-                go = SpawnPosContainer[SpawnNum];
+
+                //SpawnData SD = new SpawnData();
+                //SD = SpawnPosList[SpawnNum];
+                //go.transform.position = SD.Pos.transform.position;
+                //SD.Spwaned = true;
+                go.transform.position = SetSpawnPos();
+
+                    //go.transform.position = rabaSpawn;
                 LoadedGo.Add(go);
+                //}
                 Debug.Log("123");
             }
             Debug.Log("456");

@@ -267,17 +267,17 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     private void DoAttackState()
     {
         var CarrotVec = Vector3.Normalize( Target.transform.position - gameObject.transform.position );
-        for(int i = 0; i < CarrotContainer.Count ; i++)
-        {
-            if(!CarrotContainer[i].active)
-            {
-                Carrot = CarrotContainer[i];
-            }
-            else
-            {
-                return;
-            }
-        }
+        //for(int i = 0; i < CarrotContainer.Count ; i++)
+        //{
+        //    if(!CarrotContainer[i].active)
+        //    {
+        //        Carrot = CarrotContainer[i];
+        //    }
+        //    else
+        //    {
+        //        return;
+        //    }
+        //}
         if (rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
         {
             Carrot.transform.position = gameObject.transform.position + (new Vector3(0,0.45f,0) + gameObject.transform.forward);

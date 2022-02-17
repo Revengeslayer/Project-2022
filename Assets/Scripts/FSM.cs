@@ -90,7 +90,7 @@ public class FSM : MonoBehaviour
 	{
 		//Idle->Skill
 		if (isSkill ==true)
-		{
+		{		
 			anim.SetBool("isSkill", true);
 			mCurrentState = FSMState.Skill;
 			mCheckState = CheckSkillState;
@@ -208,14 +208,6 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckSkillState;
 			mDoState = DoSkillState;
 		}
-		//if (isAttack = true && isSkill == true)
-		//{
-		//	anim.SetBool("isAttack", false);
-		//	anim.SetBool("isSkill", true);
-		//	mCurrentState = FSMState.Skill;
-		//	mCheckState = CheckSkillState;
-		//	mDoState = DoSkillState;
-		//}
 	}
 	private void CheckSkillState()
 	{
@@ -229,7 +221,7 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckAttackState;
 			mDoState = DoAttackState;
 		}
-		if (isMove ==true)
+		if (isSkill == false && isMove ==true)
 		{
 			anim.SetBool("isSkill", false);
 			anim.SetBool("Skill1", false);
@@ -241,7 +233,6 @@ public class FSM : MonoBehaviour
 		}
 		if (isSkill == false)
 		{
-
 			anim.SetBool("isSkill", false);
 			anim.SetBool("Skill1", false);
 			anim.SetBool("Skill2", false);
@@ -286,10 +277,11 @@ public class FSM : MonoBehaviour
 			mDoState = DoAttackState;
 		}
 		//從移動中轉技能
-		if (isMove==true && isSkill==true)
+		if (isSkill==true)
 		{
 			isMove = false;
 			anim.SetBool("isSkill", true);
+			anim.SetBool("isWalkF", false);
 			mCurrentState = FSMState.Skill;
 			mCheckState = CheckSkillState;
 			mDoState = DoSkillState;
@@ -531,16 +523,16 @@ public class FSM : MonoBehaviour
 			zAtack = 1;
 			atkCount = 1;
 		}
-		////按下方向鍵
-		//if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
-		//{
-		//	isMove = true;
-		//	isAttack = false;
-		//	zAtack = 0;
-		//	atkCount = 0;
-		//}
+        //按下方向鍵
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+        {
+            isMove = true;
+            isAttack = false;
+            zAtack = 0;
+            atkCount = 0;
+        }
 
-	}
+    }
 	private void DoDodgeState()
 	{
 
@@ -566,17 +558,18 @@ public class FSM : MonoBehaviour
 		}
 		//觸發Skill
 		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
-		{
-			isBattle = true;
-			isSkill = true;
+		{			
 			if (Input.GetKey(KeyCode.X))
 			{
 				isAttack = false;
+				isBattle = true;
+				isSkill = true;
 				anim.SetBool("Skill1", true);
 			}
 			if (Input.GetKey(KeyCode.C))
 			{
-				isAttack = false;
+				isAttack = false; isBattle = true;
+				isSkill = true;
 				anim.SetBool("Skill2", true);
 			}
 		}

@@ -8,7 +8,8 @@ public class MonsterDmg : MonoBehaviour
     public GameObject monsterHpbar;
 
     // Start is called before the first frame update
-    private  int zAtack;
+    private int zAttack;
+    private int skillAttack;
     static float playerHp;
     public  GameObject objPlayer;
     public  GameObject objMonster;
@@ -33,8 +34,6 @@ public class MonsterDmg : MonoBehaviour
     private float nowTimeHurt = 0;
     private bool hertDelay = false;
     private bool hertWait = false;
-    // private bool  
-
     /// <summary>
     /// getHit動畫計時用
     /// </summary>
@@ -72,7 +71,8 @@ public class MonsterDmg : MonoBehaviour
     {
         playerHp = PlayerInfo.playerHp;//紀錄玩家血量
 
-        zAtack = FSM.zAtack;
+        zAttack = FSM.zAtack;
+        skillAttack = PlayerInfo.skillAttack;
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
 
         if (hpImage.fillAmount <= 0)
@@ -151,7 +151,7 @@ public class MonsterDmg : MonoBehaviour
             dogAnimator.SetBool("chase", false);            
         }
 
-        if (zAtack != 0)
+        if (zAttack != 0 || skillAttack != 0)
         {
             attackHertGet = PlayerAttack(monsterDistance);
         }
@@ -200,16 +200,16 @@ public class MonsterDmg : MonoBehaviour
         cosValue = a / b;
 
         dogAnimator.SetBool("gethit", false);
-        if (zAtack == 1)
+        if (zAttack == 1)
         {
             
             if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
-                hpImage.fillAmount = hpImage.fillAmount - (40.0f/ monsterHp);
+                hpImage.fillAmount = hpImage.fillAmount - (20.0f/ monsterHp);
                 dogAnimator.SetBool("gethit", true);
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
-                Debug.Log("造成傷害 40");
+                Debug.Log("造成傷害 20");
                 return true;
                 //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
             }
@@ -219,16 +219,15 @@ public class MonsterDmg : MonoBehaviour
             }
         }
         
-        else if (zAtack == 2)
-        {
-           
+        else if (zAttack == 2)
+        {        
             if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
-                hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+                hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
-                Debug.Log("造成傷害 20");
+                Debug.Log("造成傷害 40");
                 return true;
                 //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
             }
@@ -238,16 +237,51 @@ public class MonsterDmg : MonoBehaviour
             }
         }
 
-        else if (zAtack == 3)
+        else if (zAttack == 3)
         {
+            if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+                dogAnimator.SetBool("gethit", true);
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                Debug.Log("造成傷害 60");
+                return true;
+                //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
+            }
+            else //if (monsterDistance > 2.3f)
+            {
+                return false;
+            }
+        }
 
-            if ( monsterDistance <= 2.3f && hpImage.fillAmount > 0)
+        else if (skillAttack == 1)
+        {
+            if (cosValue >= 0.2 && monsterDistance <= 2.0f && hpImage.fillAmount > 0)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
+                dogAnimator.SetBool("gethit", true);
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                Debug.Log("造成傷害 40");
+                return true;
+                //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
+            }
+            else //if (monsterDistance > 2.3f)
+            {
+                return false;
+            }
+            
+        }
+        else if (skillAttack == 2)
+        {
+            if (monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
-                Debug.Log("造成傷害 60");
+                Debug.Log("造成傷害 20");
                 return true;
             }
             else //if (cosValue < 0.7 || monsterDistance > 2.3f)
@@ -259,6 +293,10 @@ public class MonsterDmg : MonoBehaviour
         {
             return false;
         }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 
     public static bool Timer(float cdTime,float nowTime)
@@ -282,7 +320,7 @@ public class MonsterDmg : MonoBehaviour
 
         //掉落道具為怪物位置
         Vector3 itemPosition = this.transform.position;
-        itemPosition += new Vector3(Random.Range(-2, 2),0.2f, Random.Range(-2, 2));
+        //itemPosition += new Vector3(Random.Range(-2, 2),0.2f, Random.Range(-2, 2));
 
         Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
         Destroy(this.gameObject);

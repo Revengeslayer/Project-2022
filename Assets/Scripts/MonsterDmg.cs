@@ -321,6 +321,7 @@ public class MonsterDmg : MonoBehaviour
 
         //掉落道具為怪物位置
         Vector3 itemPosition = this.transform.position;
+        itemPosition.y -= 0.5f;
         //itemPosition += new Vector3(Random.Range(-2, 2),0.2f, Random.Range(-2, 2));
 
         Instantiate(dropItem, itemPosition, dropItem.transform.rotation);

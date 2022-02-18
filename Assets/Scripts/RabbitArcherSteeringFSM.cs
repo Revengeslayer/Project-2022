@@ -283,7 +283,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             Carrot.transform.position = gameObject.transform.position + (new Vector3(0,0.45f,0) + gameObject.transform.forward);
             Carrot.transform.forward = -CarrotVec;
             CarrotTargetPos = Target.transform.position + new Vector3(0, 0.65f, 0);
-            Carrot.SetActive(true);
+            //Carrot.SetActive(true);
             CarrotVisible = true;
         }
         NextAttack = false;
@@ -480,8 +480,8 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         //Debug.Log(CarrotVisible);
         //Debug.Log(AttackTimer); CHECK ATTACK CD
     }
-    private void FixedUpdate()
-    {
-        CarrotController();
-    }
+    //private void FixedUpdate()
+    //{
+    //    CarrotController();
+    //}
 }

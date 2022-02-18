@@ -29,6 +29,8 @@ public class PlayerInfo : MonoBehaviour
     {
         skillAttack = 0;
         zAttack = 0;
+        playerHpbar.GetComponent<Image>().fillAmount = playerHp / playerMaxHp;
+        playerHp = Mathf.Clamp(playerHp, 0, 300);
     }
 
     private void Attack1Hurt()
@@ -53,7 +55,6 @@ public class PlayerInfo : MonoBehaviour
     }
     public static void PlayerHpCal()
     {
-        playerHpbar.GetComponent<Image>().fillAmount = (playerHp-10)/playerMaxHp;
         playerHp = playerHp - 10;
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {

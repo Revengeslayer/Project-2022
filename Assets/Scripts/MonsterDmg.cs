@@ -71,7 +71,7 @@ public class MonsterDmg : MonoBehaviour
     {
         playerHp = PlayerInfo.playerHp;//¬ö¿ýª±®a¦å¶q
 
-        zAttack = FSM.zAttack;
+        zAttack = PlayerInfo.zAttack;
         skillAttack = PlayerInfo.skillAttack;
 
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);

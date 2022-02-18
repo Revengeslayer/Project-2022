@@ -36,7 +36,7 @@ public class FSM : MonoBehaviour
 	//最後按下時間
 	private float lastClick;
 	//回傳
-	public static int zAtack;
+	public static int zAttack;
 	/// <summary>
 	/// 受傷相關
 	/// </summary>
@@ -200,7 +200,6 @@ public class FSM : MonoBehaviour
 		////攻擊中轉Skill
 		if(isSkill==true)
 		{
-			Debug.Log("in");
 			//isAttack = false;
 			anim.SetBool("isAttack", false);
 			anim.SetBool("isSkill", true);
@@ -336,7 +335,7 @@ public class FSM : MonoBehaviour
 			//var lastClick = Time.time;
 			isAttack = true;
 			isBattle = true;
-			zAtack = 1;
+			zAttack = 1;
 			atkCount = 1;
 		}
 		//按下方向鍵
@@ -344,7 +343,7 @@ public class FSM : MonoBehaviour
 		{
 			isMove = true;
 			isAttack = false;
-			zAtack = 0;
+			zAttack = 0;
 			atkCount = 0;
 		}
 		//觸發Skill
@@ -385,7 +384,7 @@ public class FSM : MonoBehaviour
 		{
 			isBattle = true;
 			isAttack = true;
-			zAtack = 1;
+			zAttack = 1;
 			atkCount = 1;
 		}
 		//按下方向鍵
@@ -393,7 +392,7 @@ public class FSM : MonoBehaviour
 		{
 			isMove = true;
 			isAttack = false;
-			zAtack = 0;
+			zAttack = 0;
 			atkCount = 0;
 		}
 		//觸發Skill
@@ -423,7 +422,7 @@ public class FSM : MonoBehaviour
 			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
 			if (anim.GetInteger("combo2") <= 1)
 			{
-				zAtack = 2;
+				zAttack = 2;
 			}
 			atkCount = 2;
 		}
@@ -434,7 +433,7 @@ public class FSM : MonoBehaviour
 
 			if (anim.GetInteger("combo3") <= 1)
 			{
-				zAtack = 3;
+				zAttack = 3;
 			}
 			atkCount = 3;
 		}
@@ -520,7 +519,7 @@ public class FSM : MonoBehaviour
 			//var lastClick = Time.time;
 			isAttack = true;
 			isBattle = true;
-			zAtack = 1;
+			zAttack = 1;
 			atkCount = 1;
 		}
 		//都不按方向鍵
@@ -533,7 +532,7 @@ public class FSM : MonoBehaviour
         {
             isMove = true;
             isAttack = false;
-            zAtack = 0;
+            zAttack = 0;
             atkCount = 0;
         }
 
@@ -557,7 +556,7 @@ public class FSM : MonoBehaviour
 			{				
 				isAttack = true;
 				isBattle = true;
-				zAtack = 1;
+				zAttack = 1;
 				atkCount = 1;
 			}
 		}
@@ -617,7 +616,7 @@ public class FSM : MonoBehaviour
 		//偵測狀態
 		//Debug.Log("目前狀態          " + mCurrentState);
 		//判斷哪一個Attack
-		zAtack = 0;
+		zAttack = 0;
 		//如果死亡了
 		if(isDeath)
         {

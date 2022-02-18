@@ -13,6 +13,8 @@ public class PlayerInfo : MonoBehaviour
     float playerDistance;//짩か팒㈖かず턟차
     //또Skill돌㈖か
     public static int skillAttack;
+    //또Attack돌㈖か
+    public static int zAttack;
     //public int reBirth;
 
     void Start()
@@ -26,8 +28,21 @@ public class PlayerInfo : MonoBehaviour
     void Update()
     {
         skillAttack = 0;
+        zAttack = 0;
     }
 
+    private void Attack1Hurt()
+    {
+        zAttack = 1;
+    } 
+    private void Attack2Hurt()
+    {
+        zAttack = 2;
+    }
+    private void Attack3Hurt()
+    {
+        zAttack = 3;
+    }
     private void Skill1Hurt()
     {
         skillAttack = 1;

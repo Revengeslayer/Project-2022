@@ -523,8 +523,13 @@ public class FSM : MonoBehaviour
 			zAtack = 1;
 			atkCount = 1;
 		}
-        //按下方向鍵
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+		//都不按方向鍵
+		if (!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
+		{
+			isMove = false;
+		}
+		//按下方向鍵
+		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
         {
             isMove = true;
             isAttack = false;
@@ -561,6 +566,7 @@ public class FSM : MonoBehaviour
 		{			
 			if (Input.GetKey(KeyCode.X))
 			{
+				
 				isAttack = false;
 				isBattle = true;
 				isSkill = true;
@@ -568,7 +574,9 @@ public class FSM : MonoBehaviour
 			}
 			if (Input.GetKey(KeyCode.C))
 			{
-				isAttack = false; isBattle = true;
+			
+				isAttack = false; 
+				isBattle = true;
 				isSkill = true;
 				anim.SetBool("Skill2", true);
 			}
@@ -593,6 +601,11 @@ public class FSM : MonoBehaviour
 	private void DoDieState()
 	{
 		isDeath = false;
+		isMove = false;
+		isAttack = false;
+		isGitHit = false;
+		isSkill = false;
+		
 		anim.Play("Die");
 	}
 	#endregion

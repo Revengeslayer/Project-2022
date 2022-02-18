@@ -257,7 +257,7 @@ public class MonsterDmg : MonoBehaviour
 
         else if (skillAttack == 1)
         {
-            if (cosValue >= 0.2 && monsterDistance <= 2.0f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.85 && monsterDistance <= 2.0f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);

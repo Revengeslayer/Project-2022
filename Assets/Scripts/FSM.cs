@@ -615,6 +615,7 @@ public class FSM : MonoBehaviour
 	{
 		//偵測狀態
 		//Debug.Log("目前狀態          " + mCurrentState);
+		Debug.Log(isGitHit);
 		//判斷哪一個Attack
 		zAttack = 0;
 		//如果死亡了

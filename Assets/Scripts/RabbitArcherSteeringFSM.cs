@@ -19,7 +19,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     private FSMState mCurrentState;
 
     //Carrot
-    private List<GameObject> CarrotContainer;
+    private List<CarrotArrow> CarrotContainer;
     public static GameObject Carrot;
     private Vector3 CarrotTargetPos;
     private Vector3 CarrotVec;
@@ -64,6 +64,13 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         Die,
         Spawn
     }
+
+    public class CarrotArrow
+    {
+        public GameObject Carrot;
+        public bool CarrotVisible;
+    }
+
     void Start()
     {
         rabaAnim = GetComponent<Animator>();
@@ -72,9 +79,9 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         mCheckState = CheckSpawnState;
         mDoState = DoSpawnState;
 
-        CarrotContainer = new List<GameObject>();
-        CarrotContainer.Add(InsCarrot());
-        Carrot = InsCarrot();
+        CarrotContainer = new List<CarrotArrow>();
+        //Carrot = 
+            InsCarrot();
 
 
         Target = GameObject.Find("Character(Clone)");
@@ -267,24 +274,31 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     private void DoAttackState()
     {
         var CarrotVec = Vector3.Normalize( Target.transform.position - gameObject.transform.position );
-        //for(int i = 0; i < CarrotContainer.Count ; i++)
-        //{
-        //    if(!CarrotContainer[i].active)
-        //    {
-        //        Carrot = CarrotContainer[i];
-        //    }
-        //    else
-        //    {
-        //        return;
-        //    }
-        //}
+        foreach(CarrotArrow ca in CarrotContainer)  //get invisible
+        {
+
+            if(ca.CarrotVisible)
+            {
+                return;
+            }
+            else
+            {
+                Carrot = ca.Carrot;
+
+            }
+        }
         if (rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
         {
             Carrot.transform.position = gameObject.transform.position + (new Vector3(0,0.45f,0) + gameObject.transform.forward);
             Carrot.transform.forward = -CarrotVec;
             CarrotTargetPos = Target.transform.position + new Vector3(0, 0.65f, 0);
+
             Carrot.SetActive(true);
             CarrotVisible = true;
+
+            //Vector3 TargetDist = Target.transform.position - Carrot.transform.position;
+            //CarrotVec = (CarrotTargetPos - gameObject.transform.position).normalized;
+            //Carrot.transform.position += CarrotVec * Time.deltaTime * 10;
         }
         NextAttack = false;
         AttackTimer = 0;
@@ -434,20 +448,28 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         }
     }
 
-    public static GameObject InsCarrot()
+    public void InsCarrot()
     {
-        GameObject carrot1 = Instantiate(Resources.Load("Weapons/carrotarrow")) as GameObject;
-        carrot1.SetActive(false);
-        return carrot1;
-    }
+        CarrotArrow ca = new CarrotArrow(); //class for GO & bool
+        GameObject carrotIns = Instantiate(Resources.Load("Weapons/carrotarrow")) as GameObject;  //Ins
 
+        carrotIns.SetActive(false);
+        CarrotVisible = false;
+
+        ca.CarrotVisible = false;
+        ca.Carrot = carrotIns;
+        CarrotContainer.Add(ca);
+
+        //return carrot1;
+    }
     private void CarrotController()
     {
         Vector3 CurrentPos;
-        Vector3 TargetDist = Target.transform.position - Carrot.transform.position;
-        CarrotVec = (CarrotTargetPos - gameObject.transform.position).normalized;
-        var CVTDdot = Vector3.Dot(CarrotVec, TargetDist);
-        if (CarrotVisible)
+        //Vector3 TargetDist = Target.transform.position - Carrot.transform.position;
+        var CarrotVec = (CarrotTargetPos - gameObject.transform.position).normalized;
+        Carrot.transform.position += CarrotVec * Time.deltaTime * 10;
+        //var CVTDdot = Vector3.Dot(CarrotVec, TargetDist);
+        //if (CarrotVisible)
         {
             //if (CVTDdot < 0.1f)
             //{
@@ -455,7 +477,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             //    //CarrotVisible = false;
             //    //Carrot.transform.position += Vector3.down * Time.deltaTime *5;
             //}
-            Carrot.transform.position += CarrotVec * Time.deltaTime * 10;
+            //Carrot.transform.position += CarrotVec * Time.deltaTime * 10;
         }
     }
     private void OnDrawGizmos()
@@ -482,6 +504,6 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        CarrotController();
+        //CarrotController();
     }
 }

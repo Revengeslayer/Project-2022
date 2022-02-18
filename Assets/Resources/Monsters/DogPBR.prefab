@@ -114,6 +114,8 @@ MonoBehaviour:
   objPlayer: {fileID: 0}
   objMonster: {fileID: 0}
   hpImage: {fileID: 6322577571346870265}
+  hpImage0: {fileID: 0}
+  dropItem: {fileID: 0}
 --- !u!1 &6322577569327963967
 GameObject:
   m_ObjectHideFlags: 0

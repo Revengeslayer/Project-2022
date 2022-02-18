@@ -31,8 +31,16 @@ public class PlayerInfo : MonoBehaviour
         zAttack = 0;
         playerHpbar.GetComponent<Image>().fillAmount = playerHp / playerMaxHp;
         playerHp = Mathf.Clamp(playerHp, 0, 300);
+        if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
+        {
+            FSM.isDeath = true;
+        }
     }
 
+    private void dash(float speed)
+    {
+
+    }
     private void Attack1Hurt()
     {
         zAttack = 1;
@@ -55,10 +63,6 @@ public class PlayerInfo : MonoBehaviour
     }
     public static void PlayerHpCal()
     {
-        playerHp = playerHp - 10;
-        if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
-        {
-            FSM.isDeath = true;
-        }
+        playerHp = playerHp - 10;      
     }
 }

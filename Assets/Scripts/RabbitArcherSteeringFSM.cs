@@ -147,7 +147,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             mDoState = DoIdleState;
             toIDLE = false;
 
-            Debug.Log(IDLEnum);
+            //Debug.Log(IDLEnum);
         }
         else if (toMOVE && NextActionInBattle) //Chase
         {
@@ -472,12 +472,12 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("目前狀態          " + mCurrentState);
+        //Debug.Log("目前狀態          " + mCurrentState);
 
         mCheckState();
         //狀態做甚麼
         mDoState();
-        Debug.Log(CarrotVisible);
+        //Debug.Log(CarrotVisible);
         //Debug.Log(AttackTimer); CHECK ATTACK CD
     }
     private void FixedUpdate()

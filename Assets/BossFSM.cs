@@ -90,4 +90,5 @@ public class BossFSM : MonoBehaviour
 	    gameObject.SetActive(false);
         G.SetActive(true);
     }
+
 }

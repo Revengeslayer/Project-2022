@@ -19,6 +19,7 @@ TagManager:
   - Monster
   - rabaSpawn
   - SpawnA
+  - Lich
   layers:
   - Default
   - TransparentFX

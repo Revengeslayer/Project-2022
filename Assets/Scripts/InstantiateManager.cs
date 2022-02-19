@@ -122,7 +122,7 @@ public class InstantiateManager : MonoBehaviour
                 SpawnData SD = new SpawnData();
                 SD.Pos = SpawnPos;
                 SpawnPosList.Add(SD);
-                Debug.Log(SpawnPosList.Count+"count");
+                //Debug.Log(SpawnPosList.Count+"count");
             }
         }
     }
@@ -155,10 +155,7 @@ public class InstantiateManager : MonoBehaviour
         SpawnedList = new List<SpawnData>();
         //SpawnPosContainer = GameObject.FindGameObjectsWithTag("rabaSpawn");
         SpawnPosInitializer();
-        //rabaSpawn = GameObject.FindGameObjectWithTag("rabaSpawn").transform.position;
-        Debug.Log(SpawnPosList.ToString());
-        Debug.Log(SpawnPosContainer.Length);
-        
+        //rabaSpawn = GameObject.FindGameObjectWithTag("rabaSpawn").transform.position;        
     }
     void Update()
     {
@@ -179,7 +176,6 @@ public class InstantiateManager : MonoBehaviour
                 }
             }
             Spawn = false;
-            Debug.Log("456");
         }
     }
     

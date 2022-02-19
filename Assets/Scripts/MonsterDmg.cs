@@ -76,7 +76,6 @@ public class MonsterDmg : MonoBehaviour
 
         zAtack = FSM.zAtack;
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
-        Debug.Log(bAvoid);
 
         if (hpImage.fillAmount <= 0)
         {
@@ -219,8 +218,6 @@ public class MonsterDmg : MonoBehaviour
             {
                 hpImage.fillAmount = hpImage.fillAmount - (40.0f/ monsterHp);
                 dogAnimator.SetBool("gethit", true);
-                //dogAnimator.SetBool("Attack01", false);
-                //dogAnimator.SetBool("chase", false);
                 Debug.Log("造成傷害 40");
                 return true;
                 //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
@@ -236,7 +233,7 @@ public class MonsterDmg : MonoBehaviour
            
             if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
-                hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+                hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
@@ -255,7 +252,7 @@ public class MonsterDmg : MonoBehaviour
 
             if ( monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
-                hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
+                hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);

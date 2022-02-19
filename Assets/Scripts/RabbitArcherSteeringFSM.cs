@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RabbitArcherSteeringFSM : MonoBehaviour
 {
@@ -13,18 +14,30 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
     private Animator rabaAnim;
     private Rigidbody rabaRig;
+    public GameObject monsterHpbar;
+    public Image hpImage;
+    public Image hpImage0;
     public GameObject Target;
-    
-    
+
+    //Add
+    private float zAttack;
+    float monsterHp;
+    public GameObject dropItem;
+
+
+
     private FSMState mCurrentState;
+
+    InstantiateManager raManger;
 
     //Carrot
     private List<CarrotArrow> CarrotContainer;
     public static GameObject Carrot;
     private Vector3 CarrotTargetPos;
-    private Vector3 CarrotVec;
+    private Vector3 CarrotVecG;
 
     //Distance
+    private float DisToTarget;
     private float DisForSIGHT;
     private float DisForCHASE;
     private float DisForATTACK;
@@ -35,10 +48,13 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     private float AttackTimer;
     private float IdleTimer;
     private float EscTimer;
+    private float DamageTimer;
     //Bool
     private bool NextActionInBattle;
     private bool NextAttack;
     private bool TargetInSight;
+    private bool Shooted;
+    private bool getHurt;
     public static bool CarrotVisible;
 
     private bool toSPAWN;
@@ -75,21 +91,22 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     {
         rabaAnim = GetComponent<Animator>();
         rabaRig = GetComponent<Rigidbody>();
+        monsterHp = 200;
+
         mCurrentState = FSMState.Spawn;
         mCheckState = CheckSpawnState;
         mDoState = DoSpawnState;
 
-        CarrotContainer = new List<CarrotArrow>();
-        //Carrot = 
-            InsCarrot();
 
-
+        //CarrotContainer = new List<CarrotArrow>();
+        
         Target = GameObject.Find("Character(Clone)");
 
         //Timer
         BattleActionTimer = 0;
         IdleTimer = 0;
         EscTimer = 2;
+        DamageTimer = 0;
 
         //Dist
         DisForCHASE = 15;
@@ -154,7 +171,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             mDoState = DoIdleState;
             toIDLE = false;
 
-            Debug.Log(IDLEnum);
+            //Debug.Log(IDLEnum);
         }
         else if (toMOVE && NextActionInBattle) //Chase
         {
@@ -213,7 +230,18 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void CheckDamageState()
     {
+        rabaAnim.SetBool("isDamage", true);
 
+        //DamageTimer += Time.time;
+
+        if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("Damage") && rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
+        {
+            rabaAnim.SetBool("isDamage", false);
+            mCurrentState = FSMState.BattleIdle;
+            mCheckState = CheckBattleIdleState;
+            mDoState = DoBattleIdleState;
+            getHurt = false;
+        }
     }
     private void CheckDieState()
     {
@@ -242,7 +270,10 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void DoBattleIdleState()
     {
-        gameObject.transform.LookAt(Target.transform.position);
+        //gameObject.transform.LookAt(Target.transform.position);
+        var CurrentForward = Target.transform.position - gameObject.transform.position;
+        CurrentForward.y = 0;
+        gameObject.transform.forward = CurrentForward.normalized;
     }
 
     private void DoWanderState()
@@ -273,33 +304,16 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void DoAttackState()
     {
-        var CarrotVec = Vector3.Normalize( Target.transform.position - gameObject.transform.position );
-        foreach(CarrotArrow ca in CarrotContainer)  //get invisible
-        {
+        //var CarrotVec = Vector3.Normalize( Target.transform.position - gameObject.transform.position );
+        //var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward);
 
-            if(ca.CarrotVisible)
-            {
-                return;
-            }
-            else
-            {
-                Carrot = ca.Carrot;
 
-            }
-        }
-        if (rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
-        {
-            Carrot.transform.position = gameObject.transform.position + (new Vector3(0,0.45f,0) + gameObject.transform.forward);
-            Carrot.transform.forward = -CarrotVec;
-            CarrotTargetPos = Target.transform.position + new Vector3(0, 0.65f, 0);
 
-            Carrot.SetActive(true);
-            CarrotVisible = true;
+        //    Carrot.transform.position = gameObject.transform.position + (new Vector3(0,0.45f,0) + gameObject.transform.forward);
+        //    Carrot.transform.forward = -CarrotVec;
+        //    CarrotTargetPos = Target.transform.position + new Vector3(0, 0.65f, 0);
 
-            //Vector3 TargetDist = Target.transform.position - Carrot.transform.position;
-            //CarrotVec = (CarrotTargetPos - gameObject.transform.position).normalized;
-            //Carrot.transform.position += CarrotVec * Time.deltaTime * 10;
-        }
+        Shooted = true;
         NextAttack = false;
         AttackTimer = 0;
     }
@@ -317,11 +331,23 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void DoDamageState()
     {
-
+        
     }
     private void DoDieState()
     {
 
+    }
+    IEnumerator Die()
+    {
+        rabaAnim.Play("Die");
+        yield return new WaitForSeconds(2.0f);
+
+        //掉落道具為怪物位置
+        Vector3 itemPosition = this.transform.position;
+        itemPosition += new Vector3(Random.Range(-2, 2), 0.2f, Random.Range(-2, 2));
+
+        Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
+        Destroy(this.gameObject);
     }
     private void DoSpawnState()
     {
@@ -459,25 +485,35 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         ca.CarrotVisible = false;
         ca.Carrot = carrotIns;
         CarrotContainer.Add(ca);
-
-        //return carrot1;
     }
-    private void CarrotController()
-    {
-        Vector3 CurrentPos;
-        //Vector3 TargetDist = Target.transform.position - Carrot.transform.position;
-        var CarrotVec = (CarrotTargetPos - gameObject.transform.position).normalized;
-        Carrot.transform.position += CarrotVec * Time.deltaTime * 10;
-        //var CVTDdot = Vector3.Dot(CarrotVec, TargetDist);
-        //if (CarrotVisible)
+    
+    private void PlayerAttack(float zAttack)
+    {        
+        var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward * 2);
+        var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward * 2).magnitude;
+        var cosValue = a / b;
+
+        if (zAttack == 0)
         {
-            //if (CVTDdot < 0.1f)
-            //{
-            //    //Carrot.SetActive(false);
-            //    //CarrotVisible = false;
-            //    //Carrot.transform.position += Vector3.down * Time.deltaTime *5;
-            //}
-            //Carrot.transform.position += CarrotVec * Time.deltaTime * 10;
+            return;
+        }
+        else if(zAttack == 1 && cosValue >= 0.7  && hpImage.fillAmount > 0 )
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
+            //dogAnimator.SetBool("gethit", true);
+            Debug.Log("造成傷害 40");
+            
+            getHurt = true;
+        }
+        else if(zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0 )
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
+            getHurt = true;
+        }
+        else if(zAttack == 3 && hpImage.fillAmount > 0 )
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
+            getHurt = true;
         }
     }
     private void OnDrawGizmos()
@@ -495,15 +531,46 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     void Update()
     {
         Debug.Log("目前狀態          " + mCurrentState);
+        if (hpImage.fillAmount <= 0)
+        {
+            mCheckState = CheckDieState;
+            mDoState = DoDieState;
+            StartCoroutine(Die());
+        }
 
         mCheckState();
         //狀態做甚麼
         mDoState();
-        Debug.Log(CarrotVisible);
-        //Debug.Log(AttackTimer); CHECK ATTACK CD
+        
+
+        DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
+        monsterHpbar.transform.forward = -Camera.main.transform.forward;
+
+        if (Shooted == true)
+        {
+            if(rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK") && rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.3)
+            {
+                var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position);
+                var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward*0.5F);
+
+                CarrotController.InsCarrot(SpawnPos, CarrotVec);
+                Shooted = false;
+            }
+        }
+
+        if(DisToTarget < 2.3f)
+        {
+            zAttack = FSM.zAtack;
+            PlayerAttack(zAttack);
+        }        
     }
     private void FixedUpdate()
     {
-        //CarrotController();
+        if (getHurt)
+        {
+            mCheckState = CheckDamageState;
+            mCurrentState = FSMState.Damage;
+            mDoState = DoDamageState;
+        }
     }
 }

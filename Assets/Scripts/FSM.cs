@@ -602,7 +602,7 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		Debug.Log("目前狀態          " + mCurrentState);
+		//Debug.Log("目前狀態          " + mCurrentState);
 		//判斷哪一個Attack
 		zAtack = 0;
 		//如果死亡了

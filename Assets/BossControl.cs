@@ -9,54 +9,56 @@ public class BossControl : MonoBehaviour
 
     private float bossHp;
 
-
+    private int bossState;
+    private int bossDo;
     
     private void Start()
     {
         objPlayer = GameObject.Find("Character(Clone)");
         objBoss = this.gameObject;
 
+        bossState = 0;
         bossHp = 1000;
     }
     // Update is called once per frame
     void Update()
     {
-        
 
 
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            BossFSM.mCurrentState = BossFSM.BossFSMState.Idle;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            BossFSM.mCurrentState = BossFSM.BossFSMState.Active;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            BossFSM.mCurrentState = BossFSM.BossFSMState.Attack1;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            BossFSM.mCurrentState = BossFSM.BossFSMState.Attack2;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            BossFSM.mCurrentState = BossFSM.BossFSMState.Stand;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            BossFSM.mCurrentState = BossFSM.BossFSMState.Walk;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            BossFSM.mCurrentState = BossFSM.BossFSMState.Roll;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            BossFSM.mCurrentState = BossFSM.BossFSMState.Die;
-        }
+
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Idle;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Active;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Attack1;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha4))
+        //{
+        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Attack2;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha5))
+        //{
+        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Stand;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha6))
+        //{
+        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Walk;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha7))
+        //{
+        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Roll;
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha0))
+        //{
+        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Die;
+        //}
     }
 
     void BossNormalAtk()
@@ -107,6 +109,22 @@ public class BossControl : MonoBehaviour
         {
             Debug.Log("-----¨Sºu¨ì-----");
         }
+    }
 
+    void BossRollMove()
+    {
+        objBoss.transform.LookAt (objPlayer.transform.position);
+        
+    }
+
+    private int BossBehavior(int bossStatus)
+    {
+        int reBossDo = 0;
+        if (bossStatus == 1)
+        {
+            reBossDo = Random.Range(0, 3);
+        }
+
+        return reBossDo;
     }
 }

@@ -61,8 +61,23 @@ public class PlayerInfo : MonoBehaviour
     {
         skillAttack = 2;
     }
-    public static void PlayerHpCal()
+    public static void PlayerHpCal(int a)
     {
-        playerHp = playerHp - 10;      
+        //ªüª¯´¶§ð
+        if (a == 1)
+        {
+            playerHp = playerHp - 10;
+        }
+
+        //Boss´¶§ð
+        else if(a == 10)
+        {
+            playerHp = playerHp - 30;
+        }
+        //BossÂà°Ê§ð
+        else if (a == 11)
+        {
+            playerHp = playerHp - 50;
+        }
     }
 }

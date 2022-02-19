@@ -76,6 +76,7 @@ public class Trigger : MonoBehaviour
         {
             InstantiateManager.Spawn = true;
         }
+        //09-新增 如果踩到就把拍巫師的攝影機打開
     }
     private void OnTriggerStay(Collider other)
     {

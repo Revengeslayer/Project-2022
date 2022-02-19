@@ -14,7 +14,11 @@ public class FSM : MonoBehaviour
 	/// 做狀態的delegate
 	/// </summary>
 	private delegate void DoState();
-	private CheckState mDoState;
+	private DoState mDoState;
+	/// <summary>
+	/// 當前狀態
+	/// </summary>
+	private FSMState mCurrentState;
 	/// <summary>
 	/// 角色相關
 	/// </summary>
@@ -54,11 +58,7 @@ public class FSM : MonoBehaviour
 	/// 死亡相關
 	/// </summary>
 	public static bool isDeath;
-
-    
-
-
-    private FSMState mCurrentState;
+ 
 	// Start is called before the first frame update
 	public enum FSMState
 	{

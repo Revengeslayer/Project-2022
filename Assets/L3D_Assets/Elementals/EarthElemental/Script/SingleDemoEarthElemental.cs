@@ -15,6 +15,7 @@ public class SingleDemoEarthElemental : MonoBehaviour {
 	public float size = 1;
 	public Material[] Mat;
 	public Renderer mesh;
+	[Header("123")]
 	public GameObject[] DieAnim;
 	public GameObject Model;
 	public GameObject instanceDieMesh;

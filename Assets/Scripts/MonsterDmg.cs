@@ -138,7 +138,7 @@ public class MonsterDmg : MonoBehaviour
                 if (hertWait)
                 {
                     FSM.isGitHit = true;
-                    PlayerInfo.PlayerHpCal();
+                    PlayerInfo.PlayerHpCal(1);
                     hertDelay = false;
                     hertWait = false;
                     nowTimeHurt = 0;

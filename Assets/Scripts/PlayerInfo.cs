@@ -56,6 +56,8 @@ public class PlayerInfo : MonoBehaviour
     {
 
     }
+    # region AnimationEvent
+
     private void Attack1Hurt()
     {
         zAttack = 1;
@@ -78,24 +80,24 @@ public class PlayerInfo : MonoBehaviour
     }
     private void Attack1Move()
     {
-        if (attack3 == false)
+        if (attack1 == false)
         {
-            attack3 = true;
+            attack1 = true;
         }
-        else if (attack3 == true)
+        else if (attack1 == true)
         {
-            attack3 = false;
+            attack1 = false;
         }
     }
     private void Attack2Move()
     {
-        if (attack3 == false)
+        if (attack2 == false)
         {
-            attack3 = true;
+            attack2 = true;
         }
-        else if (attack3 == true)
+        else if (attack2 == true)
         {
-            attack3 = false;
+            attack2 = false;
         }
     }
     private void Attack3Move()
@@ -109,6 +111,14 @@ public class PlayerInfo : MonoBehaviour
             attack3 = false;
         }       
     }
+
+    private void Die()
+    {
+        attack1 = false;
+        attack2 = false;
+        attack3 = false;
+    }
+    #endregion
     public static void PlayerHpCal(int a)
     {
         //ªüª¯´¶§ð

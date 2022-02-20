@@ -14,7 +14,11 @@ public class FSM : MonoBehaviour
 	/// 做狀態的delegate
 	/// </summary>
 	private delegate void DoState();
-	private CheckState mDoState;
+	private DoState mDoState;
+	/// <summary>
+	/// 當前狀態
+	/// </summary>
+	private FSMState mCurrentState;
 	/// <summary>
 	/// 角色相關
 	/// </summary>
@@ -36,7 +40,7 @@ public class FSM : MonoBehaviour
 	//最後按下時間
 	private float lastClick;
 	//回傳
-	public static int zAtack;
+	public static int zAttack;
 	/// <summary>
 	/// 受傷相關
 	/// </summary>
@@ -54,11 +58,7 @@ public class FSM : MonoBehaviour
 	/// 死亡相關
 	/// </summary>
 	public static bool isDeath;
-
-    
-
-
-    private FSMState mCurrentState;
+ 
 	// Start is called before the first frame update
 	public enum FSMState
 	{
@@ -200,7 +200,6 @@ public class FSM : MonoBehaviour
 		////攻擊中轉Skill
 		if(isSkill==true)
 		{
-			Debug.Log("in");
 			//isAttack = false;
 			anim.SetBool("isAttack", false);
 			anim.SetBool("isSkill", true);
@@ -336,7 +335,7 @@ public class FSM : MonoBehaviour
 			//var lastClick = Time.time;
 			isAttack = true;
 			isBattle = true;
-			zAtack = 1;
+			zAttack = 1;
 			atkCount = 1;
 		}
 		//按下方向鍵
@@ -344,7 +343,7 @@ public class FSM : MonoBehaviour
 		{
 			isMove = true;
 			isAttack = false;
-			zAtack = 0;
+			zAttack = 0;
 			atkCount = 0;
 		}
 		//觸發Skill
@@ -385,7 +384,7 @@ public class FSM : MonoBehaviour
 		{
 			isBattle = true;
 			isAttack = true;
-			zAtack = 1;
+			zAttack = 1;
 			atkCount = 1;
 		}
 		//按下方向鍵
@@ -393,7 +392,7 @@ public class FSM : MonoBehaviour
 		{
 			isMove = true;
 			isAttack = false;
-			zAtack = 0;
+			zAttack = 0;
 			atkCount = 0;
 		}
 		//觸發Skill
@@ -423,7 +422,7 @@ public class FSM : MonoBehaviour
 			anim.SetInteger("combo2", anim.GetInteger("combo2") + 1);
 			if (anim.GetInteger("combo2") <= 1)
 			{
-				zAtack = 2;
+				zAttack = 2;
 			}
 			atkCount = 2;
 		}
@@ -434,7 +433,7 @@ public class FSM : MonoBehaviour
 
 			if (anim.GetInteger("combo3") <= 1)
 			{
-				zAtack = 3;
+				zAttack = 3;
 			}
 			atkCount = 3;
 		}
@@ -520,15 +519,20 @@ public class FSM : MonoBehaviour
 			//var lastClick = Time.time;
 			isAttack = true;
 			isBattle = true;
-			zAtack = 1;
+			zAttack = 1;
 			atkCount = 1;
 		}
-        //按下方向鍵
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+		//都不按方向鍵
+		if (!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
+		{
+			isMove = false;
+		}
+		//按下方向鍵
+		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
         {
             isMove = true;
             isAttack = false;
-            zAtack = 0;
+            zAttack = 0;
             atkCount = 0;
         }
 
@@ -552,7 +556,7 @@ public class FSM : MonoBehaviour
 			{				
 				isAttack = true;
 				isBattle = true;
-				zAtack = 1;
+				zAttack = 1;
 				atkCount = 1;
 			}
 		}
@@ -561,6 +565,7 @@ public class FSM : MonoBehaviour
 		{			
 			if (Input.GetKey(KeyCode.X))
 			{
+				
 				isAttack = false;
 				isBattle = true;
 				isSkill = true;
@@ -568,7 +573,9 @@ public class FSM : MonoBehaviour
 			}
 			if (Input.GetKey(KeyCode.C))
 			{
-				isAttack = false; isBattle = true;
+			
+				isAttack = false; 
+				isBattle = true;
 				isSkill = true;
 				anim.SetBool("Skill2", true);
 			}
@@ -593,6 +600,11 @@ public class FSM : MonoBehaviour
 	private void DoDieState()
 	{
 		isDeath = false;
+		isMove = false;
+		isAttack = false;
+		isGitHit = false;
+		isSkill = false;
+		
 		anim.Play("Die");
 	}
 	#endregion
@@ -602,9 +614,10 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		Debug.Log("目前狀態          " + mCurrentState);
+		//Debug.Log("目前狀態          " + mCurrentState);
+		//Debug.Log(isGitHit);
 		//判斷哪一個Attack
-		zAtack = 0;
+		zAttack = 0;
 		//如果死亡了
 		if(isDeath)
         {

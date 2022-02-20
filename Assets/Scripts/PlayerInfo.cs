@@ -7,77 +7,77 @@ using UnityEngine.UI;
 public class PlayerInfo : MonoBehaviour
 {
     private static  GameObject playerHpbar;
-    private int[] getHit;
-    private static Animator playerAnimator;
-
-    private List<GameObject> dogMonsters;
     //public Image hpImage;
     static float playerMaxHp = 300;
     public static float playerHp;
     float playerDistance;//人物與怪物的距離
+    //傳Skill給怪物
+    public static int skillAttack;
+    //傳Attack給怪物
+    public static int zAttack;
     //public int reBirth;
 
     void Start()
     {
-        dogMonsters = new List<GameObject>();
-        playerAnimator = GetComponent<Animator>();
         playerHp = playerMaxHp;
-
         playerHpbar = GameObject.Find("PlayerHpBar");
-        //foreach (var a in GameObject.FindGameObjectsWithTag("Monster"))
-        //{
-        //    dogMonsters.Add(a);
-        //}
-        //getHit = new int[dogMonsters.Count];
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //reBirth = Main.reBirth;
-        //if(reBirth ==1)
-        //{
-        //    playerHp = playerMaxHp;
-        //    reBirth = 0;
-        //}
-        //for (int a = 0; a < dogMonsters.Count; a++)
-        //{
-        //    getHit[a] = MonsterDmg.mDogAtk;
-        //    MonsterAtack(dogMonsters[a],a);
-        //    for (int i = 0; i < 4 ; i++ )
-        //    {
-        //        Debug.Log(i + "    "+ getHit[i]);
-        //    }
-        //}
-        // Debug.Log("QQQQQQQQQQQQ" + getHit);
-    }
-
-    //public void MonsterAtack(GameObject objMonster,int i)
-    //{
-        //float a;//算角度分子
-
-        //float b;//算角度分母
-
-        //float cosValue;//cos值
-
-        //a = Vector3.Dot((this.transform.position - objMonster.transform.position), objMonster.transform.forward * 2);
-        //b = Vector3.Distance(this.transform.position, objMonster.transform.position) * (objMonster.transform.forward * 2).magnitude;
-        //cosValue = a / b;
-       // Debug.Log("...0.0.0......"+cosValue);
-
-        //if (getHit[i] == 1 && cosValue >0.7f)
-        //{           
-        //    playerHpbar.GetComponent<Image>().fillAmount = playerHpbar.GetComponent<Image>().fillAmount- 0.0001f;
-        //}
-        
-    //}
-    public static void PlayerHpCal()
-    {
-        playerHpbar.GetComponent<Image>().fillAmount = (playerHp-10)/playerMaxHp;
-        playerHp = playerHp - 10;
+        skillAttack = 0;
+        zAttack = 0;
+        playerHpbar.GetComponent<Image>().fillAmount = playerHp / playerMaxHp;
+        playerHp = Mathf.Clamp(playerHp, 0, 300);
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
             FSM.isDeath = true;
+        }
+    }
+
+    private void dash(float speed)
+    {
+
+    }
+    private void Attack1Hurt()
+    {
+        zAttack = 1;
+    } 
+    private void Attack2Hurt()
+    {
+        zAttack = 2;
+    }
+    private void Attack3Hurt()
+    {
+        zAttack = 3;
+    }
+    private void Skill1Hurt()
+    {
+        skillAttack = 1;
+    }
+    private void Skill2Hurt()
+    {
+        skillAttack = 2;
+    }
+    public static void PlayerHpCal(int a)
+    {
+        //阿狗普攻
+        if (a == 1)
+        {
+            playerHp = playerHp - 10;
+        }
+
+        //Boss普攻
+        else if(a == 10)
+        {
+            playerHp = playerHp - 30;
+        }
+        //Boss轉動攻
+        else if (a == 11)
+        {
+            playerHp = playerHp - 50;
         }
     }
 }

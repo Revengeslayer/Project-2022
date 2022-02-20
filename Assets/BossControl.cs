@@ -11,7 +11,8 @@ public class BossControl : MonoBehaviour
 
     private int bossState;
     private int bossDo;
-    
+
+    bool bossRoll = false;
     private void Start()
     {
         objPlayer = GameObject.Find("Character(Clone)");
@@ -34,7 +35,10 @@ public class BossControl : MonoBehaviour
 
         //    gameObject.transform.position += gameObject.transform.forward * 2.0f * Time.deltaTime;
         //}
-
+        if(bossRoll == true)
+        {
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 4;
+        }
 
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -104,7 +108,8 @@ public class BossControl : MonoBehaviour
         }
     }
     void BossRollAtk()
-    {       
+    {
+        objBoss.transform.LookAt(objPlayer.transform.position);
         float bossAtkHorizontalDistance;//¾î¦V¶ZÂ÷
         float bossAtkDistance;//ª½¦V¶ZÂ÷
 
@@ -136,9 +141,17 @@ public class BossControl : MonoBehaviour
         }
     }
 
+
     void BossRollMove()
     {
-        objBoss.transform.LookAt (objPlayer.transform.position);        
+        if (bossRoll == false)
+        {
+            bossRoll = true;
+        }
+        else if (bossRoll == true)
+        {
+            bossRoll = false;
+        }               
     }
 
     private int BossBehavior(int bossState)

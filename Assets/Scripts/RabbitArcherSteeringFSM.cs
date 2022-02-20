@@ -512,7 +512,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
             getHurt = true;
         }
-        else if(zAttack == 3 && hpImage.fillAmount > 0 )
+        else if(cosValue >= 0.85 &&zAttack == 3 && hpImage.fillAmount > 0 )
         {
             hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
             getHurt = true;

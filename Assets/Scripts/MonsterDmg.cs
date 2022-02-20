@@ -240,7 +240,7 @@ public class MonsterDmg : MonoBehaviour
 
         else if (zAttack == 3)
         {
-            if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.85 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
@@ -346,7 +346,7 @@ public class MonsterDmg : MonoBehaviour
             cosValue = a / b;
             monsterDis = Vector3.Distance(this.transform.position, dogMonsters[i].transform.position);
             forwardDis = monsterDis * cosValue;
-            if (Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) < 2.0f && Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) != 0
+            if (Vector3.Distance(this.transform.position+this.transform.forward*1, dogMonsters[i].transform.position) < 2.0f && Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) != 0
                 /*&& Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward) > 0 && Mathf.Sqrt(monsterDis * monsterDis - forwardDis * forwardDis) < 1.5f*/)
             {
                 monsteCollision = false;

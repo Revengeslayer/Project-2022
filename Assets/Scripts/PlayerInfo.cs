@@ -16,7 +16,7 @@ public class PlayerInfo : MonoBehaviour
     //¶ÇAttackµ¹©Çª«
     public static int zAttack;
     //public int reBirth;
-
+    bool attack3 = false;
     void Start()
     {
         playerHp = playerMaxHp;
@@ -34,6 +34,11 @@ public class PlayerInfo : MonoBehaviour
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
             FSM.isDeath = true;
+        }
+
+        if(attack3)
+        {
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime*8;
         }
     }
 
@@ -60,6 +65,18 @@ public class PlayerInfo : MonoBehaviour
     private void Skill2Hurt()
     {
         skillAttack = 2;
+    }
+
+    private void Attack3Move()
+    {
+        if(attack3 == false)
+        {
+            attack3 = true;
+        }
+        else if (attack3 == true)
+        {
+            attack3 = false;
+        }       
     }
     public static void PlayerHpCal(int a)
     {

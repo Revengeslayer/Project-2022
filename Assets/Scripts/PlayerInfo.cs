@@ -80,4 +80,13 @@ public class PlayerInfo : MonoBehaviour
             playerHp = playerHp - 50;
         }
     }
+    public static void CarrotArrowDamage()
+    {
+        playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 10) / playerMaxHp;
+        playerHp = playerHp - 10;
+        if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
+        {
+            FSM.isDeath = true;
+        }
+    }
 }

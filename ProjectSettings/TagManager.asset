@@ -18,7 +18,6 @@ TagManager:
   - ClipNear01
   - Monster
   - rabaSpawn
-  - SpawnA
   layers:
   - Default
   - TransparentFX

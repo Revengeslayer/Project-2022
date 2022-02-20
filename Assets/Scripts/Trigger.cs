@@ -71,10 +71,6 @@ public class Trigger : MonoBehaviour
         {
             Camera.main.nearClipPlane = 8.6f;
         }
-        else if (colliderTag == "SpawnA")
-        {
-            InstantiateManager.Spawn = true;
-        }
     }
     private void OnTriggerStay(Collider other)
     {

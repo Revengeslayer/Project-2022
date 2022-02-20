@@ -51,8 +51,6 @@ public class MonsterDmg : MonoBehaviour
     /// </summary>
     private List<GameObject> dogMonsters;
     private bool monsterCollision;
-    private bool bAvoid;
-    public float ProbeDis;
 
     void Start()
     {
@@ -76,33 +74,23 @@ public class MonsterDmg : MonoBehaviour
 
         zAtack = FSM.zAtack;
         monsterDistance = Vector3.Distance(objMonster.transform.position, objPlayer.transform.position);
-        Debug.Log(bAvoid);
 
         if (hpImage.fillAmount <= 0)
         {
             hpImage0.fillAmount = 0;
         }
         //MonsterDis(); 
-        if (monsterDistance <= 6.0f && hpImage.fillAmount > 0 && playerHp >0) //****************
+        if (monsterDistance <= 6.0f && hpImage.fillAmount > 0 && playerHp >0)
         {   
             
             gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
 
             if (monsterDistance >= 2.0f)
-            {
-                //for(int i = 0;i < dogMonsters.Count; i++)
-                //{
-                //    var abs = dogMonsters[i];
-                //}
-                bAvoid = DogCheckAvoid();
-                //if (!bAvoid)
-                {
-                    //gameObject.transform.LookAt(objPlayer.transform.position);
-                    gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;
-                    dogAnimator.SetBool("Attack01", false);
-                    dogAnimator.SetBool("chase", true);
-                    nowTimeAtk = Time.time;
-                }
+            {  
+                gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;                  
+                dogAnimator.SetBool("Attack01", false);
+                dogAnimator.SetBool("chase", true);
+                nowTimeAtk = Time.time;
             }
             else if (monsterDistance < 2.0f)
             {   
@@ -284,51 +272,6 @@ public class MonsterDmg : MonoBehaviour
         {
             return false;
         }
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position, 6);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(this.transform.position, ProbeDis );
-    }
-
-    private bool DogCheckAvoid()
-    {
-        Vector3 finalVecX = Vector3.zero;
-        Vector3 finalVecZ = Vector3.zero;
-
-        foreach (GameObject Dog in dogMonsters)
-        {
-            if (Dog != gameObject)
-            {
-                var Vec = (Dog.transform.position - gameObject.transform.position);
-                var Dist = Vec.magnitude;
-                var Checkturn = Vector3.Dot(gameObject.transform.right, Vec);
-                Debug.Log(Dog.name);
-
-                if (ProbeDis < Dist)
-                {
-                    bAvoid = true;
-
-                    if (Checkturn > 0) // turn Left
-                    {
-                        //gameObject.transform.right += (Vec - gameObject.transform.position) * 3 * Time.deltaTime;
-                        //gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;
-                    }
-                    else  //turn Right
-                    {
-                        //gameObject.transform.right += -(Vec - gameObject.transform.position) * 3 * Time.deltaTime;
-                        //gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;
-                    }
-                }
-                else
-                {
-                    bAvoid = false;
-                }
-            }
-        }
-        return bAvoid;
     }
 
     //Die觸發的相關函式

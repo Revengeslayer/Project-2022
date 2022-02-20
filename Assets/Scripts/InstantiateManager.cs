@@ -11,7 +11,6 @@ public class InstantiateManager : MonoBehaviour
     private List<SpawnData> SpawnedList;
     private GameObject[] SpawnPosContainer;
     private Vector3 rabaSpawn;
-    public static bool Spawn;
 
     #region ForINS
     public class InstantiateData
@@ -163,22 +162,27 @@ public class InstantiateManager : MonoBehaviour
     void Update()
     {
         if(Input.GetMouseButtonDown(0))
-        //if(Spawn)
         {
             int iCount = InsGoDataContainer.Count;
-            for (int i = 0; i < Nums; i++)
+            if (Nums > LoadedGo.Count)
             {
-                if (Nums > LoadedGo.Count)
-                {
-                    //int SpawnNum = Random.Range(0, SpawnPosList.Count);
-                    var go = LoadGoData();
-                    go.SetActive(true);
-                                        
-                    go.transform.position = SetSpawnPos();
-                    LoadedGo.Add(go);
-                }
+                //for (int i = 0; i < SpawnPosList.Count; i++)
+                //{
+                int SpawnNum = Random.Range(0, SpawnPosList.Count);
+                var go = LoadGoData();
+                go.SetActive(true);
+
+                //SpawnData SD = new SpawnData();
+                //SD = SpawnPosList[SpawnNum];
+                //go.transform.position = SD.Pos.transform.position;
+                //SD.Spwaned = true;
+                go.transform.position = SetSpawnPos();
+
+                    //go.transform.position = rabaSpawn;
+                LoadedGo.Add(go);
+                //}
+                Debug.Log("123");
             }
-            Spawn = false;
             Debug.Log("456");
         }
     }

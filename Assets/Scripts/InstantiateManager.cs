@@ -12,6 +12,7 @@ public class InstantiateManager : MonoBehaviour
     private GameObject[] SpawnPosContainer;
     private Vector3 rabaSpawn;
     public static bool Spawn;
+    public static float GetSpawnNums;
 
     #region ForINS
     public class InstantiateData
@@ -159,13 +160,14 @@ public class InstantiateManager : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        //if(Spawn)
+        //if(Input.GetMouseButtonDown(0))
+        if(Spawn)
         {
+            //GetSpawnNums = 1;
             int iCount = InsGoDataContainer.Count;
-            for (int i = 0; i < Nums; i++)
+            for (int i = 0; i < GetSpawnNums; i++)
             {
-                if (Nums > LoadedGo.Count)
+                //if (Nums > LoadedGo.Count)
                 {
                     //int SpawnNum = Random.Range(0, SpawnPosList.Count);
                     var go = LoadGoData();

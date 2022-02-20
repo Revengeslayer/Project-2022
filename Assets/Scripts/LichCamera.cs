@@ -15,9 +15,9 @@ public class LichCamera : MonoBehaviour
     public Transform target;
 
     // Update is called once per frame
-    void Update()
-    {
-        camera.transform.position = target.position+ new Vector3(offsetX, offsetY, offsetZ);
-        camera.transform.Rotate(new Vector3(spinX, spinY, spinY));
-    }
+    //void Update()
+    //{
+    //    //camera.transform.position = target.position+ new Vector3(offsetX, offsetY, offsetZ);
+    //    //camera.transform.Rotate(new Vector3(spinX, spinY, spinY));
+    //}
 }

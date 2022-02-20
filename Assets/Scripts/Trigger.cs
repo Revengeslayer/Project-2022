@@ -12,6 +12,10 @@ public class Trigger : MonoBehaviour
     private float YT;
     private GameObject Viking_Tower;
     private GameObject Tree;
+    private GameObject SpawnA;
+    private GameObject SpawnB;
+    private GameObject SpawnC;
+    private GameObject SpawnD;
     // Start is called before the first frame update
 
 
@@ -23,6 +27,10 @@ public class Trigger : MonoBehaviour
         Boss01_1 = -Camera.main.transform.right;
         Viking_Tower = GameObject.Find("Viking_Tower");
         Tree = GameObject.Find("tree03(4)");
+        SpawnA = GameObject.Find("SpawnA");
+        SpawnB = GameObject.Find("SpawnB");
+        SpawnC = GameObject.Find("SpawnC");
+        SpawnD = GameObject.Find("SpawnD");
     }
     void OnTriggerEnter(Collider other)
     {
@@ -72,10 +80,34 @@ public class Trigger : MonoBehaviour
         {
             Camera.main.nearClipPlane = 8.6f;
         }
-        else if (colliderTag == "SpawnA")
+        else if (colliderTag == "SpawnA") //5
         {
+            InstantiateManager.GetSpawnNums = 5;
             InstantiateManager.Spawn = true;
+            Destroy(SpawnA);
         }
+        else if (colliderTag == "SpawnB") //9
+        {
+            InstantiateManager.GetSpawnNums = 9;
+            InstantiateManager.Spawn = true;
+            Destroy(SpawnB);
+        }
+        else if (colliderTag == "SpawnC") //7
+        {
+            InstantiateManager.GetSpawnNums = 7;
+            InstantiateManager.Spawn = true;
+            Destroy(SpawnC);
+        }
+        else if (colliderTag == "SpawnD") //6
+        {
+            InstantiateManager.GetSpawnNums = 6;
+            InstantiateManager.Spawn = true;
+            Destroy(SpawnD);
+        }
+        //else if (colliderTag == "SpawnC")
+        //{
+        //    InstantiateManager.SpawnC = true;
+        //}
         //09-新增 如果踩到就把拍巫師的攝影機打開
     }
     private void OnTriggerStay(Collider other)

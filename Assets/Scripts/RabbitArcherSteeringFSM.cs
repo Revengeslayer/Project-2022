@@ -18,9 +18,12 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     public Image hpImage;
     public Image hpImage0;
     public GameObject Target;
+    private GameObject ReSetTarget;
 
     //Add
     private float zAttack;
+    private float skillAttack;
+    private float playerHp;
     float monsterHp;
     public GameObject dropItem;
 
@@ -87,7 +90,11 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         public GameObject Carrot;
         public bool CarrotVisible;
     }
-
+    private void Awake()
+    {
+        zAttack = PlayerInfo.zAttack;
+        skillAttack = PlayerInfo.skillAttack;
+    }
     void Start()
     {
         rabaAnim = GetComponent<Animator>();
@@ -103,7 +110,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         //CarrotContainer = new List<CarrotArrow>();
 
         Target = GameObject.Find("Character(Clone)");
-
+        ReSetTarget = GameObject.Find("Fence (65)");
         //Timer
         BattleActionTimer = 0;
         IdleTimer = 0;
@@ -489,7 +496,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         CarrotContainer.Add(ca);
     }
     
-    private void PlayerAttack(float zAttack)
+    private void PlayerAttack(float zAttack , float skillAttack)
     {        
         var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward * 2);
         var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward * 2).magnitude;
@@ -517,6 +524,16 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
             getHurt = true;
         }
+        else if (skillAttack == 1 && cosValue >= 0.85 && hpImage.fillAmount > 0)
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
+            getHurt = true;
+        }
+        else if (skillAttack == 2 && DisToTarget <= 2.3f && hpImage.fillAmount > 0)
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
+            getHurt = true;            
+        }
     }
     private void OnDrawGizmos()
     {
@@ -533,6 +550,11 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     void Update()
     {
         Debug.Log("¥Ø«eª¬ºA          " + mCurrentState);
+        playerHp = PlayerInfo.playerHp;
+        if (playerHp <= 0)
+        {
+            Target = ReSetTarget;
+        }
         if (hpImage.fillAmount <= 0 && Alife == true)
         {
             Debug.Log("inDie");
@@ -566,8 +588,10 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         if(DisToTarget < 2.3f)
         {
             zAttack = FSM.zAttack;
-            PlayerAttack(zAttack);
-        }        
+            skillAttack = PlayerInfo.skillAttack;
+            PlayerAttack(zAttack , skillAttack);
+        }
+        Debug.Log("zattack :" + zAttack);
     }
     private void FixedUpdate()
     {

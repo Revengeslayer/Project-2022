@@ -20,6 +20,10 @@ TagManager:
   - rabaSpawn
   - SpawnA
   - Lich
+  - SpawnB
+  - rabaSpawnB
+  - SpawnC
+  - SpawnD
   layers:
   - Default
   - TransparentFX

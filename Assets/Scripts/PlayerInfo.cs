@@ -16,6 +16,8 @@ public class PlayerInfo : MonoBehaviour
     //¶ÇAttackµ¹©Çª«
     public static int zAttack;
     //public int reBirth;
+    bool attack1 = false;
+    bool attack2 = false;
     bool attack3 = false;
     void Start()
     {
@@ -36,7 +38,15 @@ public class PlayerInfo : MonoBehaviour
             FSM.isDeath = true;
         }
 
-        if(attack3)
+        if (attack1)
+        {
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 4;
+        }
+        if (attack2)
+        {
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 2;
+        }
+        if (attack3)
         {
             this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime*8;
         }
@@ -66,7 +76,28 @@ public class PlayerInfo : MonoBehaviour
     {
         skillAttack = 2;
     }
-
+    private void Attack1Move()
+    {
+        if (attack3 == false)
+        {
+            attack3 = true;
+        }
+        else if (attack3 == true)
+        {
+            attack3 = false;
+        }
+    }
+    private void Attack2Move()
+    {
+        if (attack3 == false)
+        {
+            attack3 = true;
+        }
+        else if (attack3 == true)
+        {
+            attack3 = false;
+        }
+    }
     private void Attack3Move()
     {
         if(attack3 == false)

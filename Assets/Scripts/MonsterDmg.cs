@@ -18,7 +18,7 @@ public class MonsterDmg : MonoBehaviour
     public Image hpImage0;
     float monsterHp;
     float monsterDistance;//人物與怪物的距離
-
+    bool monsteCollision = true;
     private Animator dogAnimator;
    
     /// <summary>
@@ -82,18 +82,18 @@ public class MonsterDmg : MonoBehaviour
         }
         //MonsterDis(); 
         if (monsterDistance <= 6.0f && hpImage.fillAmount > 0 && playerHp >0)
-        {   
-            
+        {
+            //MonsteCollision();
             gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
 
-            if (monsterDistance >= 2.0f)
+            if (monsterDistance >= 2.0f && monsteCollision)
             {  
                 gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;                  
                 dogAnimator.SetBool("Attack01", false);
                 dogAnimator.SetBool("chase", true);
                 nowTimeAtk = Time.time;
             }
-            else if (monsterDistance < 2.0f)
+            else if (monsterDistance < 3.0f)
             {   
                 //攻擊間隔判斷
                 if (atkStatus == false)
@@ -240,7 +240,7 @@ public class MonsterDmg : MonoBehaviour
 
         else if (zAttack == 3)
         {
-            if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.85 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
@@ -328,35 +328,38 @@ public class MonsterDmg : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    //public void MonsterDis()
-    //{
-    //    float a;//算角度分子
+    public void MonsteCollision()
+    {
+        float a;//算角度分子
 
-    //    float b;//算角度分母
+        float b;//算角度分母
 
-    //    float cosValue;//cos值
+        float cosValue;//cos值
 
-    //    float monsterDis;
-    //    float forwardDis;
+        float monsterDis;
+        float forwardDis;
 
-    //    for (int i =0; i< dogMonsters.Count; i++)
-    //    { 
-    //        a = Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward);
-    //        b = Vector3.Distance(dogMonsters[i].transform.position, this.transform.position) * (this.transform.forward).magnitude;
-    //        cosValue = a / b;
-    //        monsterDis = Vector3.Distance(this.transform.position, dogMonsters[i].transform.position);
-    //        forwardDis = monsterDis * cosValue;
-    //        if (Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) < 5.0f && Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) != 0
-    //            && Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward) > 0 && Mathf.Sqrt(monsterDis * monsterDis - forwardDis * forwardDis) < 4.0f)
-    //        {
-    //            Debug.Log("該轉彎");
-    //            gameObject.transform.Rotate(new Vector3(0, 30 * Time.deltaTime, 0));
-    //        }
-    //        //else
-    //        //{
-    //        //    gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
-    //        //}
-    //    }
-    //}
+        for (int i = 0; i < dogMonsters.Count; i++)
+        {
+            a = Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward);
+            b = Vector3.Distance(dogMonsters[i].transform.position, this.transform.position) * (this.transform.forward).magnitude;
+            cosValue = a / b;
+            monsterDis = Vector3.Distance(this.transform.position, dogMonsters[i].transform.position);
+            forwardDis = monsterDis * cosValue;
+            if (Vector3.Distance(this.transform.position+this.transform.forward*1, dogMonsters[i].transform.position) < 2.0f && Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) != 0
+                /*&& Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward) > 0 && Mathf.Sqrt(monsterDis * monsterDis - forwardDis * forwardDis) < 1.5f*/)
+            {
+                monsteCollision = false;
+            }
+            else
+            { 
+                monsteCollision = true; 
+            }
+            //else
+            //{
+            //    gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
+            //}
+        }
+    }
 
 }

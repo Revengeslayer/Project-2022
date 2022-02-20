@@ -11,7 +11,8 @@ public class BossControl : MonoBehaviour
 
     private int bossState;
     private int bossDo;
-    
+
+    bool bossRoll = false;
     private void Start()
     {
         objPlayer = GameObject.Find("Character(Clone)");
@@ -19,46 +20,59 @@ public class BossControl : MonoBehaviour
 
         bossState = 0;
         bossHp = 1000;
+
+        BossFSM.mCurrentState = BossFSM.BossFSMState.Active;
     }
     // Update is called once per frame
     void Update()
     {
-
-
-
-
-        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //if (Vector3.Distance(objPlayer.transform.position, objBoss.transform.position) <= 10.0f)
         //{
-        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Idle;
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha2))
-        //{
-        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Active;
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha3))
-        //{
-        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Attack1;
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha4))
-        //{
-        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Attack2;
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha5))
-        //{
-        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Stand;
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha6))
-        //{
+        //    objBoss.transform.LookAt(objPlayer.transform.position);
         //    BossFSM.mCurrentState = BossFSM.BossFSMState.Walk;
+
+
+
+        //    gameObject.transform.position += gameObject.transform.forward * 2.0f * Time.deltaTime;
         //}
-        //if (Input.GetKeyDown(KeyCode.Alpha7))
-        //{
-        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Roll;
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha0))
-        //{
-        //    BossFSM.mCurrentState = BossFSM.BossFSMState.Die;
-        //}
+        if(bossRoll == true)
+        {
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 4;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.Idle;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.Active;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.Attack1;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.Attack2;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.Stand;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.Walk;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.Roll;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.Die;
+        }
     }
 
     void BossNormalAtk()
@@ -78,8 +92,24 @@ public class BossControl : MonoBehaviour
         }   
     }
 
+    void BossLeftAtk()
+    {
+        Vector3 bossAtkPosition0;
+        float bossAtkDistance0;
+        bossAtkPosition0 = objBoss.transform.position + objBoss.transform.forward * 5.0f;
+        bossAtkDistance0 = Vector3.Distance(bossAtkPosition0, objPlayer.transform.position);
+        if (bossAtkDistance0 < 2.0f)
+        {
+            PlayerInfo.PlayerHpCal(20);
+        }
+        else
+        {
+            Debug.Log("Boss§ðÀ»½d³ò¥~");
+        }
+    }
     void BossRollAtk()
-    {       
+    {
+        objBoss.transform.LookAt(objPlayer.transform.position);
         float bossAtkHorizontalDistance;//¾î¦V¶ZÂ÷
         float bossAtkDistance;//ª½¦V¶ZÂ÷
 
@@ -111,20 +141,30 @@ public class BossControl : MonoBehaviour
         }
     }
 
+
     void BossRollMove()
     {
-        objBoss.transform.LookAt (objPlayer.transform.position);
-        
+        if (bossRoll == false)
+        {
+            bossRoll = true;
+        }
+        else if (bossRoll == true)
+        {
+            bossRoll = false;
+        }               
     }
 
-    private int BossBehavior(int bossStatus)
+    private int BossBehavior(int bossState)
     {
         int reBossDo = 0;
-        if (bossStatus == 1)
+        if (bossState == 1)
         {
             reBossDo = Random.Range(0, 3);
         }
-
+        //if (bossState == 2)
+        //{
+        //    reBossDo = Random.Range(3, 5);
+        //}
         return reBossDo;
     }
 }

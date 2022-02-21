@@ -122,6 +122,11 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckGetHitState;
 			mDoState = DoGetHitState;
 		}
+		//Idle ->Dodge
+		//if()
+		//{
+
+		//}
 	}
 	private void CheckBattleIdleState()
 	{
@@ -210,16 +215,16 @@ public class FSM : MonoBehaviour
 	}
 	private void CheckSkillState()
 	{
-		if(isSkill==false &&isAttack ==true)
-		{
-			anim.SetBool("isSkill", false);
-			anim.SetBool("Skill1", false);
-			anim.SetBool("Skill2", false);
-			anim.SetBool("isAttack", true);
-			mCurrentState = FSMState.Attack;
-			mCheckState = CheckAttackState;
-			mDoState = DoAttackState;
-		}
+		//if(isSkill==false &&isAttack ==true)
+		//{
+		//	anim.SetBool("isSkill", false);
+		//	anim.SetBool("Skill1", false);
+		//	anim.SetBool("Skill2", false);
+		//	anim.SetBool("isAttack", true);
+		//	mCurrentState = FSMState.Attack;
+		//	mCheckState = CheckAttackState;
+		//	mDoState = DoAttackState;
+		//}
 		if (isSkill == false && isMove ==true)
 		{
 			anim.SetBool("isSkill", false);
@@ -309,8 +314,9 @@ public class FSM : MonoBehaviour
 	}
 	private void CheckDieState()
     {
+		
 
-    }
+	}
 	#endregion
 
 	#region Do
@@ -362,10 +368,14 @@ public class FSM : MonoBehaviour
 				anim.SetBool("Skill2", true);
 			}
 		}
+		//觸發翻滾
+		if (Input.GetKey(KeyCode.LeftShift))
+		{
+			isDodge = true;
+		}
 	}
 	private void DoBattleIdleState()
 	{
-		
 		anim.SetInteger("combo2", 0);
 		anim.SetInteger("combo3", 0);
 		//強切Idle
@@ -415,7 +425,6 @@ public class FSM : MonoBehaviour
 	private void DoAttackState()
 	{
 		isGitHit = false;
-		#region 先不用
 		//判斷第二下
 		if (Input.GetKeyDown(KeyCode.Z) && anim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK01"))
 		{
@@ -473,6 +482,7 @@ public class FSM : MonoBehaviour
 			atkCount = 0;
 			anim.SetInteger("combo3", 0);
 			isAttack = false;
+			anim.SetBool("isAttack", false);
 			//判斷有沒有攻擊中按住方向鍵
 			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
 			{
@@ -495,16 +505,6 @@ public class FSM : MonoBehaviour
 				anim.SetBool("Skill2", true);
 			}
 		}
-		#endregion
-		#region 測試
-		//if (Input.GetKeyDown(KeyCode.Z) && CheckCombo(1, lastClick))
-		//{
-		//	lastClick = Time.time;
-		//	Debug.Log("連及觸發");
-		//}
-		//Debug.Log("atkCount               "+ atkCount);
-		//Debug.Log("zAtack                 "+ zAtack);
-		#endregion
 	}
     private void DoSkillState()
 	{
@@ -513,15 +513,15 @@ public class FSM : MonoBehaviour
 			isSkill = false;			
 		}
 
-		//按下攻擊
-		if (Input.GetKeyDown(KeyCode.Z))
-		{
-			//var lastClick = Time.time;
-			isAttack = true;
-			isBattle = true;
-			zAttack = 1;
-			atkCount = 1;
-		}
+		////按下攻擊
+		//if (Input.GetKeyDown(KeyCode.Z))
+		//{
+		//	//var lastClick = Time.time;
+		//	isAttack = true;
+		//	isBattle = true;
+		//	zAttack = 1;
+		//	atkCount = 1;
+		//}
 		//都不按方向鍵
 		if (!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
 		{
@@ -604,7 +604,7 @@ public class FSM : MonoBehaviour
 		isAttack = false;
 		isGitHit = false;
 		isSkill = false;
-		
+		isDodge = false;
 		anim.Play("Die");
 	}
 	#endregion
@@ -614,7 +614,7 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		//Debug.Log("目前狀態          " + mCurrentState);
+		Debug.Log("目前狀態          " + mCurrentState);
 		//Debug.Log(isGitHit);
 		//判斷哪一個Attack
 		zAttack = 0;
@@ -625,6 +625,7 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckDieState;
 			mDoState = DoDieState;
 		}
+
 		//要不要拔刀
 		if (isBattle || isAttack)
 		{
@@ -644,19 +645,6 @@ public class FSM : MonoBehaviour
 		if (isMove == true)
 		{
 			PlayControl.Move(moveSpeed);
-		}
-	}
-
-	private bool CheckCombo(float cdTime, float lastClickTime)
-	{
-
-		if (Time.time - lastClickTime < cdTime)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
 		}
 	}
 }

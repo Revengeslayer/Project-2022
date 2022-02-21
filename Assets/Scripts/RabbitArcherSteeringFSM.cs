@@ -532,7 +532,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("目前狀態          " + mCurrentState);
+        //Debug.Log("目前狀態          " + mCurrentState);
         if (hpImage.fillAmount <= 0 && Alife == true)
         {
             Debug.Log("inDie");

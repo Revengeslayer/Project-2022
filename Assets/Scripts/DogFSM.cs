@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class DogFSM : MonoBehaviour
     /// Dog相關
     /// </summary>
     //怪物初始位置
-    private Vector3 InitDic;
+    private Vector3 initDic;
     [Header("走路速度")]
     public float dogWalkSpeed;
     [Header("跑步速度")]
@@ -35,7 +36,9 @@ public class DogFSM : MonoBehaviour
     [Header("回歸距離")]
     public float dogBackToInitDic;
     [Header("更換待機指令的間隔時間")]
-    public float actRestTme;            
+    public float actRestTme;
+    [Header("追丟或超出範圍的間隔時間")]
+    public float reRestTme;
     //最後動作的時間
     private float lastActTime;
     //隨機動作權重
@@ -57,12 +60,13 @@ public class DogFSM : MonoBehaviour
         Wander,
         Chase,
         GetHit,
-        Die
+        Die,
+        Return
     }
 
     void Start()
     {
-        InitDic = this.transform.position;
+        initDic = this.transform.position;
         player =GameObject.Find("Character");
         //player=GameObject.Find("Character(Clone)");
         mCurrentState = DogFSMState.Idle_Battle;
@@ -103,15 +107,15 @@ public class DogFSM : MonoBehaviour
                 anim.SetBool("Wander", false);
                 RandomAction();
             }
+            WanderRadiusCheck();
         }
         if (mCurrentState == DogFSMState.Chase)
-        {
-            
+        {          
             //朝向玩家位置
             targetRotation = Quaternion.LookRotation(player.transform.position - gameObject.transform.position, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
             transform.Translate(Vector3.forward * Time.deltaTime * dogRunSpeed);
-            ChaseRadiusCheck();
+            ChaseCCancelCheck();
         }
         if (mCurrentState == DogFSMState.GetHit)
         {
@@ -121,19 +125,57 @@ public class DogFSM : MonoBehaviour
         {
 
         }
+        if(mCurrentState == DogFSMState.Return)
+        {
+            targetRotation = Quaternion.LookRotation(initDic - transform.position, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
+            transform.Translate(Vector3.forward * Time.deltaTime * dogRunSpeed);
+            ReturnCheck();
+        }
     }
 
-    private void ChaseRadiusCheck()
+    private void WanderRadiusCheck()
+    {
+        var diatanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+        var diatanceToInitial = Vector3.Distance(transform.position, initDic);
+
+        if (diatanceToPlayer < dogChaseDic)
+        {
+            anim.SetBool("Wander", false);
+            is_Running = true;
+            anim.SetBool("Chase", true);
+            mCurrentState = DogFSMState.Chase;
+        }
+
+        if (diatanceToInitial> dogBackToInitDic)
+        {
+            targetRotation = Quaternion.LookRotation(initDic - transform.position, Vector3.up);
+        }
+    }
+    /// <summary>
+    /// 追逐超出範圍/追逐跟丟的檢查
+    /// </summary>
+    private void ReturnCheck()
+    {
+        var diatanceToInitial = Vector3.Distance(gameObject.transform.position, initDic);
+        //如果已經接近初始位置，則隨機一個待機狀態
+        if (diatanceToInitial < 0.5f)
+        {
+            is_Running = false;
+            anim.SetBool("Chase", false);
+            RandomAction();
+        }
+    }
+
+    private void ChaseCCancelCheck()
     {
         var diatanceToPlayer = Vector3.Distance(player.transform.position, gameObject.transform.position);
-        var diatanceToInitial = Vector3.Distance(gameObject.transform.position, InitDic);
+        var diatanceToInitial = Vector3.Distance(gameObject.transform.position, initDic);
 
         if (diatanceToInitial > dogBackToInitDic || diatanceToPlayer > dogChaseDic)
         {
-            anim.SetBool("Chase", false);
-            is_Running = false;
-            anim.SetBool("Idle", true);
-            mCurrentState = DogFSMState.Idle_Battle;
+            StartCoroutine(IdleAmoment());
+            mCurrentState = DogFSMState.Return;
         }
     }
     /// <summary>
@@ -152,30 +194,32 @@ public class DogFSM : MonoBehaviour
             
         }
     }
+    /// <summary>
+    /// 選擇待機/遊走
+    /// </summary>
+    private void RandomAction()
+    {
+        lastActTime = Time.time;
 
+        float name = UnityEngine.Random.Range(0, actionWeight[0] + actionWeight[1]);
+        if (name <= actionWeight[0])
+        {
+            mCurrentState = DogFSMState.Idle_Battle;
+            anim.SetBool("Idle", true);
+        }
+        else if (actionWeight[0] < name && name <= actionWeight[0] + actionWeight[1])
+        {
+            mCurrentState = DogFSMState.Wander;
+            anim.SetBool("Wander", true);
+            targetRotation = Quaternion.Euler(0, UnityEngine.Random.Range(1, 5) * 90, 0);
+        }
+    }
     void Update()
     {
         Debug.Log(mCurrentState);
         CheckNowState();
     }
 
-    private void RandomAction()
-    {
-        lastActTime = Time.time;
-
-        float name = Random.Range(0, actionWeight[0]+ actionWeight[1]);
-        if(name<= actionWeight[0])
-        {
-            mCurrentState = DogFSMState.Idle_Battle;
-            anim.SetBool("Idle", true);
-        }
-        else if(actionWeight[0] < name&&name <= actionWeight[0]+ actionWeight[1])
-        {
-            mCurrentState = DogFSMState.Wander;
-            anim.SetBool("Wander", true);
-            targetRotation = Quaternion.Euler(0, Random.Range(1, 5) * 90, 0);
-        }
-    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -185,6 +229,12 @@ public class DogFSM : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(this.transform.position, dogWarnDic);
         Gizmos.color = Color.black;
-        Gizmos.DrawWireSphere(InitDic, dogBackToInitDic);
+        Gizmos.DrawWireSphere(initDic, dogBackToInitDic);
+    }
+
+    IEnumerator IdleAmoment()
+    {
+        anim.Play("Idle_Battle");
+        yield return new WaitForSeconds(reRestTme);
     }
 }

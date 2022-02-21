@@ -540,12 +540,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dogWalkSpeed: 1
-  dogRunSpeed: 0
+  dogRunSpeed: 2
   dogAtkDic: 1.3
   dogChaseDic: 4
   dogWarnDic: 5
   dogBackToInitDic: 6
-  actRestTme: 5
+  actRestTme: 2
+  reRestTme: 0.5
 --- !u!1001 &1040502396
 PrefabInstance:
   m_ObjectHideFlags: 0

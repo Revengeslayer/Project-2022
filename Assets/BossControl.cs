@@ -178,10 +178,11 @@ public class BossControl : MonoBehaviour
         return reBossDo;
     }
 
-//    private void OnDrawGizmos()
-//    {
-//        Gizmos.color = Color.blue;
 
-//        Gizmos.DrawWireSphere(objBoss.transform.position + objBoss.transform.forward * 6.0f, 3.0f);
-//    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.blue;
+
+    //    Gizmos.DrawWireSphere(objBoss.transform.position + objBoss.transform.forward * 6.0f, 3.0f);
+    //}
 }

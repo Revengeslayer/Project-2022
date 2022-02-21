@@ -41,7 +41,9 @@ public class DogFSM : MonoBehaviour
     //隨機動作權重
     private float[] actionWeight = { 3000, 4000 };
     //怪物的目標朝向
-    private Quaternion targetRotation;         
+    private Quaternion targetRotation;
+    //isRuning?
+    private bool is_Running = false;
 
 
 
@@ -74,8 +76,10 @@ public class DogFSM : MonoBehaviour
         {
             if(Time.time-lastActTime>actRestTme)
             {
+                anim.SetBool("Idle", false);
                 RandomAction();
             }
+            TargetDicChenk();
         }      
         if (mCurrentState == DogFSMState.Attack01)
         {
@@ -96,12 +100,18 @@ public class DogFSM : MonoBehaviour
 
             if (Time.time - lastActTime > actRestTme)
             {
+                anim.SetBool("Wander", false);
                 RandomAction();
             }
         }
         if (mCurrentState == DogFSMState.Chase)
         {
-
+            
+            //朝向玩家位置
+            targetRotation = Quaternion.LookRotation(player.transform.position - gameObject.transform.position, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
+            transform.Translate(Vector3.forward * Time.deltaTime * dogRunSpeed);
+            ChaseRadiusCheck();
         }
         if (mCurrentState == DogFSMState.GetHit)
         {
@@ -112,6 +122,37 @@ public class DogFSM : MonoBehaviour
 
         }
     }
+
+    private void ChaseRadiusCheck()
+    {
+        var diatanceToPlayer = Vector3.Distance(player.transform.position, gameObject.transform.position);
+        var diatanceToInitial = Vector3.Distance(gameObject.transform.position, InitDic);
+
+        if (diatanceToInitial > dogBackToInitDic || diatanceToPlayer > dogChaseDic)
+        {
+            anim.SetBool("Chase", false);
+            is_Running = false;
+            anim.SetBool("Idle", true);
+            mCurrentState = DogFSMState.Idle_Battle;
+        }
+    }
+    /// <summary>
+    /// 是否要追逐
+    /// </summary>
+    private void TargetDicChenk()
+    {
+        var dicToPlayer = Vector3.Distance(player.transform.position, gameObject.transform.position);
+
+        if(dicToPlayer< dogChaseDic)
+        {
+            anim.SetBool("Idle", false);
+            is_Running = true;
+            anim.SetBool("Chase", true);
+            mCurrentState = DogFSMState.Chase;
+            
+        }
+    }
+
     void Update()
     {
         Debug.Log(mCurrentState);
@@ -126,12 +167,12 @@ public class DogFSM : MonoBehaviour
         if(name<= actionWeight[0])
         {
             mCurrentState = DogFSMState.Idle_Battle;
-            anim.SetTrigger("Idle");
+            anim.SetBool("Idle", true);
         }
         else if(actionWeight[0] < name&&name <= actionWeight[0]+ actionWeight[1])
         {
             mCurrentState = DogFSMState.Wander;
-            anim.SetTrigger("Wander");
+            anim.SetBool("Wander", true);
             targetRotation = Quaternion.Euler(0, Random.Range(1, 5) * 90, 0);
         }
     }

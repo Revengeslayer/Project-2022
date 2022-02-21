@@ -7,6 +7,7 @@ public class MonsterDmg : MonoBehaviour
 {
     public GameObject monsterHpbar;
 
+    public GameObject swordLight;
     // Start is called before the first frame update
     private int zAttack;
     private int skillAttack;
@@ -388,6 +389,16 @@ public class MonsterDmg : MonoBehaviour
         }
     }
 
+
+    void DogNAtkLightOpen()
+    {
+        swordLight.SetActive(true);
+    }
+
+    void DogNAtkLightClose()
+    {
+        swordLight.SetActive(false);
+    }
     //private void OnDrawGizmos()
     //{
     //    Vector3 playrerAtkPosition;

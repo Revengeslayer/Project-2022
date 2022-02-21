@@ -82,7 +82,7 @@ public class BossControl : MonoBehaviour
 
         bossAtkPosition0 = objBoss.transform.position + objBoss.transform.forward * 6.0f;
         bossAtkDistance0 = Vector3.Distance(bossAtkPosition0, objPlayer.transform.position);
-        if (bossAtkDistance0 < 2.0f)
+        if (bossAtkDistance0 < 3.0f)
         {
             PlayerInfo.PlayerHpCal(10);
         }
@@ -92,21 +92,21 @@ public class BossControl : MonoBehaviour
         }   
     }
 
-    void BossLeftAtk()
-    {
-        Vector3 bossAtkPosition0;
-        float bossAtkDistance0;
-        bossAtkPosition0 = objBoss.transform.position + objBoss.transform.forward * 5.0f;
-        bossAtkDistance0 = Vector3.Distance(bossAtkPosition0, objPlayer.transform.position);
-        if (bossAtkDistance0 < 2.0f)
-        {
-            PlayerInfo.PlayerHpCal(20);
-        }
-        else
-        {
-            Debug.Log("Boss§ðÀ»½d³ò¥~");
-        }
-    }
+    //void BossLeftAtk()
+    //{
+    //    Vector3 bossAtkPosition0;
+    //    float bossAtkDistance0;
+    //    bossAtkPosition0 = objBoss.transform.position + objBoss.transform.forward * 5.0f; 
+    //    bossAtkDistance0 = Vector3.Distance(bossAtkPosition0, objPlayer.transform.position);
+    //    if (bossAtkDistance0 < 2.0f)
+    //    {
+    //        PlayerInfo.PlayerHpCal(20);
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Boss§ðÀ»½d³ò¥~");
+    //    }
+    //}
     void BossRollAtk()
     {
         objBoss.transform.LookAt(objPlayer.transform.position);

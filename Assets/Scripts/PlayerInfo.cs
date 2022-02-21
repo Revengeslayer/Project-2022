@@ -40,11 +40,11 @@ public class PlayerInfo : MonoBehaviour
 
         if (attack1)
         {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 4;
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6;
         }
         if (attack2)
         {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 2;
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6;
         }
         if (attack3)
         {

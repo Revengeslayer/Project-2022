@@ -92,6 +92,13 @@ public class BossControl : MonoBehaviour
         }   
     }
 
+    void BossNAtkWave()
+    {
+        gameObject.GetComponent<ParticleSystem>().Play(); 
+        //gameObject.GetComponent<ParticleSystem>().Pause(); 
+        //gameObject.GetComponent<ParticleSystem>().Stop();
+    }
+
     //void BossLeftAtk()
     //{
     //    Vector3 bossAtkPosition0;
@@ -167,4 +174,6 @@ public class BossControl : MonoBehaviour
         //}
         return reBossDo;
     }
+
+
 }

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BossControl : MonoBehaviour
 {
-    public GameObject objPlayer;
-    public GameObject objBoss;
+    private GameObject objPlayer;
+    private GameObject objBoss;
 
+    public GameObject atkWave;
     private float bossHp;
 
     private int bossState;
@@ -17,7 +18,6 @@ public class BossControl : MonoBehaviour
     {
         objPlayer = GameObject.Find("Character(Clone)");
         objBoss = this.gameObject;
-
         bossState = 0;
         bossHp = 1000;
 
@@ -92,11 +92,14 @@ public class BossControl : MonoBehaviour
         }   
     }
 
-    void BossNAtkWave()
+    void BossNAtkWaveOpen()
     {
-        gameObject.GetComponent<ParticleSystem>().Play(); 
-        //gameObject.GetComponent<ParticleSystem>().Pause(); 
-        //gameObject.GetComponent<ParticleSystem>().Stop();
+        atkWave.SetActive(true);
+    }
+
+    void BossNAtkWaveClose()
+    {
+        atkWave.SetActive(false);
     }
 
     //void BossLeftAtk()
@@ -175,5 +178,10 @@ public class BossControl : MonoBehaviour
         return reBossDo;
     }
 
+//    private void OnDrawGizmos()
+//    {
+//        Gizmos.color = Color.blue;
 
+//        Gizmos.DrawWireSphere(objBoss.transform.position + objBoss.transform.forward * 6.0f, 3.0f);
+//    }
 }

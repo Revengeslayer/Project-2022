@@ -8,7 +8,7 @@ public class PlayerInfo : MonoBehaviour
 {
     private static  GameObject playerHpbar;
     //public Image hpImage;
-    static float playerMaxHp = 300;
+    static float playerMaxHp = 500;
     public static float playerHp;
     float playerDistance;//人物與怪物的距離
     //傳Skill給怪物
@@ -32,7 +32,7 @@ public class PlayerInfo : MonoBehaviour
         skillAttack = 0;
         zAttack = 0;
         playerHpbar.GetComponent<Image>().fillAmount = playerHp / playerMaxHp;
-        playerHp = Mathf.Clamp(playerHp, 0, 300);
+        playerHp = Mathf.Clamp(playerHp, 0, playerMaxHp);
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
             FSM.isDeath = true;
@@ -70,13 +70,17 @@ public class PlayerInfo : MonoBehaviour
     {
         zAttack = 3;
     }
-    private void Skill1Hurt()
+    private void Skill1Hurt1()
     {
         skillAttack = 1;
     }
-    private void Skill2Hurt()
+    private void Skill1Hurt2()
     {
         skillAttack = 2;
+    }
+    private void Skill2Hurt()
+    {
+        skillAttack = 3;
     }
     private void Attack1Move()
     {

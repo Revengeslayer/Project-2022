@@ -256,6 +256,7 @@ public class MonsterDmg : MonoBehaviour
             }
         }
 
+        //人物技能X 傷害第一段
         else if (skillAttack == 1)
         {
             if (cosValue >= 0.85 && monsterDistance <= 2.0f && hpImage.fillAmount > 0)
@@ -274,7 +275,32 @@ public class MonsterDmg : MonoBehaviour
             }
             
         }
+
+        //人物技能X 傷害第二段
         else if (skillAttack == 2)
+        {
+            Vector3 playrerAtkPosition;
+            float dogMonsterkDistance;
+
+            playrerAtkPosition = objPlayer.transform.position + objPlayer.transform.forward * 2.0f;
+            dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
+            if (dogMonsterkDistance <= 1.0f && hpImage.fillAmount > 0)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+                dogAnimator.SetBool("gethit", true);
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                Debug.Log("造成傷害 40");
+                return true;
+                //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
+            }
+            else //if (monsterDistance > 2.3f)
+            {
+                return false;
+            }
+
+        }
+        else if (skillAttack == 3)
         {
             if (monsterDistance <= 2.3f && hpImage.fillAmount > 0)
             {
@@ -361,5 +387,18 @@ public class MonsterDmg : MonoBehaviour
             //}
         }
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    Vector3 playrerAtkPosition;
+    //    float dogMonsterkDistance;
+
+    //    playrerAtkPosition = objPlayer.transform.position + objPlayer.transform.forward * 2.0f;
+    //    dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
+
+    //    Gizmos.color = Color.blue;
+
+    //    Gizmos.DrawWireSphere(playrerAtkPosition, 1.0f);
+    //}
 
 }

@@ -51,6 +51,7 @@ public class FSM : MonoBehaviour
 	/// </summary>
 	//is Move?
 	public bool isMove;
+	public bool canMove;
 	public float moveSpeed;
 	//is Dodge?
 	public bool isDodge;
@@ -273,6 +274,7 @@ public class FSM : MonoBehaviour
 		//不移動且戰鬥回BI
 		if(isMove==false && isBattle == true)
 		{
+			canMove = false;
 			anim.SetBool("isWalkF", false);
 			anim.SetBool("isBattle", true);
 			mCurrentState = FSMState.BattleIdle;
@@ -282,6 +284,7 @@ public class FSM : MonoBehaviour
 		//不移動且非戰鬥回I
 		if (isMove == false && isBattle == false)
 		{
+			canMove = false;
 			anim.SetBool("isWalkF", false);
 			anim.SetBool("isBattle", false);
 			mCurrentState = FSMState.Idle;
@@ -293,6 +296,7 @@ public class FSM : MonoBehaviour
         {
 			anim.SetBool("isAttack", true);
 			isMove = false;
+			canMove = false;
 			anim.SetBool("isWalkF", false);
 			mCurrentState = FSMState.Attack;
 			mCheckState = CheckAttackState;
@@ -303,6 +307,7 @@ public class FSM : MonoBehaviour
 		{
 			anim.SetBool("isDodge", true);
 			isMove = false;
+			canMove = false;
 			anim.SetBool("isWalkF", false);
 			mCurrentState = FSMState.Dodge;
 			mCheckState = CheckDodgeState;
@@ -313,6 +318,7 @@ public class FSM : MonoBehaviour
 		{
 			isMove = false;
 			anim.SetBool("isSkill", true);
+			canMove = false;
 			anim.SetBool("isWalkF", false);
 			mCurrentState = FSMState.Skill;
 			mCheckState = CheckSkillState;
@@ -486,11 +492,11 @@ public class FSM : MonoBehaviour
 		{
 			atkCount = 0;
 			isAttack = false;
-			//判斷有沒有攻擊中按住方向鍵
-			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
-			{
-				isMove = true;
-			}
+			////判斷有沒有攻擊中按住方向鍵
+			//if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+			//{
+			//	isMove = true;
+			//}
 		}
 		//第二下清除
 		if (atkCount == 2
@@ -500,11 +506,11 @@ public class FSM : MonoBehaviour
 			atkCount = 0;
 			anim.SetInteger("combo2", 0);
 			isAttack = false;
-			//判斷有沒有攻擊中按住方向鍵
-			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
-			{
-				isMove = true;
-			}
+			////判斷有沒有攻擊中按住方向鍵
+			//if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+			//{
+			//	isMove = true;
+			//}
 		}
 		//第三下清除
 		if (atkCount == 3
@@ -515,11 +521,11 @@ public class FSM : MonoBehaviour
 			anim.SetInteger("combo3", 0);
 			isAttack = false;
 			anim.SetBool("isAttack", false);
-			//判斷有沒有攻擊中按住方向鍵
-			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
-			{
-				isMove = true;
-			}
+			////判斷有沒有攻擊中按住方向鍵
+			//if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+			//{
+			//	isMove = true;
+			//}
 		}
 		////觸發Skill
 		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
@@ -582,6 +588,7 @@ public class FSM : MonoBehaviour
 	private void DoMoveState()
 	{
 		isGitHit = false;
+		canMove = true;
 		//都不按方向鍵
 		if (!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
 		{
@@ -590,6 +597,7 @@ public class FSM : MonoBehaviour
 		//移動中觸發攻擊
 		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
 		{
+			isMove = true;
 			if (Input.GetKeyDown(KeyCode.Z))
 			{				
 				isAttack = true;
@@ -658,6 +666,7 @@ public class FSM : MonoBehaviour
 	{
 		//偵測狀態
 		Debug.Log("目前狀態          " + mCurrentState);
+		Debug.Log(canMove);
 		//Debug.Log(isGitHit);
 		//判斷哪一個Attack
 		zAttack = 0;
@@ -685,7 +694,7 @@ public class FSM : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (isMove == true)
+		if (canMove == true)
 		{
 			PlayControl.Move(moveSpeed);
 		}

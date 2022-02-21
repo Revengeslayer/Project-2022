@@ -19,6 +19,7 @@ public class PlayerInfo : MonoBehaviour
     bool attack1 = false;
     bool attack2 = false;
     bool attack3 = false;
+    private float at3Time;
     void Start()
     {
         playerHp = playerMaxHp;

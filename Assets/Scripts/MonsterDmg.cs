@@ -205,7 +205,7 @@ public class MonsterDmg : MonoBehaviour
         if (zAttack == 1)
         {
             
-            if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.5 && monsterDistance <= 3.0f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (20.0f/ monsterHp);
                 dogAnimator.SetBool("gethit", true);
@@ -223,7 +223,7 @@ public class MonsterDmg : MonoBehaviour
         
         else if (zAttack == 2)
         {        
-            if (cosValue >= 0.7 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.5 && monsterDistance <= 3.0f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
@@ -241,7 +241,7 @@ public class MonsterDmg : MonoBehaviour
 
         else if (zAttack == 3)
         {
-            if (cosValue >= 0.85 && monsterDistance <= 2.3f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.6 && monsterDistance <= 3.0f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);

@@ -563,7 +563,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             }
         }
 
-        if(DisToTarget < 2.3f)
+        if(DisToTarget < 3.0f)
         {
             zAttack = FSM.zAttack;
             PlayerAttack(zAttack);

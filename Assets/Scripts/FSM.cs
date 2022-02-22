@@ -580,8 +580,26 @@ public class FSM : MonoBehaviour
 		{
 			isDodge = true;
 		}
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+        {
+			CheckForward();
+            isMove = true;
+        }
 
+    }
+    private void CheckForward()
+    {
+		var x = -Input.GetAxis("Vertical");
+		var z = Input.GetAxis("Horizontal");
+
+		var a = -Camera.main.transform.forward * x;
+		a.y = 0;
+		var b = Camera.main.transform.right * z;
+		b.y = 0;
+
+		gameObject.transform.forward = new Vector3(a.x, 0, b.z);
 	}
+
     private void DoSkillState()
 	{
 		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1 &&(anim.GetCurrentAnimatorStateInfo(0).IsName("Skill1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Skill2")))

@@ -53,6 +53,8 @@ public class FSM : MonoBehaviour
 	public bool isMove;
 	public bool canMove;
 	public float moveSpeed;
+	// is AtkToMove
+	public bool isAtkToMove;
 	//is Dodge?
 	public bool isDodge;
 	// is SkillToDodge?
@@ -61,7 +63,8 @@ public class FSM : MonoBehaviour
 	/// 死亡相關
 	/// </summary>
 	public static bool isDeath;
- 
+	//BItoI check
+	private float BItoITime;
 	// Start is called before the first frame update
 	public enum FSMState
 	{
@@ -139,6 +142,7 @@ public class FSM : MonoBehaviour
 		//BIdle->Skill
 		if (isSkill == true)
 		{
+			BItoITime = 0;
 			anim.SetBool("isSkill", true);
 			mCurrentState = FSMState.Skill;
 			mCheckState = CheckSkillState;
@@ -147,6 +151,7 @@ public class FSM : MonoBehaviour
 		//BIdle->Attack
 		if (isAttack == true)
 		{
+			BItoITime = 0;
 			anim.SetBool("isAttack", true);
 			mCurrentState = FSMState.Attack;
 			mCheckState = CheckAttackState;
@@ -155,6 +160,7 @@ public class FSM : MonoBehaviour
 		//BIdle->Move
 		if (isMove == true)
 		{
+			BItoITime = 0;
 			anim.SetBool("isWalkF", true);
 			mCurrentState = FSMState.Move;
 			mCheckState = CheckMoveState;
@@ -163,6 +169,7 @@ public class FSM : MonoBehaviour
 		//BIdle ->GetHit
 		if (isGitHit == true)
 		{
+			BItoITime = 0;
 			anim.Play("GetHit");
 			isGitHit = false;
 			anim.SetBool("isGetHit", true);
@@ -170,25 +177,29 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckGetHitState;
 			mDoState = DoGetHitState;
 		}
-		//Idle ->Dodge
+		//BIdle ->Dodge
 		if (isDodge == true)
 		{
+			BItoITime = 0;
 			anim.SetBool("isDodge", true);
 			mCurrentState = FSMState.Dodge;
 			mCheckState = CheckDodgeState;
 			mDoState = DoDodgeState;
 		}
-	}	
-	private void CheckAttackState()
-    {
-		if (Input.GetKeyDown(KeyCode.Q))
-		{ 
-			anim.SetBool("isAttack", false);
+		//BIt ->I
+		if (CheckBItoI())
+		{
+			BItoITime = 0;
+			anim.SetBool("isBattle", false);
+			isBattle = false;
 			atkCount = 0;
 			mCurrentState = FSMState.Idle;
 			mCheckState = CheckIdleState;
 			mDoState = DoIdleState;
 		}
+	}	
+	private void CheckAttackState()
+    {
 		//不攻擊回歸BI
 		if(isAttack==false && isBattle==true)
         {
@@ -197,15 +208,6 @@ public class FSM : MonoBehaviour
 			mCurrentState = FSMState.BattleIdle;
 			mCheckState = CheckBattleIdleState;
 			mDoState = DoBattleIdleState;
-		}
-		//不攻擊回歸I
-		if (isAttack == false && isBattle == false)
-		{
-			anim.SetBool("isAttack", false);
-			anim.SetBool("isBattle", false);
-			mCurrentState = FSMState.Idle;
-			mCheckState = CheckIdleState;
-			mDoState = DoIdleState;
 		}
 		//攻擊轉移動
 		if (isAttack == false && isMove == true)
@@ -442,22 +444,11 @@ public class FSM : MonoBehaviour
 		}
 	}
 	private void DoBattleIdleState()
-	{
+	{	
 		isBattle = true;
 		isSkillToDodge = false;
 		anim.SetInteger("combo2", 0);
 		anim.SetInteger("combo3", 0);
-		//強切Idle
-		if (Input.GetKeyDown(KeyCode.B))
-		{
-			isBattle = false;
-			anim.SetBool("isBattle", false);
-			isBattle = false;
-			atkCount = 0;
-			mCurrentState = FSMState.Idle;
-			mCheckState = CheckIdleState;
-			mDoState = DoIdleState;
-		}
 		//按下攻擊
 		if (Input.GetKeyDown(KeyCode.Z))
 		{			
@@ -492,6 +483,18 @@ public class FSM : MonoBehaviour
 		if (Input.GetKey(KeyCode.LeftShift))
 		{
 			isDodge = true;
+		}
+	}
+	private bool CheckBItoI()
+	{
+		BItoITime += Time.deltaTime;
+		if (BItoITime > 3)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	private void DoAttackState()
@@ -583,11 +586,14 @@ public class FSM : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
         {
 			CheckForward();
-            isMove = true;
+			if (isAtkToMove)
+			{
+				isMove = true;
+			}
         }
 
     }
-    private void CheckForward()
+	private void CheckForward()
     {
 		var x = -Input.GetAxis("Vertical");
 		var z = Input.GetAxis("Horizontal");
@@ -599,7 +605,6 @@ public class FSM : MonoBehaviour
 
 		gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, new Vector3(a.x, 0, b.z), 0.95f);
 	}
-
     private void DoSkillState()
 	{
 		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1 &&(anim.GetCurrentAnimatorStateInfo(0).IsName("Skill1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Skill2")))
@@ -737,8 +742,8 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		Debug.Log("目前狀態          " + mCurrentState);
-		//Debug.Log(isSkillToDodge);
+		//Debug.Log("目前狀態          " + mCurrentState);
+		Debug.Log(BItoITime);
 		//判斷哪一個Attack
 		zAttack = 0;
 		//如果死亡了
@@ -774,5 +779,9 @@ public class FSM : MonoBehaviour
     {
 		isSkillToDodge = true;
 	}
+	private void AtkToMove()
+    {
+		isAtkToMove = true;
+    }
 }
 

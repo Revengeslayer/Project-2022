@@ -59,14 +59,11 @@ public class PlayerInfo : MonoBehaviour
         }
         if (dodge)
         {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 12;
         }
     }
 
-    private void dash(float speed)
-    {
 
-    }
     # region AnimationEvent
 
     private void Attack1Hurt()
@@ -179,6 +176,7 @@ public class PlayerInfo : MonoBehaviour
     {
         playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 10) / playerMaxHp;
         playerHp = playerHp - 10;
+        FSM.isGitHit = true;
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
             FSM.isDeath = true;

@@ -86,7 +86,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DODGE
-  m_Speed: 2
+  m_Speed: 2.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1031665900962213716}
@@ -691,18 +691,18 @@ AnimatorStateMachine:
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -6169249220850615298}
-    second:
-    - {fileID: -1204905233410575047}
-    - {fileID: 1915773469853059362}
-    - {fileID: -5916915316919754617}
-    - {fileID: 4943835622960718692}
   - first: {fileID: -8855486672741943919}
     second:
     - {fileID: 4936763418059761103}
     - {fileID: -6743408102681242566}
     - {fileID: 8892339146198842009}
     - {fileID: 3271144674165724248}
+  - first: {fileID: -6169249220850615298}
+    second:
+    - {fileID: -1204905233410575047}
+    - {fileID: 1915773469853059362}
+    - {fileID: -5916915316919754617}
+    - {fileID: 4943835622960718692}
   - first: {fileID: -444267857645019648}
     second:
     - {fileID: 2080017638660099157}

@@ -20,6 +20,7 @@ public class PlayerInfo : MonoBehaviour
     bool attack2 = false;
     bool attack3 = false;
     bool dodge = false;
+    bool skill_X = false;
     private float at3Time;
     void Start()
     {
@@ -52,7 +53,11 @@ public class PlayerInfo : MonoBehaviour
         {
             this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime*8;
         }
-        if(dodge)
+        if (skill_X)
+        {
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6;
+        }
+        if (dodge)
         {
             this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
         }
@@ -120,6 +125,18 @@ public class PlayerInfo : MonoBehaviour
         {
             attack3 = false;
         }       
+    }
+
+    private void Skill_X_Move()
+    {
+        if (skill_X == false)
+        {
+            skill_X = true;
+        }
+        else if (skill_X == true)
+        {
+            skill_X = false;
+        }
     }
     private void DodgeMove()
     {

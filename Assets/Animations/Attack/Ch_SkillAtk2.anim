@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SkillAtk2
+  m_Name: Ch_SkillAtk2
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -101360,6 +101360,13 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: Skill2Hurt
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.7
+    functionName: SkillToDodge
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

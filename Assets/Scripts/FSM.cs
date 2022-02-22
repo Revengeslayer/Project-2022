@@ -55,6 +55,8 @@ public class FSM : MonoBehaviour
 	public float moveSpeed;
 	//is Dodge?
 	public bool isDodge;
+	// is SkillToDodge?
+	public bool isSkillToDodge;
 	/// <summary>
 	/// 死亡相關
 	/// </summary>
@@ -214,48 +216,71 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckMoveState;
 			mDoState = DoMoveState;
 		}
-		////攻擊中轉Skill
-		if(isSkill==true)
+		if (isAttack == true)
 		{
-			//isAttack = false;
-			anim.SetBool("isAttack", false);
-			anim.SetBool("isSkill", true);
-			mCurrentState = FSMState.Skill;
-			mCheckState = CheckSkillState;
-			mDoState = DoSkillState;
+			//攻擊中轉Skill
+			if (isSkill == true)
+			{
+				isAttack = false;
+				anim.SetBool("isAttack", false);
+				anim.SetBool("isSkill", true);
+				mCurrentState = FSMState.Skill;
+				mCheckState = CheckSkillState;
+				mDoState = DoSkillState;
+			}
+			//攻擊中轉Dodge
+			if (isDodge == true)
+            {
+				isAttack = false;
+				anim.SetBool("isAttack", false);
+				anim.SetBool("isDodge", true);
+				mCurrentState = FSMState.Dodge;
+				mCheckState = CheckDodgeState;
+				mDoState = DoDodgeState;
+			}
 		}
 	}
 	private void CheckSkillState()
 	{
-		//if (isSkill == false && isAttack == true)
-		//{
-		//	anim.SetBool("isSkill", false);
-		//	anim.SetBool("Skill1", false);
-		//	anim.SetBool("Skill2", false);
-		//	anim.SetBool("isAttack", true);
-		//	mCurrentState = FSMState.Attack;
-		//	mCheckState = CheckAttackState;
-		//	mDoState = DoAttackState;
-		//}
-		if (isSkill == false && isMove == true)
-		{
-			anim.SetBool("isSkill", false);
-			anim.SetBool("Skill1", false);
-			anim.SetBool("Skill2", false);
-			anim.SetBool("isWalkF", true);
-			mCurrentState = FSMState.Move;
-			mCheckState = CheckMoveState;
-			mDoState = DoMoveState;
-		}
+		//Skill中轉翻滾
+		if(isSkill == true)
+        {
+			if(isDodge == true)
+            {
+				isSkillToDodge = false;
+				anim.SetBool("isSkill", false);
+				anim.SetBool("Skill1", false);
+				anim.SetBool("Skill2", false);
+				anim.SetBool("isDodge", true);
+				mCurrentState = FSMState.Dodge;
+				mCheckState = CheckDodgeState;
+				mDoState = DoDodgeState;
+			}
+        }
+		//完整播完技能
 		if (isSkill == false)
 		{
-			anim.SetBool("isSkill", false);
-			anim.SetBool("Skill1", false);
-			anim.SetBool("Skill2", false);
-			anim.SetBool("isBattle", true);
-			mCurrentState = FSMState.BattleIdle;
-			mCheckState = CheckBattleIdleState;
-			mDoState = DoBattleIdleState;
+			//轉到移動
+			if (isMove == true)
+			{
+				anim.SetBool("isSkill", false);
+				anim.SetBool("Skill1", false);
+				anim.SetBool("Skill2", false);
+				anim.SetBool("isWalkF", true);
+				mCurrentState = FSMState.Move;
+				mCheckState = CheckMoveState;
+				mDoState = DoMoveState;
+			}
+			else//回到BI
+			{
+				anim.SetBool("isSkill", false);
+				anim.SetBool("Skill1", false);
+				anim.SetBool("Skill2", false);
+				anim.SetBool("isBattle", true);
+				mCurrentState = FSMState.BattleIdle;
+				mCheckState = CheckBattleIdleState;
+				mDoState = DoBattleIdleState;
+			}
 		}
 	}
 	private void CheckDodgeState()
@@ -267,6 +292,14 @@ public class FSM : MonoBehaviour
 			mCurrentState = FSMState.BattleIdle;
 			mCheckState = CheckBattleIdleState;
 			mDoState = DoBattleIdleState;
+		}
+		if (isDodge == false && isMove == true)
+		{
+			anim.SetBool("isDodge", false);
+			anim.SetBool("isWalkF", true);
+			mCurrentState = FSMState.Move;
+			mCheckState = CheckMoveState;
+			mDoState = DoMoveState;
 		}
 	}
 	private void CheckMoveState()
@@ -411,6 +444,7 @@ public class FSM : MonoBehaviour
 	private void DoBattleIdleState()
 	{
 		isBattle = true;
+		isSkillToDodge = false;
 		anim.SetInteger("combo2", 0);
 		anim.SetInteger("combo3", 0);
 		//強切Idle
@@ -527,22 +561,26 @@ public class FSM : MonoBehaviour
 			//	isMove = true;
 			//}
 		}
-		////觸發Skill
+		//觸發Skill
 		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
 		{
 			isBattle = true;
 			isSkill = true;
 			if (Input.GetKey(KeyCode.X))
 			{
-				isAttack = false;
 				anim.SetBool("Skill1", true);
 			}
 			if (Input.GetKey(KeyCode.C))
 			{
-				isAttack = false;
 				anim.SetBool("Skill2", true);
 			}
 		}
+		//觸發翻滾
+		if (Input.GetKey(KeyCode.LeftShift))
+		{
+			isDodge = true;
+		}
+
 	}
     private void DoSkillState()
 	{
@@ -573,17 +611,33 @@ public class FSM : MonoBehaviour
 			zAttack = 0;
 			atkCount = 0;
 		}
+		//觸發翻滾
+		if (Input.GetKey(KeyCode.LeftShift))
+		{
+			if (isSkillToDodge == true)
+			{
+				isDodge = true;
+			}
+		}
 
 	}
 	private void DoDodgeState()
 	{
 		isBattle = true;
-
-		if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("DODGE"))
+		isAttack = false;
+		isMove = false;
+		isSkill = false;
+		zAttack = 0;
+		atkCount = 0;
+		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("DODGE"))
 		{
 			isDodge = false;
 		}
-		atkCount = 0;
+		//按下方向鍵
+		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+		{
+			isMove = true;
+		}
 	}
 	private void DoMoveState()
 	{
@@ -666,12 +720,11 @@ public class FSM : MonoBehaviour
 	{
 		//偵測狀態
 		Debug.Log("目前狀態          " + mCurrentState);
-		Debug.Log(canMove);
-		//Debug.Log(isGitHit);
+		//Debug.Log(isSkillToDodge);
 		//判斷哪一個Attack
 		zAttack = 0;
 		//如果死亡了
-		if(isDeath)
+		if (isDeath)
         {
 			mCurrentState = FSMState.Die;
 			mCheckState = CheckDieState;
@@ -698,6 +751,10 @@ public class FSM : MonoBehaviour
 		{
 			PlayControl.Move(moveSpeed);
 		}
+	}
+	private void SkillToDodge()
+    {
+		isSkillToDodge = true;
 	}
 }
 

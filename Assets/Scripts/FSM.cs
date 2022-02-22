@@ -597,7 +597,7 @@ public class FSM : MonoBehaviour
 		var b = Camera.main.transform.right * z;
 		b.y = 0;
 
-		gameObject.transform.forward = new Vector3(a.x, 0, b.z);
+		gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, new Vector3(a.x, 0, b.z), 0.95f);
 	}
 
     private void DoSkillState()

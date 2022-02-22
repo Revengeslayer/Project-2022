@@ -51,15 +51,15 @@ public class PlayControl : MonoBehaviour
         b.y = 0;
 
 
-        //player.transform.forward = Vector3.Lerp(player.transform.forward, new Vector3(a.x, 0, b.z), 1f);
-        player.transform.forward = new Vector3(a.x, 0, b.z);
+        player.transform.forward = Vector3.Lerp(player.transform.forward, new Vector3(a.x, 0, b.z), 0.95f);
+        //player.transform.forward = new Vector3(a.x, 0, b.z);
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
             if (Input.GetKey(KeyCode.DownArrow))
             {
-                //player.transform.forward = Vector3.Lerp(player.transform.forward, new Vector3(-a.x, 0, b.z), 1f);
-                player.transform.forward = new Vector3(-a.x, 0, b.z);
+                player.transform.forward = Vector3.Lerp(player.transform.forward, new Vector3(-a.x, 0, b.z), 0.95f);
+                //player.transform.forward = new Vector3(-a.x, 0, b.z);
             }
         }
 
@@ -68,8 +68,8 @@ public class PlayControl : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                //player.transform.forward = Vector3.Lerp(player.transform.forward, new Vector3(a.x, 0, -b.z), 1f);
-                player.transform.forward = new Vector3(a.x, 0, -b.z);
+                player.transform.forward = Vector3.Lerp(player.transform.forward, new Vector3(a.x, 0, -b.z), 0.95f);
+                //player.transform.forward = new Vector3(a.x, 0, -b.z);
             }
         }
         return player.transform.forward;

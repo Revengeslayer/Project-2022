@@ -260,7 +260,7 @@ public class MonsterDmg : MonoBehaviour
         //人物技能X 傷害第一段
         else if (skillAttack == 1)
         {
-            if (cosValue >= 0.85 && monsterDistance <= 2.0f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.8f && monsterDistance <= 2.8f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);
@@ -280,12 +280,15 @@ public class MonsterDmg : MonoBehaviour
         //人物技能X 傷害第二段
         else if (skillAttack == 2)
         {
-            Vector3 playrerAtkPosition;
-            float dogMonsterkDistance;
+            //前方一段距離的圓傷害判定用
+            //Vector3 playrerAtkPosition;
+            //float dogMonsterkDistance;
 
-            playrerAtkPosition = objPlayer.transform.position + objPlayer.transform.forward * 2.0f;
-            dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
-            if (dogMonsterkDistance <= 1.0f && hpImage.fillAmount > 0)
+            //playrerAtkPosition = objPlayer.transform.position + objPlayer.transform.forward * 1.0f;
+            //dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
+            //前方一段距離的圓傷害判定用
+
+            if (cosValue >= 0.7f && monsterDistance <= 3.5f && hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
                 dogAnimator.SetBool("gethit", true);

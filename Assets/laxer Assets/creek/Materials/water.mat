@@ -50,11 +50,11 @@ Material:
     m_Floats:
     - _FadeLength: 0.1
     - _MaxDepth: 10
-    - _MaxWaterSpeed: 3.5714285
+    - _MaxWaterSpeed: 2.5
     - _SandHeight: -1
     - _Shininess: 1
-    - _Transparency: -0.19642858
-    - _WaveSpeed: 2.857143
+    - _Transparency: 0.15
+    - _WaveSpeed: 0.61
     m_Colors:
     - _Color: {r: 0.028301895, g: 0.024697408, b: 0.024697408, a: 1}
     - _ReflectColor: {r: 0.7794118, g: 0.7794118, b: 0.7794118, a: 0.5019608}

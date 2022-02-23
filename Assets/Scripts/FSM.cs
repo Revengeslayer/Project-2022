@@ -733,6 +733,7 @@ public class FSM : MonoBehaviour
 		isGitHit = false;
 		isSkill = false;
 		isDodge = false;
+		canMove = false;
 		anim.Play("Die");
 	}
 	#endregion

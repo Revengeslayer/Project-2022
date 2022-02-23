@@ -49,6 +49,8 @@ public class DogFSM : MonoBehaviour
     private bool is_Running = false;
     //ReturnIdle Waittime
     private float returnIdleWaittime;
+    //
+    private float canAtkTime;
 
 
 
@@ -56,6 +58,7 @@ public class DogFSM : MonoBehaviour
     {
         NONE = -1,
         Idle_Battle,
+        AttackIdle,
         Attack01,
         Attack02,
         Block,
@@ -130,6 +133,7 @@ public class DogFSM : MonoBehaviour
                 anim.SetBool("Idle", true);
                 mCurrentState = DogFSMState.LookPlayer;
             }
+            
         }
         if (mCurrentState == DogFSMState.GetHit)
         {
@@ -168,6 +172,42 @@ public class DogFSM : MonoBehaviour
                 mCurrentState = DogFSMState.Return;
             }
         }
+        if(mCurrentState == DogFSMState.AttackIdle)
+        {
+            var diatanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+            var lookAtForford = (player.transform.position - transform.position).normalized;
+            lookAtForford.y = 0;
+            gameObject.transform.forward = lookAtForford;
+
+            if (diatanceToPlayer <= dogAtkDic && AttackIdleCanAtkTime())
+            {
+                Debug.Log("ATK");
+                //anim.SetBool("Idle", false);
+                //anim.SetBool("Attack", true);
+                //mCurrentState = DogFSMState.Attack01;
+            }
+            //else
+            //{
+            //    anim.SetBool("Idle", false);
+            //    is_Running = true;
+            //    anim.SetBool("Chase", true);
+            //    mCurrentState = DogFSMState.Chase;
+            //}
+        }
+    }
+
+    private bool AttackIdleCanAtkTime()
+    {
+        canAtkTime += Time.deltaTime;
+        if(canAtkTime>1.2f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     private void ReturnIdleCheck()
@@ -250,6 +290,13 @@ public class DogFSM : MonoBehaviour
         var diatanceToPlayer = Vector3.Distance(player.transform.position, gameObject.transform.position);
         var diatanceToInitial = Vector3.Distance(gameObject.transform.position, initDic);
 
+        if(diatanceToPlayer<= dogAtkDic)
+        {
+            is_Running = false;
+            anim.SetBool("Chase", false);
+            anim.SetBool("Idle", true);
+            mCurrentState = DogFSMState.AttackIdle;
+        }
         if (diatanceToInitial > dogBackToInitDic || diatanceToPlayer > dogChaseDic)
         {
             is_Running = false;

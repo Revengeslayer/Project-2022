@@ -171,6 +171,11 @@ public class PlayerInfo : MonoBehaviour
         {
             playerHp = playerHp - 50;
         }
+        //Boss¸õ§ð
+        else if (a == 12)
+        {
+            playerHp = playerHp - 50;
+        }
     }
     public static void CarrotArrowDamage()
     {

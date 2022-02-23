@@ -8,12 +8,17 @@ public class BossControl : MonoBehaviour
     private GameObject objBoss;
 
     public GameObject atkWave;
+    public GameObject jumpWave;
+    public GameObject awakeDust;
+    public GameObject jumpHint;
+
     private float bossHp;
 
     private int bossState;
     private int bossDo;
 
     bool bossRoll = false;
+    bool bossJump = false;
     private void Start()
     {
         objPlayer = GameObject.Find("Character(Clone)");
@@ -38,6 +43,12 @@ public class BossControl : MonoBehaviour
         if(bossRoll == true)
         {
             this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 4;
+        }
+
+        if (bossJump == true)
+        {
+            objBoss.transform.LookAt(objPlayer.transform.position);
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
         }
 
 
@@ -68,6 +79,10 @@ public class BossControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             BossFSM.mCurrentState = BossFSM.BossFSMState.Roll;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            BossFSM.mCurrentState = BossFSM.BossFSMState.JumpAtk;
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -102,6 +117,63 @@ public class BossControl : MonoBehaviour
         atkWave.SetActive(false);
     }
 
+    void BossJumpWaveOpen()
+    {
+        jumpWave.SetActive(true);
+    }
+
+    void BossJumpWaveClose()
+    {
+        jumpWave.SetActive(false);
+    }
+
+    void BossAwakeDustOpen()
+    {
+        awakeDust.SetActive(true);
+    }
+
+    void BossAwakeDustClose()
+    {
+        awakeDust.SetActive(false);
+    }
+
+    void BossJumpHintOpen()
+    {
+        jumpHint.SetActive(true);
+    }
+
+    void BossJumpHintClose()
+    {
+        jumpHint.SetActive(false);
+    }
+    void BossJumpDamage()
+    {
+        Vector3 bossAtkPosition0;
+        float bossAtkDistance0;
+
+        bossAtkPosition0 = objBoss.transform.position;
+        bossAtkDistance0 = Vector3.Distance(bossAtkPosition0, objPlayer.transform.position);
+        if (bossAtkDistance0 < 6.0f)
+        {
+            PlayerInfo.PlayerHpCal(12);
+        }
+        else
+        {
+            Debug.Log("Boss§ðÀ»½d³ò¥~");
+        }
+    }
+
+    void BossJumpMove()
+    {
+        if (bossJump == false)
+        {
+            bossJump = true;
+        }
+        else if (bossJump == true)
+        {
+            bossJump = false;
+        }
+    }
     //void BossLeftAtk()
     //{
     //    Vector3 bossAtkPosition0;
@@ -183,6 +255,6 @@ public class BossControl : MonoBehaviour
     //{
     //    Gizmos.color = Color.blue;
 
-    //    Gizmos.DrawWireSphere(objBoss.transform.position + objBoss.transform.forward * 6.0f, 3.0f);
+    //    Gizmos.DrawWireSphere(objBoss.transform.position, 6.0f);
     //}
 }

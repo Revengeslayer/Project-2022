@@ -34,7 +34,8 @@ public class BossFSM : MonoBehaviour
         Stand,
         Walk,
         Roll,
-        Die
+        Die,
+        JumpAtk
     }
 
     void Start()
@@ -65,6 +66,7 @@ public class BossFSM : MonoBehaviour
         if (mCurrentState == BossFSMState.Stand)
         {
             anim.Play("Idle");
+
         }
         if (mCurrentState == BossFSMState.Walk)
         {
@@ -77,6 +79,10 @@ public class BossFSM : MonoBehaviour
         if (mCurrentState == BossFSMState.Die)
         {
             anim.Play("Die");
+        }
+        if (mCurrentState == BossFSMState.JumpAtk)
+        {
+            anim.Play("JumpAtk");
         }
     }
     void Update()

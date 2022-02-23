@@ -66,6 +66,8 @@ public class FSM : MonoBehaviour
 	public static bool isDeath;
 	//BItoI check
 	private float BItoITime;
+
+	private int DizzyCount;
 	// Start is called before the first frame update
 	public enum FSMState
 	{
@@ -77,7 +79,7 @@ public class FSM : MonoBehaviour
 		Skill,
 		Dodge,
 		GetHit,
-		Die
+		Die,
 	}
 
 	private void Start()
@@ -360,7 +362,19 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckSkillState;
 			mDoState = DoSkillState;
 		}
-		
+		if (isGitHit == true)
+		{
+			isMove = false;
+			canMove = false;
+			anim.SetBool("isWalkF", false);
+			anim.Play("GetHit");
+			isGitHit = false;
+			anim.SetBool("isGetHit", true);
+			mCurrentState = FSMState.GetHit;
+			mCheckState = CheckGetHitState;
+			mDoState = DoGetHitState;
+		}
+
 	}
 	private void CheckGetHitState()
 	{
@@ -372,15 +386,15 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckBattleIdleState;
 			mDoState = DoBattleIdleState;
 		}
-		if(isGitHit==true &&isMove==true)
-        {
-			isGitHit = false;
-			anim.SetBool("isGetHit", false);
-			anim.SetBool("isWalkF", true);
-			mCurrentState = FSMState.Move;
-			mCheckState = CheckMoveState;
-			mDoState = DoMoveState;
-		}
+		//if(isGitHit==true &&isMove==true)
+  //      {
+		//	isGitHit = false;
+		//	anim.SetBool("isGetHit", false);
+		//	anim.SetBool("isWalkF", true);
+		//	mCurrentState = FSMState.Move;
+		//	mCheckState = CheckMoveState;
+		//	mDoState = DoMoveState;
+		//}
 	}
 	private void CheckDieState()
     {
@@ -489,7 +503,7 @@ public class FSM : MonoBehaviour
 	private bool CheckBItoI()
 	{
 		BItoITime += Time.deltaTime;
-		if (BItoITime > 3)
+		if (BItoITime > 6)
 		{
 			return true;
 		}
@@ -669,7 +683,7 @@ public class FSM : MonoBehaviour
 	}
 	private void DoMoveState()
 	{
-		isGitHit = false;
+		//isGitHit = false;
 		canMove = true;
 		//都不按方向鍵
 		if (!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
@@ -717,6 +731,11 @@ public class FSM : MonoBehaviour
 	private void DoGetHitState()
 	{
 		isBattle = true;
+		canMove = false;
+		if(PlayerInfo.DizzyCount>=50)
+		{
+			PlayerInfo.DizzyCount = 0;
+		}
 		
 		if (anim.GetCurrentAnimatorStateInfo(0).IsName("GetHit")
 			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
@@ -724,11 +743,11 @@ public class FSM : MonoBehaviour
 			isGitHit = false;			
 			atkCount = 0;			
 		}
-		////判斷有沒有攻擊中按住方向鍵
-		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
-		{
-			isMove = true;			
-		}
+		//////判斷有沒有攻擊中按住方向鍵
+		//if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
+		//{
+		//	isMove = true;			
+		//}
 	}
 	private void DoDieState()
 	{
@@ -748,8 +767,8 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		//Debug.Log("目前狀態          " + mCurrentState);
-		Debug.Log(BItoITime);
+		Debug.Log("目前狀態          " + mCurrentState);
+
 		//判斷哪一個Attack
 		zAttack = 0;
 		//如果死亡了

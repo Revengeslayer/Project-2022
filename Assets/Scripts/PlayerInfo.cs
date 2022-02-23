@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerInfo : MonoBehaviour
 {
     private static  GameObject playerHpbar;
+    private static GameObject PlayerDizzyBar;
     //public Image hpImage;
     static float playerMaxHp = 500;
     public static float playerHp;
@@ -22,20 +23,30 @@ public class PlayerInfo : MonoBehaviour
     bool dodge = false;
     bool skill_X = false;
     private float at3Time;
+    //·w¯t¦¸¼Æ
+    public static float DizzyCount;
+    static float playerMaxDizzy = 50;
+    //Â½ºuµL¼Ä
+    private static bool dodgeInv;
     void Start()
     {
         playerHp = playerMaxHp;
         playerHpbar = GameObject.Find("PlayerHpBar");
+        PlayerDizzyBar = GameObject.Find("PlayerDizzyBar");
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        DizzyCount = Mathf.Clamp(DizzyCount, 0, playerMaxDizzy);
+        Debug.Log(skillAttack);
         skillAttack = 0;
         zAttack = 0;
         playerHpbar.GetComponent<Image>().fillAmount = playerHp / playerMaxHp;
+        PlayerDizzyBar.GetComponent<Image>().fillAmount = DizzyCount / playerMaxDizzy;
         playerHp = Mathf.Clamp(playerHp, 0, playerMaxHp);
+        
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
             FSM.isDeath = true;
@@ -59,7 +70,7 @@ public class PlayerInfo : MonoBehaviour
         }
         if (dodge)
         {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 12;
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
         }
     }
 
@@ -155,36 +166,61 @@ public class PlayerInfo : MonoBehaviour
     #endregion
     public static void PlayerHpCal(int a)
     {
-        //ªüª¯´¶§ð
-        if (a == 1)
+        if (!dodgeInv)
         {
-            playerHp = playerHp - 10;
-        }
+            //ªüª¯´¶§ð
+            if (a == 1)
+            {
+                playerHp = playerHp - 10;
+            }
 
-        //Boss´¶§ð
-        else if(a == 10)
-        {
-            playerHp = playerHp - 30;
+            //Boss´¶§ð
+            else if (a == 10)
+            {
+                playerHp = playerHp - 30;
+            }
+            //BossÂà°Ê§ð
+            else if (a == 11)
+            {
+                playerHp = playerHp - 50;
+            }
+            //Boss¸õ§ð
+            else if (a == 12)
+            {
+                playerHp = playerHp - 200;
+            }
         }
-        //BossÂà°Ê§ð
-        else if (a == 11)
-        {
-            playerHp = playerHp - 50;
-        }
-        //Boss¸õ§ð
-        else if (a == 12)
-        {
-            playerHp = playerHp - 50;
-        }
+    
     }
+
     public static void CarrotArrowDamage()
     {
-        playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 10) / playerMaxHp;
-        playerHp = playerHp - 10;
-        FSM.isGitHit = true;
-        if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
+        if (!dodgeInv)
         {
-            FSM.isDeath = true;
+            playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 1) / playerMaxHp;
+            playerHp = playerHp - 1;
+            DizzyCount++;
+            if (DizzyCount % 3 == 0 || DizzyCount % 50 == 0)
+            {
+                FSM.isGitHit = true;
+            }
         }
+        if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
+        {          
+            FSM.isDeath = true;            
+        }
+    }
+
+    private void DodgeCheck()
+    {
+        if(dodgeInv ==false)
+        {
+            dodgeInv = true;
+        }
+        else
+        {
+            dodgeInv = false;
+        }
+
     }
 }

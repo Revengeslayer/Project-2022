@@ -12,6 +12,10 @@ public class Trigger : MonoBehaviour
     private float YT;
     private GameObject Viking_Tower;
     private GameObject Tree;
+    private GameObject SpawnA;
+    private GameObject SpawnB;
+    private GameObject SpawnC;
+    private GameObject SpawnD;
     // Start is called before the first frame update
 
 
@@ -23,6 +27,10 @@ public class Trigger : MonoBehaviour
         Boss01_1 = -Camera.main.transform.right;
         Viking_Tower = GameObject.Find("Viking_Tower");
         Tree = GameObject.Find("tree03(4)");
+        SpawnA = GameObject.Find("SpawnA");
+        SpawnB = GameObject.Find("SpawnB");
+        SpawnC = GameObject.Find("SpawnC");
+        SpawnD = GameObject.Find("SpawnD");
     }
     void OnTriggerEnter(Collider other)
     {
@@ -63,7 +71,7 @@ public class Trigger : MonoBehaviour
         //    //FlowPlayer.offect = new Vector3(20f, 8.5f, 0);
         //    //FlowPlayer.CMRotate = CMRotateVillage;
         //    //FlowPlayer.smoothTime = 0.25f;
-            
+
         //    Viking_Tower.SetActive(false);
         //    Tree.SetActive(false);
         //}
@@ -74,8 +82,43 @@ public class Trigger : MonoBehaviour
         }
         else if (colliderTag == "SpawnA")
         {
-            InstantiateManager.Spawn = true;
+            Destroy(other.gameObject);
+            var tagName = other.tag;  //for SpawnArea
+            InstantiateManager.stringTag = tagName;
+            InstantiateManager.Spawn = true;  //for SpawnBool
         }
+        else if (colliderTag == "SpawnB") 
+        {
+            Destroy(other.gameObject);
+            var tagName = other.tag;  //for SpawnArea
+            InstantiateManager.stringTag = tagName;
+            InstantiateManager.Spawn = true;  //for SpawnBool
+        }
+        else if (colliderTag == "SpawnC")
+        {
+            Destroy(other.gameObject);
+            var tagName = other.tag;  //for SpawnArea
+            InstantiateManager.stringTag = tagName;
+            InstantiateManager.Spawn = true;  //for SpawnBool
+        }
+        else if (colliderTag == "SpawnD")
+        {
+            Destroy(other.gameObject);
+            var tagName = other.tag;  //for SpawnArea
+            InstantiateManager.stringTag = tagName;
+            InstantiateManager.Spawn = true;  //for SpawnBool
+        }
+        else if (colliderTag == "SpawnE") 
+        {
+            Destroy(other.gameObject);
+            var tagName = other.tag;  //for SpawnArea
+            InstantiateManager.stringTag = tagName;
+            InstantiateManager.Spawn = true;  //for SpawnBool
+        }
+        //else if (colliderTag == "SpawnC")
+        //{
+        //    InstantiateManager.SpawnC = true;
+        //}
         //09-新增 如果踩到就把拍巫師的攝影機打開
     }
     private void OnTriggerStay(Collider other)

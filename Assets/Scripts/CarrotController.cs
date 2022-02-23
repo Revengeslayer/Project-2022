@@ -30,7 +30,7 @@ public class CarrotController : MonoBehaviour
             PlayerInfo.CarrotArrowDamage();
             Destroy(gameObject);
         }
-        else if (Dist < 0.8 && HitCheckDot < 0)
+        else if (Dist < 0.7 && HitCheckDot < 0)
         {
             PlayerInfo.CarrotArrowDamage();
             Destroy(gameObject);
@@ -58,6 +58,6 @@ public class CarrotController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(this.transform.position, 0.3f);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(this.transform.position, 0.8f);
+        Gizmos.DrawWireSphere(this.transform.position, 0.7f);
     }
 }

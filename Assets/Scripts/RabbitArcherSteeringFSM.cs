@@ -265,7 +265,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
         //DamageTimer += Time.time;
 
-        if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("Damage") && rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
+        if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("Damage") && rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
         {
             rabaAnim.SetBool("isDamage", false);
             mCurrentState = FSMState.BattleIdle;
@@ -321,6 +321,8 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             CheckESC();
             gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, -Vec, 0.95f);
             gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 3;
+            BattleActionTimer = 0;
+            NextActionInBattle = false;
             //Debug.Log("ESC");
         }
         else if (toCHASE)
@@ -366,7 +368,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void DoDamageState()
     {
-
+        toMOVE = false;
     }
     private void DoDieState()
     {
@@ -383,10 +385,32 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
         Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
         gameObject.SetActive(false);
+        hpImage.fillAmount = 1;
+        mCurrentState = FSMState.Spawn;
+        mCheckState = CheckSpawnState;
+        mDoState = DoSpawnState;
+        Alife = true;
+        getHurt = false;
+
+        Target = GameObject.Find("Character(Clone)");
+
+        //Timer
+        BattleActionTimer = 0;
+        IdleTimer = 0;
+        EscTimer = 0;
+        EscCD = Time.time;
+        DamageTimer = 0;
+        PATimer = 0;
+
+        //Dist
+        DisForCHASE = 15;
+        DisForSIGHT = 11;
+        DisForATTACK = 6;
+        DisForESCAPE = 3;
+        yield break;
     }
     private void DoSpawnState()
     {
-        hpImage.fillAmount = 1;
         rabaRig.AddForce(new Vector3(0, 600, 0));
     }
     #endregion
@@ -425,11 +449,12 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         //    EscTimer = 0;
         //    doESC = false;
         //}
-        else if (!toCHASE)
+        else if (doESC && EscTimer > 1.5)
         {
             toESC = false;
             doESC = false;
             toMOVE = false;
+            EscTimer = 0;
         }
     }
     private void CheckTargetDist()
@@ -489,10 +514,9 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
         if (Dist < DisForESCAPE && Time.time > EscCD)
         {
-            EscCD = Time.time + 5;
+            EscCD = Time.time + 7;
             toMOVE = true;
             toESC = true;
-            EscTimer = 0;
         }
 
         else if (Dist > DisForATTACK && Dist < DisForCHASE)
@@ -644,8 +668,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log("目前狀態          " + mCurrentState);
-        Debug.Log(zAttack);
+        Debug.Log("目前狀態          " + mCurrentState);
         playerHp = PlayerInfo.playerHp;
         if (playerHp <= 0)
         {
@@ -686,12 +709,11 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             }
         }
 
-        if (DisToTarget < 3.0f)
+        if (DisToTarget < 2.3f)
         {
-            //zAttack = FSM.zAttack;
             PlayerAttack(zAttack, skillAttack);
         }
-
+        Debug.Log(getHurt + "HURT");
     }
     private void FixedUpdate()
     {

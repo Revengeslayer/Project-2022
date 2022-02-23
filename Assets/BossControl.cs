@@ -48,7 +48,7 @@ public class BossControl : MonoBehaviour
         if (bossJump == true)
         {
             objBoss.transform.LookAt(objPlayer.transform.position);
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 12;
         }
 
 

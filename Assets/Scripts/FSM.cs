@@ -125,7 +125,6 @@ public class FSM : MonoBehaviour
 		if (isGitHit == true)
 		{
 			anim.Play("GetHit");
-			isGitHit = false;
 			anim.SetBool("isGetHit", true);
 			mCurrentState = FSMState.GetHit;
 			mCheckState = CheckGetHitState;
@@ -174,7 +173,6 @@ public class FSM : MonoBehaviour
 		{
 			BItoITime = 0;
 			anim.Play("GetHit");
-			isGitHit = false;
 			anim.SetBool("isGetHit", true);
 			mCurrentState = FSMState.GetHit;
 			mCheckState = CheckGetHitState;
@@ -306,6 +304,18 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckMoveState;
 			mDoState = DoMoveState;
 		}
+		//if(isGitHit == true)
+		//{
+		//	isMove = false;
+		//	canMove = false;
+		//	anim.SetBool("isWalkF", false);
+		//	anim.Play("GetHit");
+		//	isGitHit = false;
+		//	anim.SetBool("isGetHit", true);
+		//	mCurrentState = FSMState.GetHit;
+		//	mCheckState = CheckGetHitState;
+		//	mDoState = DoGetHitState;
+		//}
 	}
 	private void CheckMoveState()
 	{
@@ -374,7 +384,6 @@ public class FSM : MonoBehaviour
 			mCheckState = CheckGetHitState;
 			mDoState = DoGetHitState;
 		}
-
 	}
 	private void CheckGetHitState()
 	{
@@ -387,7 +396,7 @@ public class FSM : MonoBehaviour
 			mDoState = DoBattleIdleState;
 		}
 		//if(isGitHit==true &&isMove==true)
-  //      {
+		//{
 		//	isGitHit = false;
 		//	anim.SetBool("isGetHit", false);
 		//	anim.SetBool("isWalkF", true);
@@ -736,10 +745,11 @@ public class FSM : MonoBehaviour
 		{
 			PlayerInfo.DizzyCount = 0;
 		}
-		
+		Debug.Log("GetHit  "+ isGitHit);
 		if (anim.GetCurrentAnimatorStateInfo(0).IsName("GetHit")
 			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
 		{
+			Debug.Log("ถ]งน");
 			isGitHit = false;			
 			atkCount = 0;			
 		}

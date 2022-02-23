@@ -40,7 +40,7 @@ public class PlayerInfo : MonoBehaviour
     void Update()
     {
         DizzyCount = Mathf.Clamp(DizzyCount, 0, playerMaxDizzy);
-        Debug.Log(skillAttack);
+        //Debug.Log(skillAttack);
         skillAttack = 0;
         zAttack = 0;
         playerHpbar.GetComponent<Image>().fillAmount = playerHp / playerMaxHp;
@@ -166,28 +166,37 @@ public class PlayerInfo : MonoBehaviour
     #endregion
     public static void PlayerHpCal(int a)
     {
+        
         if (!dodgeInv)
         {
             //ªüª¯´¶§ð
             if (a == 1)
             {
                 playerHp = playerHp - 10;
+                DizzyCount++;
+                FSM.isGitHit = true;
             }
 
             //Boss´¶§ð
             else if (a == 10)
             {
                 playerHp = playerHp - 30;
+                DizzyCount++;
+                FSM.isGitHit = true;
             }
             //BossÂà°Ê§ð
             else if (a == 11)
             {
                 playerHp = playerHp - 50;
+                DizzyCount+=2;
+                FSM.isGitHit = true;
             }
             //Boss¸õ§ð
             else if (a == 12)
             {
                 playerHp = playerHp - 200;
+                DizzyCount+=20;
+                FSM.isGitHit = true;
             }
         }
     

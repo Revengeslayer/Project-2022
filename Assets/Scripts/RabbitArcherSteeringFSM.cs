@@ -20,8 +20,8 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     public GameObject Target;
 
     //Add
-    private int zAttack;
-    private int skillAttack;
+    public static float zAttack;
+    public static float skillAttack;
     private float playerHp;
     float monsterHp;
     public GameObject dropItem;
@@ -539,34 +539,95 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         CarrotContainer.Add(ca);
     }
 
-    private void PlayerAttack(int zAttack , int skillAttack)
+    private void PlayerAttack(float zAttack, float skillAttack)
     {
+        Debug.Log(skillAttack);
         var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward * 2);
         var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward * 2).magnitude;
         var cosValue = a / b;
 
-        if (zAttack == 0)
-        {
-            return;
-        }
-        else if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0)
+
+        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
             //dogAnimator.SetBool("gethit", true);
-            Debug.Log("造成傷害 40");
-
+            zAttack = 0;
             getHurt = true;
+            Debug.Log("z1");
         }
         else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
             getHurt = true;
+            zAttack = 0;
+            Debug.Log("z2");
         }
-        else if (zAttack == 3 && hpImage.fillAmount > 0)
+        else if (cosValue >= 0.85 && zAttack == 3 && hpImage.fillAmount > 0)
         {
             hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
             getHurt = true;
+            zAttack = 0;
+            Debug.Log("z3");
         }
+
+        //人物技能X 傷害第一段
+        if (skillAttack == 1)
+        {
+            Debug.Log("6666666666666666666666666666");
+            if (cosValue >= 0.8f && hpImage.fillAmount > 0)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
+                getHurt = true;
+                skillAttack = 0;
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                Debug.Log("s1");
+                Debug.Log("造成傷害 40");
+
+                //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
+            }
+        }
+
+        //人物技能X 傷害第二段
+        else if (skillAttack == 2)
+        {
+            Debug.Log("777777777777777777777");
+            //前方一段距離的圓傷害判定用
+            //Vector3 playrerAtkPosition;
+            //float dogMonsterkDistance;
+
+            //playrerAtkPosition = objPlayer.transform.position + objPlayer.transform.forward * 1.0f;
+            //dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
+            //前方一段距離的圓傷害判定用
+
+            if (cosValue >= 0.7f && hpImage.fillAmount > 0)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+                getHurt = true;
+                skillAttack = 0;
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                Debug.Log("s2");
+                Debug.Log("造成傷害 40");
+                //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
+            }
+        }
+        else if (skillAttack == 3)
+        {
+            Debug.Log("888888888888888888");
+            if (hpImage.fillAmount > 0)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
+                getHurt = true;
+                skillAttack = 0;
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                Debug.Log("s3");
+                Debug.Log("造成傷害 20");
+
+            }
+        }
+
     }
     private void OnDrawGizmos()
     {
@@ -623,13 +684,13 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             }
         }
 
-        if (DisToTarget < 2.3f)
+        if (DisToTarget < 3.0f)
         {
-            zAttack = FSM.zAttack;
-            skillAttack = PlayerInfo.skillAttack;
+            //zAttack = FSM.zAttack;
             PlayerAttack(zAttack, skillAttack);
         }
-        Debug.Log("zattack :" + zAttack);
+        //zAttack = 0;
+        //skillAttack = 0;
     }
     private void FixedUpdate()
     {

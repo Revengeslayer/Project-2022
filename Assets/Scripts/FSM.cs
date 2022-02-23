@@ -53,6 +53,7 @@ public class FSM : MonoBehaviour
 	public bool isMove;
 	public bool canMove;
 	public float moveSpeed;
+	public bool ChangeForword =false;
 	// is AtkToMove
 	public bool isAtkToMove;
 	//is Dodge?
@@ -629,6 +630,10 @@ public class FSM : MonoBehaviour
 		//«ö¤U¤è¦VÁä
 		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
 		{
+			if (ChangeForword)
+			{
+				CheckForward();
+			}
 			isMove = true;
 			isAttack = false;
 			zAttack = 0;
@@ -784,5 +789,17 @@ public class FSM : MonoBehaviour
     {
 		isAtkToMove = true;
     }
+
+	void PlayerSkillChangeForword()
+	{
+		if (ChangeForword == false)
+		{
+			ChangeForword = true;
+		}
+		else if (ChangeForword == true)
+		{
+			ChangeForword = false;
+		}
+	}
 }
 

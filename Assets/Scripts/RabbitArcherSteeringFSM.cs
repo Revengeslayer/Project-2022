@@ -20,7 +20,9 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     public GameObject Target;
 
     //Add
-    private float zAttack;
+    private int zAttack;
+    private int skillAttack;
+    private float playerHp;
     float monsterHp;
     public GameObject dropItem;
 
@@ -48,12 +50,16 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     private float AttackTimer;
     private float IdleTimer;
     private float EscTimer;
+    private float EscCD;
     private float DamageTimer;
+    private float PATimer;
     //Bool
     private bool NextActionInBattle;
     private bool NextAttack;
     private bool TargetInSight;
     private bool Shooted;
+    private bool PAshooted;
+    private bool canPA;
     private bool getHurt;
     private bool Alife;
     public static bool CarrotVisible;
@@ -107,8 +113,10 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         //Timer
         BattleActionTimer = 0;
         IdleTimer = 0;
-        EscTimer = 2;
+        EscTimer = 0;
+        EscCD = Time.time;
         DamageTimer = 0;
+        PATimer = 0;
 
         //Dist
         DisForCHASE = 15;
@@ -122,7 +130,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     {
         CheckTargetDist();  //set bool by distance
 
-        if(TargetInSight)  //CheckTargetInSight bool
+        if (TargetInSight)  //CheckTargetInSight bool
         {
             rabaAnim.SetBool("isIDLE", false);
 
@@ -133,16 +141,24 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void CheckBattleIdleState()
     {
-
         CheckBattleAction();   //set bool by timer to control Action CD
         CheckNextAttackAction();   //NextAttack CD
-        CheckTargetDist();  
+        CheckTargetDist();
         CheckIDLE();   //to check if over N seconds noAction in BattleIdle
         CheckMOVE();
         CheckATTACK();  //bool canAttack from CheckDist > get bool toATTACK
+        CheckPowerATTACK();
         CheckESC();
 
+        //if(canPA && NextAttack && TargetInSight)  //bool by Timer & Timer & Dist
+        //{
+        //    rabaAnim.SetBool("isPA", true);
 
+        //    mCurrentState = FSMState.PowerAttack;
+        //    mCheckState = CheckPowerAttackState;
+        //    mDoState = DoPowerAttackState;
+        //    BattleActionTimer = 0;
+        //}
         if (NextAttack && toATTACK && !doESC) //Timer & Disance Bool  if Dis < ESC then (!toATTACK)
         {
             rabaAnim.SetBool("isATTACK", true);
@@ -152,7 +168,8 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             mDoState = DoAttackState;
             BattleActionTimer = 0;
         }
-        if (toESC && NextActionInBattle && doESC) 
+
+        if (NextActionInBattle && doESC)
         {
             rabaAnim.SetBool("isMOVE", true);
 
@@ -161,8 +178,8 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             mDoState = DoMoveState;
         }
 
-         
-        else if(toIDLE) //CheckIDLE bool
+
+        else if (toIDLE) //CheckIDLE bool
         {
             rabaAnim.SetBool("isIDLE", true);
             int IDLEnum = Random.Range(2, 4);
@@ -181,7 +198,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             mCurrentState = FSMState.Move;
             mCheckState = CheckMoveState;
             mDoState = DoMoveState;
-        }        
+        }
     }
     private void CheckWanderState()
     {
@@ -192,9 +209,10 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         CheckNextAttackAction(); //ATTACKTimer
         CheckTargetDist();
         CheckMOVE(); //DistanceOnly
-
+        Debug.Log("check");
         if (!toMOVE)
         {
+            Debug.Log("check out");
             rabaAnim.SetBool("isMOVE", false);
 
             mCurrentState = FSMState.BattleIdle;
@@ -216,11 +234,22 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             mCheckState = CheckBattleIdleState;
             mDoState = DoBattleIdleState;
         }
-        
+
     }
     private void CheckPowerAttackState()
     {
+        //CheckTargetDist(); // canATTACK BOOL
+        //CheckATTACK();  //toATTACK BOOL
+        //CheckNextAttackAction(); //NextAttack CD
 
+        if (!canPA) //bool by Timer
+        {
+            rabaAnim.SetBool("isPA", false);
+
+            mCurrentState = FSMState.BattleIdle;
+            mCheckState = CheckBattleIdleState;
+            mDoState = DoBattleIdleState;
+        }
     }
     private void CheckKnockBackState()
     {
@@ -268,7 +297,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     #region DoState
     private void DoIdleState()
     {
-        
+
     }
     private void DoBattleIdleState()
     {
@@ -285,22 +314,22 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     private void DoMoveState()
     {
         var Vec = Target.transform.position - gameObject.transform.position;
-        
-        if(toESC)  //fix : esc for N sceonds && use updated forward && normalized speed
+        Debug.Log("do");
+        if (doESC)  //fix : esc for N sceonds && use updated forward && normalized speed
         {
+            Debug.Log("esc");
             CheckESC();
             gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, -Vec, 0.95f);
-            gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 3 ;
-            toESC = false;
-            toMOVE = false;
+            gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 3;
             //Debug.Log("ESC");
         }
-        if(toCHASE)
+        else if (toCHASE)
         {
+            Debug.Log("chase");
             gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, Vec, 0.2f);
-            gameObject.transform.position += gameObject.transform.forward * Time.deltaTime  * 2;
+            gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 2;
             toCHASE = false;
-            toMOVE =false;
+            toMOVE = false;
             //Debug.Log("CHASE");
         }
     }
@@ -321,7 +350,11 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void DoPowerAttackState()
     {
-
+        PAshooted = true;
+        canPA = false;
+        NextAttack = false;
+        PATimer = 0;
+        AttackTimer = 0;
     }
     private void DoKnockBackState()
     {
@@ -333,7 +366,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void DoDamageState()
     {
-        
+
     }
     private void DoDieState()
     {
@@ -360,10 +393,10 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     private void CheckNextAttackAction()
     {
         AttackTimer += Time.deltaTime;
-        if(AttackTimer > 1.95)
+        if (AttackTimer > 1.95)
         {
             NextAttack = true;
-        }      
+        }
     }
     private void CheckBattleAction()
     {
@@ -377,18 +410,25 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         {
             NextActionInBattle = false;
         }
-    }    
+    }
+
     private void CheckESC()
     {
-        EscTimer += Time.deltaTime;
-        if(toESC && EscTimer < 3)
+        if (toESC && EscTimer < 1.5)
         {
+            EscTimer += Time.deltaTime;
             doESC = true;
         }
-        else
+        //else if (!toESC && !doESC)
+        //{
+        //    EscTimer = 0;
+        //    doESC = false;
+        //}
+        else if (!toCHASE)
         {
-            EscTimer = 0;
+            toESC = false;
             doESC = false;
+            toMOVE = false;
         }
     }
     private void CheckTargetDist()
@@ -398,25 +438,25 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         var Dist = (Target.transform.position - gameObject.transform.position).magnitude;
         //Debug.Log("距離:"+Dist);
 
-        if(Dist < DisForESCAPE)
+        if (Dist < DisForESCAPE)
         {
             TargetInSight = true;
             rabaAnim.SetBool("inSIGHT", true);
             canATTACK = true;
         }
-        else if(Dist <  DisForATTACK)
+        else if (Dist < DisForATTACK)
         {
             TargetInSight = true;
             rabaAnim.SetBool("inSIGHT", true);
             canATTACK = true;
         }
-        else if(Dist < DisForSIGHT)
+        else if (Dist < DisForSIGHT)
         {
             TargetInSight = true;
             rabaAnim.SetBool("inSIGHT", true);
             canATTACK = false;
         }
-        else if(Dist < DisForCHASE)
+        else if (Dist < DisForCHASE)
         {
             TargetInSight = false;
             rabaAnim.SetBool("inSIGHT", false);
@@ -431,7 +471,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void CheckIDLE()
     {
-        if(!rabaAnim.GetBool("inSIGHT"))
+        if (!rabaAnim.GetBool("inSIGHT"))
         {
             IdleTimer += Time.deltaTime;
             if (IdleTimer > 4)
@@ -446,13 +486,15 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     {
         var Dist = (Target.transform.position - gameObject.transform.position).magnitude;
 
-        if (Dist < DisForESCAPE )
+        if (Dist < DisForESCAPE && Time.time > EscCD)
         {
+            EscCD = Time.time + 5;
             toMOVE = true;
             toESC = true;
+            EscTimer = 0;
         }
 
-        else if (Dist > DisForATTACK && Dist < DisForCHASE) 
+        else if (Dist > DisForATTACK && Dist < DisForCHASE)
         {
             toMOVE = true;
             toCHASE = true;
@@ -464,15 +506,23 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
         //else if(wander)
     }
-    private void CheckATTACK() 
+    private void CheckATTACK()
     {
-        if(!canATTACK) //By Distance
+        if (!canATTACK) //By Distance
         {
             toATTACK = false;
         }
-        else if(canATTACK) //By Distance
+        else if (canATTACK) //By Distance
         {
             toATTACK = true;
+        }
+    }
+    private void CheckPowerATTACK()
+    {
+        PATimer += Time.deltaTime;
+        if (PATimer > 5)
+        {
+            canPA = true;
         }
     }
 
@@ -488,9 +538,9 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         ca.Carrot = carrotIns;
         CarrotContainer.Add(ca);
     }
-    
-    private void PlayerAttack(float zAttack)
-    {        
+
+    private void PlayerAttack(int zAttack , int skillAttack)
+    {
         var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward * 2);
         var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward * 2).magnitude;
         var cosValue = a / b;
@@ -499,20 +549,20 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         {
             return;
         }
-        else if(zAttack == 1 && cosValue >= 0.7  && hpImage.fillAmount > 0 )
+        else if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
             //dogAnimator.SetBool("gethit", true);
             Debug.Log("造成傷害 40");
-            
+
             getHurt = true;
         }
-        else if(zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0 )
+        else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
             getHurt = true;
         }
-        else if(cosValue >= 0.85 &&zAttack == 3 && hpImage.fillAmount > 0 )
+        else if (zAttack == 3 && hpImage.fillAmount > 0)
         {
             hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
             getHurt = true;
@@ -532,7 +582,17 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log("目前狀態          " + mCurrentState);
+        Debug.Log("目前狀態          " + mCurrentState);
+        playerHp = PlayerInfo.playerHp;
+        if (playerHp <= 0)
+        {
+            //Target = ReSetTarget;
+            DisForESCAPE = 0;
+            DisForATTACK = 0;
+            DisForSIGHT = 0;
+            DisForCHASE = 0;
+            TargetInSight = false;
+        }
         if (hpImage.fillAmount <= 0 && Alife == true)
         {
             Debug.Log("inDie");
@@ -546,28 +606,30 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         mCheckState();
         //狀態做甚麼
         mDoState();
-        
+
 
         DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
         monsterHpbar.transform.forward = -Camera.main.transform.forward;
 
         if (Shooted == true)
         {
-            if(rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK") && rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.3)
+            if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK") && rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.3)
             {
                 var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position);
-                var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward*0.5F);
+                var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward * 0.5F);
 
                 CarrotController.InsCarrot(SpawnPos, CarrotVec);
                 Shooted = false;
             }
         }
 
-        if(DisToTarget < 3.0f)
+        if (DisToTarget < 2.3f)
         {
             zAttack = FSM.zAttack;
-            PlayerAttack(zAttack);
-        }        
+            skillAttack = PlayerInfo.skillAttack;
+            PlayerAttack(zAttack, skillAttack);
+        }
+        Debug.Log("zattack :" + zAttack);
     }
     private void FixedUpdate()
     {

@@ -4,20 +4,45 @@ using UnityEngine;
 
 public class InstantiateManager : MonoBehaviour
 {
-    public Object Target;
-    public Object prefab;
-    public int Nums;
-    private List<SpawnData> SpawnPosList;
+    private Object Target;
+    public Object RA01;
+    public int RANums1;
+    private List<InstantiateData> RAInsGoDataContainer1;
+    public Object RA02;
+    public int RANums2;
+    private List<InstantiateData> RAInsGoDataContainer2;
+    public Object RA03;
+    public int RANums3;
+    private List<InstantiateData> RAInsGoDataContainer3;
+    public Object RA04;
+    public int RANums4;
+    private List<InstantiateData> RAInsGoDataContainer4;
+    public Object RW01;
+    public int RWNums1;
+    private List<InstantiateData> RWInsGoDataContainer1;
+    public Object RW02;
+    public int RWNums2;
+    private List<InstantiateData> RWInsGoDataContainer2;
+    public Object RW03;
+    public int RWNums3;
+    private List<InstantiateData> RWInsGoDataContainer3;
+    public Object RW04;
+    public int RWNums4;
+    private List<InstantiateData> RWInsGoDataContainer4;
+    public static string stringTag;
     private List<SpawnData> SpawnedList;
     private GameObject[] SpawnPosContainer;
     private Vector3 rabaSpawn;
     public static bool Spawn;
+    public static float GetSpawnNums;
 
     #region ForINS
     public class InstantiateData
     {
         public GameObject insGo;
         public bool setOn;
+        public int goNums;
+        public string goType;
     }
     private static InstantiateManager mInstance;
 
@@ -37,20 +62,24 @@ public class InstantiateManager : MonoBehaviour
     /// Add InstantiateData(class) into Container List
     /// </summary>
     /// <param name="prefab"></param>
-    /// <param name="iCount"></param>
+    /// <param name="Nums"></param>
     /// 生成prefab後開一個class來存 , 再把class加進List容器
-    public void InitGoData(Object prefab, int iCount)
+    public List<InstantiateData> InitGoData(Object prefab, int Nums)
     {
-        InsGoDataContainer = new List<InstantiateData>();
-        for (int i = 0; i < iCount; i++)
+        List<InstantiateData>  GoDataContainer = new List<InstantiateData>();
+        string prefabName = prefab.name;
+        for (int i = 0; i < Nums; i++)
         {
             GameObject go = GameObject.Instantiate(prefab) as GameObject;
             go.SetActive(false);
             InstantiateData insData = new InstantiateData();
             insData.setOn = false;
             insData.insGo = go;
-            InsGoDataContainer.Add(insData);
+            insData.goNums = i;
+            insData.goType = prefabName;
+            GoDataContainer.Add(insData);
         }
+        return GoDataContainer;
     }
     /// <summary>
     /// Check ContainerLength and do forloop
@@ -110,71 +139,232 @@ public class InstantiateManager : MonoBehaviour
     public class SpawnData
     {
         public GameObject Pos = null;
-        public bool Spwaned;
+        public bool Spawned;
+        public string Area;
     }
-    private void SpawnPosInitializer()
+    private List<SpawnData> SpawnPosInitializer(string SpawnPosTag)
     {
-        SpawnPosContainer = GameObject.FindGameObjectsWithTag("rabaSpawn");
-        foreach(GameObject SpawnPos in SpawnPosContainer)
+        var SpawnPosContainer = GameObject.FindGameObjectsWithTag(SpawnPosTag);
+        List<SpawnData> SpawnPosList = new List<SpawnData>();
+        foreach (GameObject SpawnPos in SpawnPosContainer)
         {
-            //for(int i = 0; i < SpawnPosContainer.Length; i ++)
             {
                 SpawnData SD = new SpawnData();
                 SD.Pos = SpawnPos;
+                SD.Area = SpawnPosTag;
+                SD.Spawned = false;
                 SpawnPosList.Add(SD);
-                //Debug.Log(SpawnPosList.Count+"count");
             }
         }
+        //Debug.Log(SpawnPosList.Count);
+        return SpawnPosList;
     }
-    private Vector3 SetSpawnPos()
+    //IEnumerator SpawnTimer(InstantiateData ID)
+    //{
+    //    int b = Random.Range(2, 10);
+    //    float a = 1 / b;
+    //    yield return new WaitForSeconds(a);
+    //    ID.insGo.SetActive(true);
+    //    yield break;
+    //}
+    private void SetSpawnPos(List<InstantiateData> InsGoDataContainer, List<SpawnData> SpawnPosList , int SpawnNums)
     {
-        //SpawnData SD = new SpawnData();
-        GameObject a;
-        //for (int i = 0; i < SpawnPosList.Count; i ++)
-        foreach(SpawnData SD in SpawnPosList)
+        InstantiateData ID;
+        SpawnData SD;
+        for (int i = 0; i < SpawnNums; i ++)
         {
-            //SD = SpawnPosList[i];
-            if(!SD.Spwaned)
-            {
-                a = SD.Pos;
-                rabaSpawn = a.transform.position;
-                SD.Spwaned = true;
-                SpawnedList.Add(SD);
-                SD.Pos.SetActive(false);
-                //SpawnPosList.RemoveAt(i);
-                break;
-            }
+            int ranPos = Random.Range(0, SpawnPosList.Count);
+            ID = InsGoDataContainer[i];
+            SD = SpawnPosList[ranPos];
+            ID.setOn = true;
+            ID.insGo.transform.position = SD.Pos.transform.position;
+            SpawnPosList.RemoveAt(ranPos);
+            ID.insGo.SetActive(true);
+            Debug.Log(SpawnPosList.Count);
         }
-        return rabaSpawn;
+        //InsGoDataContainer = new List<InstantiateData>();
+        //SpawnPosList = new List<SpawnData>();
+        //if(InsGoDataContainer.Count > SpawnNums)
+        //{
+
+            //}
+            //var ContainerCount = InsGoDataContainer.Count;
+            //var SpawnPosCount = SpawnPosList.Count;
+
+            //if (ContainerCount > SpawnPosCount)
+            //{
+            //    ContainerCount = SpawnPosCount;
+            //}
+            //for (int i = 0; i < SpawnNums; i ++)
+            //{
+            //    int targetNum = Random.Range(0, InsGoDataContainer.Count);
+            //    var ID = InsGoDataContainer[targetNum];
+            //    if(!ID.setOn)
+            //    {
+            //        for(int x = 0; x < SpawnPosList.Count; x ++)
+            //        //foreach (SpawnData SD in SpawnPosList)
+            //        {
+            //            int spNum = Random.Range(0, SpawnPosList.Count);
+            //            SpawnData SD = SpawnPosList[spNum];
+            //            if (!SD.Spawned)
+            //            {
+            //                ID.insGo.transform.position = SD.Pos.transform.position;
+            //                ID.insGo.SetActive(true);
+            //                ID.setOn = true;
+            //                SD.Spawned = true;
+            //                break;
+            //            }
+            //            else if(SD.Spawned)
+            //            {
+            //                x--;
+            //            }
+            //            else
+            //            {
+            //                break;                    
+            //            }
+            //        }
+            //    }
+            //    else if(ID.setOn)
+            //    {
+            //        i--;
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+            //    //foreach (SpawnData SD in SpawnPosList)
+            //    //{
+            //    //    if (!SD.Spawned)
+            //    //    {
+
+            //    //    }
+            //    //    else
+            //    //    {
+            //    //        Debug.Log("SpawnedError");
+            //    //    }
+            //    //}
+            //    //Debug.Log("indexInFor");
+            //    //Debug.Log(InsGoDataContainer.Count);
+            //    //var ID = InsGoDataContainer[i];
+            //    //var SL = SpawnPosList[i];
+            //    //if(!SL.Spawned)
+            //    //{
+            //    //    ID.insGo.transform.position = SL.Pos.transform.position;
+            //    //    ID.insGo.SetActive(true);
+            //    //    ID.setOn = true;
+            //    //    SL.Spawned = true;
+            //    //}
+            //    //else
+            //    //{
+            //    //    Debug.Log("SpawnedError");
+            //    //}
+            //}
+            //for (int i = 0; i < SpawnPosList.Count; i ++)
+            //foreach (SpawnData SD in SpawnPosList)
+            //{
+            //    SD = SpawnPosList[i];
+            //    if (!SD.Spwaned)
+            //    {
+            //        a = SD.Pos;
+            //        rabaSpawn = a.transform.position;
+            //        SD.Spwaned = true;
+            //        SpawnedList.Add(SD);
+            //        SD.Pos.SetActive(false);
+            //        SpawnPosList.RemoveAt(i);
+            //        break;
+            //    }
+            //}
+            //return rabaSpawn;
     }
     private void Awake()
     {
-        InitGoData(prefab, Nums);
+        RAInsGoDataContainer1 = new List<InstantiateData>();
+        RAInsGoDataContainer1 = InitGoData(RA01, RANums1);
+        RAInsGoDataContainer2 = new List<InstantiateData>();
+        RAInsGoDataContainer2 = InitGoData(RA02, RANums2);
+        RAInsGoDataContainer3 = new List<InstantiateData>();
+        RAInsGoDataContainer3 = InitGoData(RA03, RANums3);
+        RAInsGoDataContainer4 = new List<InstantiateData>();
+        RAInsGoDataContainer4 = InitGoData(RA04, RANums4);
+
+        RWInsGoDataContainer1 = new List<InstantiateData>();
+        RWInsGoDataContainer1 = InitGoData(RW01, RWNums1);
+        RWInsGoDataContainer2 = new List<InstantiateData>();
+        RWInsGoDataContainer2 = InitGoData(RW02, RWNums2);
+        RWInsGoDataContainer3 = new List<InstantiateData>();
+        RWInsGoDataContainer3 = InitGoData(RW03, RWNums4);
+        RWInsGoDataContainer4 = new List<InstantiateData>();
+        RWInsGoDataContainer4 = InitGoData(RW04, RWNums4);
         LoadedGo = new List<GameObject>();
-        SpawnPosList = new List<SpawnData>();
+        //SpawnPosList = new List<SpawnData>();
         SpawnedList = new List<SpawnData>();
         //SpawnPosContainer = GameObject.FindGameObjectsWithTag("rabaSpawn");
-        SpawnPosInitializer();
+        //SpawnPosInitializer();
         //rabaSpawn = GameObject.FindGameObjectWithTag("rabaSpawn").transform.position;        
     }
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        //if(Spawn)
-        {
-            int iCount = InsGoDataContainer.Count;
-            for (int i = 0; i < Nums; i++)
-            {
-                if (Nums > LoadedGo.Count)
-                {
-                    //int SpawnNum = Random.Range(0, SpawnPosList.Count);
-                    var go = LoadGoData();
-                    go.SetActive(true);
+        //if(Input.GetMouseButtonDown(0))
+        ////if(Spawn)
+        //{
+        //    //GetSpawnNums = 1;
+        //    int iCount = InsGoDataContainer.Count;
+        //    for (int i = 0; i < 50; i++)
+        //    {
+        //        //if (Nums > LoadedGo.Count)
+        //        {
+        //            //int SpawnNum = Random.Range(0, SpawnPosList.Count);
+        //            var go = LoadGoData();
+        //            go.SetActive(true);
                                         
-                    go.transform.position = SetSpawnPos();
-                    LoadedGo.Add(go);
-                }
+        //            go.transform.position = SetSpawnPos();
+        //            LoadedGo.Add(go);
+        //        }
+        //    }
+        //    Spawn = false;
+        //}
+        if (Spawn)
+        {
+            var SpawnPosList = SpawnPosInitializer(stringTag);
+            //Debug.Log(stringTag);
+            //Debug.Log(SpawnPosList.Count);
+            var SpawnPos = SpawnPosList[0];
+            //Debug.Log(SpawnPos.Area);
+            if(SpawnPos.Area == "SpawnA")
+            {
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 2);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 4);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 3);
             }
+            else if (SpawnPos.Area == "SpawnB")
+            {
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                //SetSpawnPos()
+            }
+            else if (SpawnPos.Area == "SpawnC")
+            {
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                //SetSpawnPos
+            }
+            else if (SpawnPos.Area == "SpawnD")
+            {
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                //SetSpawnPos
+            }
+            else if (SpawnPos.Area == "SpawnE")
+            {
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                //SetSpawnPos
+            }
+            //SetSpawnPos()
             Spawn = false;
         }
     }

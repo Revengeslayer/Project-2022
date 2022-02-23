@@ -180,7 +180,7 @@ public class InstantiateManager : MonoBehaviour
             ID.insGo.transform.position = SD.Pos.transform.position;
             SpawnPosList.RemoveAt(ranPos);
             ID.insGo.SetActive(true);
-            Debug.Log(SpawnPosList.Count);
+            //Debug.Log(SpawnPosList.Count);
         }
         //InsGoDataContainer = new List<InstantiateData>();
         //SpawnPosList = new List<SpawnData>();

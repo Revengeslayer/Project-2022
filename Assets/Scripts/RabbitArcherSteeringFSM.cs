@@ -643,7 +643,8 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("目前狀態          " + mCurrentState);
+        //Debug.Log("目前狀態          " + mCurrentState);
+        Debug.Log(zAttack);
         playerHp = PlayerInfo.playerHp;
         if (playerHp <= 0)
         {
@@ -689,8 +690,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             //zAttack = FSM.zAttack;
             PlayerAttack(zAttack, skillAttack);
         }
-        //zAttack = 0;
-        //skillAttack = 0;
+
     }
     private void FixedUpdate()
     {

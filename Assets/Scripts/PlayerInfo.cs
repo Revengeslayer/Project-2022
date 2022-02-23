@@ -40,6 +40,7 @@ public class PlayerInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         CheckDamageType();
 
         DizzyCount = Mathf.Clamp(DizzyCount, 0, playerMaxDizzy);
@@ -78,6 +79,10 @@ public class PlayerInfo : MonoBehaviour
 
     private void CheckDamageType()
     {
+        if (zAttack == 0)
+        {
+            RabbitArcherSteeringFSM.zAttack = 0;
+        }
         if (zAttack == 1)
         {
             RabbitArcherSteeringFSM.zAttack = 1;
@@ -89,6 +94,10 @@ public class PlayerInfo : MonoBehaviour
         if (zAttack == 3)
         {
             RabbitArcherSteeringFSM.zAttack = 3;
+        }
+        if (skillAttack == 0)
+        {
+            RabbitArcherSteeringFSM.skillAttack = 0;
         }
         if (skillAttack == 1)
         {

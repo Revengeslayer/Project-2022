@@ -94,7 +94,10 @@ public class DogFSM : MonoBehaviour
         }      
         if (mCurrentState == DogFSMState.Attack01)
         {
-
+            if((anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1&& anim.GetCurrentAnimatorStateInfo(0).IsName("Attack01")))
+            {
+                Debug.Log("Finish Animation");
+            }
         }
         if (mCurrentState == DogFSMState.Attack02)
         {
@@ -162,10 +165,12 @@ public class DogFSM : MonoBehaviour
         }
         if(mCurrentState==DogFSMState.LookPlayer)
         {
-            targetRotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
-            
-            if(Vector3.Distance(player.transform.position, gameObject.transform.position) > dogChaseDic)
+            var diatanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+            var lookAtForford = (player.transform.position - transform.position).normalized;
+            lookAtForford.y = 0;
+            gameObject.transform.forward = lookAtForford;
+
+            if (Vector3.Distance(player.transform.position, gameObject.transform.position) > dogChaseDic)
             {
                 anim.SetBool("Idle", false);
                 anim.SetBool("Wander", true);
@@ -181,18 +186,19 @@ public class DogFSM : MonoBehaviour
 
             if (diatanceToPlayer <= dogAtkDic && AttackIdleCanAtkTime())
             {
-                Debug.Log("ATK");
-                //anim.SetBool("Idle", false);
-                //anim.SetBool("Attack", true);
-                //mCurrentState = DogFSMState.Attack01;
+                canAtkTime = 0;
+                anim.SetBool("Idle", false);
+                anim.SetBool("Attack", true);
+                mCurrentState = DogFSMState.Attack01;
             }
-            //else
-            //{
-            //    anim.SetBool("Idle", false);
-            //    is_Running = true;
-            //    anim.SetBool("Chase", true);
-            //    mCurrentState = DogFSMState.Chase;
-            //}
+            if(diatanceToPlayer > dogAtkDic )
+            {
+                canAtkTime = 0;
+                anim.SetBool("Idle", false);
+                is_Running = true;
+                anim.SetBool("Chase", true);
+                mCurrentState = DogFSMState.Chase;
+            }
         }
     }
 

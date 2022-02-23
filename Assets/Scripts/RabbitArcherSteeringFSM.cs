@@ -382,10 +382,11 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         itemPosition += new Vector3(Random.Range(-2, 2), 0.2f, Random.Range(-2, 2));
 
         Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
     }
     private void DoSpawnState()
     {
+        hpImage.fillAmount = 1;
         rabaRig.AddForce(new Vector3(0, 600, 0));
     }
     #endregion

@@ -21,8 +21,9 @@ public class CarrotController : MonoBehaviour
     }
     private void Recycle()
     {
-        var Dist = (Target.transform.position - gameObject.transform.position).magnitude;
-        var ToTargetVec = Target.transform.position - gameObject.transform.position;
+        var TargetPos = Target.transform.position + new Vector3(0, 0.79f, 0);
+        var Dist = (TargetPos- gameObject.transform.position).magnitude;
+        var ToTargetVec = TargetPos- gameObject.transform.position;
         var HitCheckDot = Vector3.Dot(ToTargetVec, SetTargetVec);
         MaxTimer += Time.deltaTime;
         if (Dist < 0.3)
@@ -30,7 +31,7 @@ public class CarrotController : MonoBehaviour
             PlayerInfo.CarrotArrowDamage();
             Destroy(gameObject);
         }
-        else if (Dist < 0.7 && HitCheckDot < 0)
+        else if (Dist < 0.8 && HitCheckDot < 0)
         {
             PlayerInfo.CarrotArrowDamage();
             Destroy(gameObject);
@@ -58,6 +59,6 @@ public class CarrotController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(this.transform.position, 0.3f);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(this.transform.position, 0.7f);
+        Gizmos.DrawWireSphere(this.transform.position, 0.8f);
     }
 }

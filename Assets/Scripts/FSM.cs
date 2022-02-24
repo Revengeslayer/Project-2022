@@ -430,7 +430,11 @@ public class FSM : MonoBehaviour
 
 	#region Do
 	private void DoIdleState()
-	{		
+	{
+		isSkillToDodge = false;
+		ChangeForword = false;
+		isAtkToMove = false;
+
 		anim.SetInteger("combo2", 0);
 		anim.SetInteger("combo3", 0);
 		//±j¤ÁBI
@@ -487,6 +491,8 @@ public class FSM : MonoBehaviour
 	{	
 		isBattle = true;
 		isSkillToDodge = false;
+		ChangeForword = false;
+		isAtkToMove = false;
 		anim.SetInteger("combo2", 0);
 		anim.SetInteger("combo3", 0);
 		//«ö¤U§ðÀ»
@@ -637,7 +643,7 @@ public class FSM : MonoBehaviour
 		}
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) != false)
         {
-            CheckForward();
+			CheckForward();		
             //if (isAtkToMove)
             //{
                 isMove = true;
@@ -769,7 +775,10 @@ public class FSM : MonoBehaviour
 	{
 		isBattle = true;
 		canMove = false;
-		if(PlayerInfo.DizzyCount>=50)
+		isSkillToDodge = false;
+		ChangeForword = false;
+		isAtkToMove = false;
+		if (PlayerInfo.DizzyCount>=50)
 		{
 			PlayerInfo.DizzyCount = 0;
 		}
@@ -796,6 +805,9 @@ public class FSM : MonoBehaviour
 		isSkill = false;
 		isDodge = false;
 		canMove = false;
+		isSkillToDodge = false;
+		ChangeForword = false;
+		isAtkToMove = false;
 		anim.Play("Die");
 	}
 	#endregion

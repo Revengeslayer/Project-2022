@@ -358,39 +358,39 @@ public class MonsterDmg : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void MonsteCollision()
-    {
-        float a;//算角度分子
+    //public void MonsteCollision()
+    //{
+    //    float a;//算角度分子
 
-        float b;//算角度分母
+    //    float b;//算角度分母
 
-        float cosValue;//cos值
+    //    float cosValue;//cos值
 
-        float monsterDis;
-        float forwardDis;
+    //    float monsterDis;
+    //    float forwardDis;
 
-        for (int i = 0; i < dogMonsters.Count; i++)
-        {
-            a = Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward);
-            b = Vector3.Distance(dogMonsters[i].transform.position, this.transform.position) * (this.transform.forward).magnitude;
-            cosValue = a / b;
-            monsterDis = Vector3.Distance(this.transform.position, dogMonsters[i].transform.position);
-            forwardDis = monsterDis * cosValue;
-            if (Vector3.Distance(this.transform.position+this.transform.forward*1, dogMonsters[i].transform.position) < 2.0f && Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) != 0
-                /*&& Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward) > 0 && Mathf.Sqrt(monsterDis * monsterDis - forwardDis * forwardDis) < 1.5f*/)
-            {
-                monsteCollision = false;
-            }
-            else
-            { 
-                monsteCollision = true; 
-            }
-            //else
-            //{
-            //    gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
-            //}
-        }
-    }
+    //    for (int i = 0; i < dogMonsters.Count; i++)
+    //    {
+    //        a = Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward);
+    //        b = Vector3.Distance(dogMonsters[i].transform.position, this.transform.position) * (this.transform.forward).magnitude;
+    //        cosValue = a / b;
+    //        monsterDis = Vector3.Distance(this.transform.position, dogMonsters[i].transform.position);
+    //        forwardDis = monsterDis * cosValue;
+    //        if (Vector3.Distance(this.transform.position+this.transform.forward*1, dogMonsters[i].transform.position) < 2.0f && Vector3.Distance(this.transform.position, dogMonsters[i].transform.position) != 0
+    //            /*&& Vector3.Dot((dogMonsters[i].transform.position - this.transform.position), this.transform.forward) > 0 && Mathf.Sqrt(monsterDis * monsterDis - forwardDis * forwardDis) < 1.5f*/)
+    //        {
+    //            monsteCollision = false;
+    //        }
+    //        else
+    //        { 
+    //            monsteCollision = true; 
+    //        }
+    //        //else
+    //        //{
+    //        //    gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
+    //        //}
+    //    }
+    //}
 
 
     void DogNAtkLightOpen()

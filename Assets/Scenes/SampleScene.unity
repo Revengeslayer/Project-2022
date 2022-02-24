@@ -705,6 +705,7 @@ MonoBehaviour:
   dogBackToInitDic: 5
   actRestTme: 1.2
   reRestTme: 0
+  mobThinkTme: 2
 --- !u!1001 &6270836915789388581
 PrefabInstance:
   m_ObjectHideFlags: 0

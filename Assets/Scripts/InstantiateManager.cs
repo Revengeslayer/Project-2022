@@ -333,7 +333,7 @@ public class InstantiateManager : MonoBehaviour
             if(SpawnPos.Area == "SpawnA")
             {
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 2);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 4);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 1);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 3);
             }
             else if (SpawnPos.Area == "SpawnB")

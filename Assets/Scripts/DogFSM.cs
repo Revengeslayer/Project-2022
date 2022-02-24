@@ -107,6 +107,7 @@ public class DogFSM : MonoBehaviour
         }
         if (mCurrentState == DogFSMState.Attack01)
         {
+            float fToPlayerDic = Vector3.Distance(player.transform.position, gameObject.transform.position);
             if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1)
             {
                 //Debug.Log("攻擊完畢");
@@ -114,6 +115,13 @@ public class DogFSM : MonoBehaviour
                 attackIdleTime = Time.time;
                 anim.SetBool("Idle", true);
                 mCurrentState = DogFSMState.AttackIdle;
+            }
+            else
+            {
+                if(fToPlayerDic<=dogAtkDic)
+                {
+                    Debug.Log("攻擊到了");
+                }
             }
         }
         if (mCurrentState == DogFSMState.Attack02)
@@ -201,7 +209,7 @@ public class DogFSM : MonoBehaviour
         {
             Vector3 vLookForword = player.transform.position - gameObject.transform.position;
             vLookForword.y = 0;
-            gameObject.transform.forward = vLookForword;
+            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, vLookForword, 0.1f);
             float fPlayerToDoInit = Vector3.Distance(player.transform.position, initDic);
 
             if (Vector3.Distance(player.transform.position, gameObject.transform.position) > dogChaseDic)
@@ -239,29 +247,21 @@ public class DogFSM : MonoBehaviour
     {
         //Debug.Log("可以行動");
         float fToPlayerDic = Vector3.Distance(player.transform.position, gameObject.transform.position);
-        if (fToPlayerDic <= dogAtkDic)
-        {
-            int num = UnityEngine.Random.Range(1, 3);
-            if(num==1)
-            {
-                anim.SetBool("Idle", false);
-                anim.SetBool("Attack1", true);
-                mCurrentState = DogFSMState.Attack01;
-            }
-            if(num==2)
-            {
-                anim.SetBool("Idle", false);
-                anim.SetBool("Attack2", true);
-                mCurrentState = DogFSMState.Attack02;
-            }
-        }
-        else
+
+        int num = UnityEngine.Random.Range(1, 3);
+        if(num==1)
         {
             anim.SetBool("Idle", false);
-            is_Running = true;
-            anim.SetBool("Chase", true);
-            mCurrentState = DogFSMState.Chase;
+            anim.SetBool("Attack1", true);
+            mCurrentState = DogFSMState.Attack01;
         }
+        if(num==2)
+        {
+            anim.SetBool("Idle", false);
+            anim.SetBool("Attack2", true);
+            mCurrentState = DogFSMState.Attack02;
+        }
+
     }
 
     

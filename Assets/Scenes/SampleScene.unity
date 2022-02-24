@@ -678,6 +678,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DogPBR Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512398, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
 --- !u!1 &1848798917 stripped

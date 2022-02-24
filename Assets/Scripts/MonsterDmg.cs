@@ -81,78 +81,79 @@ public class MonsterDmg : MonoBehaviour
         {
             hpImage0.fillAmount = 0;
         }
+        #region 先不用
         //MonsterDis(); 
-        if (monsterDistance <= 6.0f && hpImage.fillAmount > 0 && playerHp >0)
-        {
-            //MonsteCollision();
-            gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
+        //if (monsterDistance <= 6.0f && hpImage.fillAmount > 0 && playerHp >0)
+        //{
+        //    //MonsteCollision();
+        //    gameObject.transform.LookAt(objPlayer.transform.position);//面向主角
 
-            if (monsterDistance >= 2.0f && monsteCollision)
-            {  
-                gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;                  
-                dogAnimator.SetBool("Attack01", false);
-                dogAnimator.SetBool("chase", true);
-                nowTimeAtk = Time.time;
-            }
-            else if (monsterDistance < 3.0f)
-            {   
-                //攻擊間隔判斷
-                if (atkStatus == false)
-                {
-                    dogAnimator.SetBool("Attack01", false);
-                    nowTimeAtk = Time.time;
-                    atkStatus = true;              
-                }
-                atkCd = Timer(1.4f,nowTimeAtk);
-                //攻擊間隔判斷
+        //    if (monsterDistance >= 2.0f && monsteCollision)
+        //    {  
+        //        gameObject.transform.position += gameObject.transform.forward * 3.0f * Time.deltaTime;                  
+        //        dogAnimator.SetBool("Attack01", false);
+        //        dogAnimator.SetBool("chase", true);
+        //        nowTimeAtk = Time.time;
+        //    }
+        //    else if (monsterDistance < 3.0f)
+        //    {   
+        //        //攻擊間隔判斷
+        //        if (atkStatus == false)
+        //        {
+        //            dogAnimator.SetBool("Attack01", false);
+        //            nowTimeAtk = Time.time;
+        //            atkStatus = true;              
+        //        }
+        //        atkCd = Timer(1.4f,nowTimeAtk);
+        //        //攻擊間隔判斷
 
-                dogAnimator.SetBool("chase", false);
-                if (atkCd)
-                {
-                    gameObject.transform.position += gameObject.transform.forward * 2.0f * Time.deltaTime; //攻擊往前移動
-                    dogAnimator.SetBool("Attack01", true);
+        //        dogAnimator.SetBool("chase", false);
+        //        if (atkCd)
+        //        {
+        //            gameObject.transform.position += gameObject.transform.forward * 2.0f * Time.deltaTime; //攻擊往前移動
+        //            dogAnimator.SetBool("Attack01", true);
 
 
-                    //讓傷害延遲計算 與動畫動作合拍
-                    if (hertDelay == false)
-                    {
-                        nowTimeHurt = Time.time;
-                        hertDelay = true;
-                    }
-                    //讓傷害延遲計算 與動畫動作合拍
+        //            //讓傷害延遲計算 與動畫動作合拍
+        //            if (hertDelay == false)
+        //            {
+        //                nowTimeHurt = Time.time;
+        //                hertDelay = true;
+        //            }
+        //            //讓傷害延遲計算 與動畫動作合拍
 
-                    atkStatus = false;
-                }
+        //            atkStatus = false;
+        //        }
 
-                //讓傷害延遲計算 與動畫動作合拍
-                if (nowTimeHurt != 0) //判斷有沒有獲取到nowTimeHurt的值
-                {
-                    hertWait = Timer(0.3f, nowTimeHurt);
-                }
-                
-                if (Time.time-nowTimeHurt > 0.4f)
-                {
-                    hertWait = false;
-                    hertDelay = false;
-                }
-               
-                if (hertWait)
-                {
-                   
-                    PlayerInfo.PlayerHpCal(1);
-                    hertDelay = false;
-                    hertWait = false;
-                    nowTimeHurt = 0;
-                }
-                //讓傷害延遲計算 與動畫動作合拍
-                
-            }
-        }
-        else if(monsterDistance >= 6.0f && hpImage.fillAmount > 0)
-        {
-            dogAnimator.SetBool("chase", false);            
-        }
+        //        //讓傷害延遲計算 與動畫動作合拍
+        //        if (nowTimeHurt != 0) //判斷有沒有獲取到nowTimeHurt的值
+        //        {
+        //            hertWait = Timer(0.3f, nowTimeHurt);
+        //        }
 
+        //        if (Time.time-nowTimeHurt > 0.4f)
+        //        {
+        //            hertWait = false;
+        //            hertDelay = false;
+        //        }
+
+        //        if (hertWait)
+        //        {
+
+        //            PlayerInfo.PlayerHpCal(1);
+        //            hertDelay = false;
+        //            hertWait = false;
+        //            nowTimeHurt = 0;
+        //        }
+        //        //讓傷害延遲計算 與動畫動作合拍
+
+        //    }
+        //}
+        //else if(monsterDistance >= 6.0f && hpImage.fillAmount > 0)
+        //{
+        //    dogAnimator.SetBool("chase", false);            
+        //}
+        #endregion
         if (zAttack != 0 || skillAttack != 0)
         {
             attackHertGet = PlayerAttack(monsterDistance);

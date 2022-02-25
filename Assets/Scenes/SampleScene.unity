@@ -747,7 +747,7 @@ MonoBehaviour:
   dogBackToInitDic: 5
   actRestTme: 1.2
   reRestTme: 0
-  mobThinkTme: 2
+  mobThinkTme: 1
   canHitCount: 0
   dropItem: {fileID: 7847104384881856875, guid: 06c2d3c404a644546ae15cd0e88d8034, type: 3}
 --- !u!1001 &6270836915789388581

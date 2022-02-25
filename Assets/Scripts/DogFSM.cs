@@ -246,15 +246,15 @@ public class DogFSM : MonoBehaviour
             atk1 = false;
             atk2 = false;
             is_Running = false;
-            anim.SetBool("Wander", false);
-            anim.SetBool("Idle", false);
-            anim.SetBool("Chase", false);
-            anim.SetBool("Attack1", false);
-            anim.SetBool("Attack2", false);
+                      
 
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("GetHit")&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1)
             {
+                Debug.Log("受傷播完");
+                attackIdleTime = Time.time;
                 getHit = false;
+                anim.SetBool("Gethit", false);
+                mCurrentState = DogFSMState.AttackIdle;
             }
         }
         if (mCurrentState == DogFSMState.Die)
@@ -263,7 +263,8 @@ public class DogFSM : MonoBehaviour
             atk1 = false;
             atk2 = false;
             is_Running = false;
-            Debug.Log("DDDDDDDDDDDDD");
+            getHit = false;
+            anim.SetBool("Gethit", false);
             StartCoroutine(Die());
         }
         if(mCurrentState == DogFSMState.Return)
@@ -397,7 +398,7 @@ public class DogFSM : MonoBehaviour
             }
         }
         if (diatanceToInitial < 0.5f)
-        {
+        {           
             anim.SetBool("Wander", false);
             RandomAction();
         }
@@ -470,13 +471,29 @@ public class DogFSM : MonoBehaviour
     }
     void Update()
     {
-        //Debug.Log(mCurrentState);
+        Debug.Log(mCurrentState);
+        Debug.Log("getHit                    "+getHit);
         monsterHpbar.transform.forward = GameObject.Find("Main Camera").transform.forward * -1; //怪物Hp條面向攝影機
         CheckDie();
-        CheckAttack();        
+        CheckHit();
+        PlayerAttack(zAttack, skillAttack);
         CheckHpbar(0);
         CheckNowState();
-        Debug.Log(canHitCount);
+        
+    }
+
+    private void CheckHit()
+    {
+        if(getHit && monsterAlive)
+        {
+            anim.SetBool("Wander", false);
+            anim.SetBool("Idle", false);
+            anim.SetBool("Chase", false);
+            anim.SetBool("Attack1", false);
+            anim.SetBool("Attack2", false);
+            mCurrentState = DogFSMState.GetHit;
+            getHit = false;
+        }
     }
 
     private void CheckDie()
@@ -486,13 +503,6 @@ public class DogFSM : MonoBehaviour
             hpImage0.fillAmount = 0;
             monsterAlive = false;
             mCurrentState = DogFSMState.Die;
-        }
-    }
-    private void CheckAttack()
-    {
-        if (Vector3.Distance(player.transform.position, gameObject.transform.position) < 2.7f)
-        {
-            PlayerAttack(zAttack, skillAttack);
         }
     }
     private void CheckHpbar(float damage)
@@ -540,61 +550,86 @@ public class DogFSM : MonoBehaviour
         float a;//算角度分子
         float b;//算角度分母
         float cosValue;//cos值
+        float ToPlayerDic = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
         a = Vector3.Dot((gameObject.transform.position - player.transform.position), player.transform.forward * 2);
         b = Vector3.Distance(gameObject.transform.position, player.transform.position) * (player.transform.forward * 2).magnitude;
         cosValue = a / b;
 
-        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0)
+        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0 && ToPlayerDic <= 3.0f)
         {
-            CheckHpbar(20);
-            getHit = true;
+            CheckHpbar(20);            
+            anim.SetBool("Gethit", true);
             canHitCount++;
-            //dogAnimator.SetBool("gethit", true);
+            if (canHitCount % 5 == 1)
+            {
+                getHit = true;
+            }
             zAttack = 0;
         }
-        else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0)
+        else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0 && ToPlayerDic  <= 3.0f)
         {
-            CheckHpbar(25);
-            getHit = true;
+            CheckHpbar(25);            
+            anim.SetBool("Gethit", true);
             canHitCount++;
+            if (canHitCount % 5 == 1)
+            {
+                getHit = true;
+            }
             zAttack = 0;
         }
-        else if ( zAttack == 3&&cosValue >= 0.85  && hpImage.fillAmount > 0)
+        else if ( zAttack == 3&&cosValue >= 0.85  && hpImage.fillAmount > 0 && ToPlayerDic <= 3.0f)
         {
-            CheckHpbar(50);
-            getHit = true;
+            CheckHpbar(50);           
+            anim.SetBool("Gethit", true);
             canHitCount++;
+            if (canHitCount % 5 == 1)
+            {
+                getHit = true;
+            }
             zAttack = 0;
         }
 
         if (skillAttack == 1)
         {
-            if (cosValue >= 0.8f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.8f && hpImage.fillAmount > 0 && ToPlayerDic <= 2.8f)
             {
                 CheckHpbar(40);
-                getHit = true;
+                
+                anim.SetBool("Gethit", true);
                 canHitCount++;
+                if (canHitCount % 5 == 1)
+                {
+                    getHit = true;
+                }
                 skillAttack = 0;
             }
         }
         else if (skillAttack == 2)
         {
-            if (cosValue >= 0.7f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.7f && hpImage.fillAmount > 0 && ToPlayerDic <= 3.5f)
             {
-                CheckHpbar(60);
-                getHit = true;
+                CheckHpbar(60);               
+                anim.SetBool("Gethit", true);
                 canHitCount++;
+                if (canHitCount % 5 == 1)
+                {
+                    getHit = true;
+                }
                 skillAttack = 0;
             }
         }
         else if (skillAttack == 3)
         {
-            if (hpImage.fillAmount > 0)
+            if (hpImage.fillAmount > 0 && ToPlayerDic <= 2.3f)
             {
-                CheckHpbar(20);
-                getHit = true;
+                CheckHpbar(20);               
+                anim.SetBool("Gethit", true);
                 canHitCount++;
+                if (canHitCount % 5 == 1)
+                {
+                    getHit = true;
+                }
                 skillAttack = 0;
             }
         }

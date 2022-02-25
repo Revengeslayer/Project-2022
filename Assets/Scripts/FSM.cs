@@ -817,7 +817,7 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//°»´úª¬ºA
-		Debug.Log("¥Ø«eª¬ºA          " + mCurrentState);
+		//Debug.Log("¥Ø«eª¬ºA          " + mCurrentState);
 
 		//§PÂ_­þ¤@­ÓAttack
 		zAttack = 0;

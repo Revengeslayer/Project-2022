@@ -79,38 +79,11 @@ public class PlayerInfo : MonoBehaviour
 
     private void CheckDamageType()
     {
-        if (zAttack == 0)
-        {
-            RabbitArcherSteeringFSM.zAttack = 0;
-        }
-        if (zAttack == 1)
-        {
-            RabbitArcherSteeringFSM.zAttack = 1;
-        }
-        if (zAttack == 2)
-        {
-            RabbitArcherSteeringFSM.zAttack = 2;
-        }
-        if (zAttack == 3)
-        {
-            RabbitArcherSteeringFSM.zAttack = 3;
-        }
-        if (skillAttack == 0)
-        {
-            RabbitArcherSteeringFSM.skillAttack = 0;
-        }
-        if (skillAttack == 1)
-        {
-            RabbitArcherSteeringFSM.skillAttack = 1;
-        }
-        if (skillAttack == 2)
-        {
-            RabbitArcherSteeringFSM.skillAttack = 2;
-        }
-        if (skillAttack == 3)
-        {
-            RabbitArcherSteeringFSM.skillAttack = 3;
-        }
+        RabbitArcherSteeringFSM.zAttack = zAttack;
+        RabbitArcherSteeringFSM.skillAttack = skillAttack;
+
+        DogFSM.zAttack = zAttack;
+        DogFSM.skillAttack = skillAttack;
     }
 
 

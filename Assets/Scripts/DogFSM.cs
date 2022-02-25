@@ -2,9 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DogFSM : MonoBehaviour
 {
+    //HP條
+    public GameObject monsterHpbar;
+    public Image hpImage;
+    public Image hpImage0;
+    float monsterHp;
     //目標
     private GameObject player;
     /// <summary>
@@ -59,6 +65,18 @@ public class DogFSM : MonoBehaviour
     private bool atk1;
     //Atk2 時機
     private bool atk2;
+    //playerAtk
+    public static float zAttack;
+    //playerSAtk
+    public static float skillAttack;
+    [Header("次數內霸體")]
+    public int canHitCount;
+    //GetHit
+    private bool getHit;
+    //Monster Alive
+    private bool monsterAlive;
+    // 怪物掉落物
+    public GameObject dropItem;
 
     public enum DogFSMState
     {
@@ -80,6 +98,8 @@ public class DogFSM : MonoBehaviour
     void Start()
     {
         initDic = this.transform.position;
+        monsterAlive = true;
+        monsterHp = 300.0f;
         player =GameObject.Find("Character");
         //player=GameObject.Find("Character(Clone)");
         mCurrentState = DogFSMState.Idle_Battle;
@@ -226,6 +246,16 @@ public class DogFSM : MonoBehaviour
             atk1 = false;
             atk2 = false;
             is_Running = false;
+            anim.SetBool("Wander", false);
+            anim.SetBool("Idle", false);
+            anim.SetBool("Chase", false);
+            anim.SetBool("Attack1", false);
+            anim.SetBool("Attack2", false);
+
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("GetHit")&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1)
+            {
+                getHit = false;
+            }
         }
         if (mCurrentState == DogFSMState.Die)
         {
@@ -233,6 +263,8 @@ public class DogFSM : MonoBehaviour
             atk1 = false;
             atk2 = false;
             is_Running = false;
+            Debug.Log("DDDDDDDDDDDDD");
+            StartCoroutine(Die());
         }
         if(mCurrentState == DogFSMState.Return)
         {
@@ -439,7 +471,41 @@ public class DogFSM : MonoBehaviour
     void Update()
     {
         //Debug.Log(mCurrentState);
+        monsterHpbar.transform.forward = GameObject.Find("Main Camera").transform.forward * -1; //怪物Hp條面向攝影機
+        CheckDie();
+        CheckAttack();        
+        CheckHpbar(0);
         CheckNowState();
+        Debug.Log(canHitCount);
+    }
+
+    private void CheckDie()
+    {
+        if (hpImage.fillAmount <= 0)
+        {
+            hpImage0.fillAmount = 0;
+            monsterAlive = false;
+            mCurrentState = DogFSMState.Die;
+        }
+    }
+    private void CheckAttack()
+    {
+        if (Vector3.Distance(player.transform.position, gameObject.transform.position) < 2.7f)
+        {
+            PlayerAttack(zAttack, skillAttack);
+        }
+    }
+    private void CheckHpbar(float damage)
+    {
+        if (hpImage.fillAmount <= 0)
+        {
+            hpImage0.fillAmount = 0;
+            monsterAlive = false;
+        }
+        else
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (damage / monsterHp);
+        }
     }
     #region Animation
     private void Attack1()
@@ -467,6 +533,86 @@ public class DogFSM : MonoBehaviour
     }
     #endregion
 
+    void PlayerAttack(float zAttack,float skillAttack)
+    {
+        //Debug.Log(zAttack);
+        //Debug.Log(skillAttack);
+        float a;//算角度分子
+        float b;//算角度分母
+        float cosValue;//cos值
+
+        a = Vector3.Dot((gameObject.transform.position - player.transform.position), player.transform.forward * 2);
+        b = Vector3.Distance(gameObject.transform.position, player.transform.position) * (player.transform.forward * 2).magnitude;
+        cosValue = a / b;
+
+        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0)
+        {
+            CheckHpbar(20);
+            getHit = true;
+            canHitCount++;
+            //dogAnimator.SetBool("gethit", true);
+            zAttack = 0;
+        }
+        else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0)
+        {
+            CheckHpbar(25);
+            getHit = true;
+            canHitCount++;
+            zAttack = 0;
+        }
+        else if ( zAttack == 3&&cosValue >= 0.85  && hpImage.fillAmount > 0)
+        {
+            CheckHpbar(50);
+            getHit = true;
+            canHitCount++;
+            zAttack = 0;
+        }
+
+        if (skillAttack == 1)
+        {
+            if (cosValue >= 0.8f && hpImage.fillAmount > 0)
+            {
+                CheckHpbar(40);
+                getHit = true;
+                canHitCount++;
+                skillAttack = 0;
+            }
+        }
+        else if (skillAttack == 2)
+        {
+            if (cosValue >= 0.7f && hpImage.fillAmount > 0)
+            {
+                CheckHpbar(60);
+                getHit = true;
+                canHitCount++;
+                skillAttack = 0;
+            }
+        }
+        else if (skillAttack == 3)
+        {
+            if (hpImage.fillAmount > 0)
+            {
+                CheckHpbar(20);
+                getHit = true;
+                canHitCount++;
+                skillAttack = 0;
+            }
+        }
+    }
+
+    IEnumerator Die()
+    {
+        anim.Play("Die");
+        yield return new WaitForSeconds(2.0f);
+
+        //掉落道具為怪物位置
+        Vector3 itemPosition = this.transform.position;
+        itemPosition.y -= 0.5f;
+        //itemPosition += new Vector3(Random.Range(-2, 2),0.2f, Random.Range(-2, 2));
+
+        Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
+        Destroy(this.gameObject);
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

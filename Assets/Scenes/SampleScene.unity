@@ -181,6 +181,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lich: {fileID: 0}
+--- !u!1 &328585518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5314464392826703007, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+  m_PrefabInstance: {fileID: 1404447298}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &328585519 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5314464392826703000, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+  m_PrefabInstance: {fileID: 1404447298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328585518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,6 +539,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6270836915349944841, guid: 5b0ec8d6000a0a24cbbd7fa5be1c3785, type: 3}
   m_PrefabInstance: {fileID: 6270836915789388581}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1209355430 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5314464392537392360, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+  m_PrefabInstance: {fileID: 1404447298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1329679148
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,6 +653,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 312703557, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_Mass
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 312703557, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 5314464392897512392, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
       propertyPath: m_Controller
       value: 
@@ -701,6 +736,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee88165d05ac5ce4dbfea99725cb2b2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monsterHpbar: {fileID: 328585518}
+  hpImage: {fileID: 1209355430}
+  hpImage0: {fileID: 328585519}
   dogWalkSpeed: 1
   dogRunSpeed: 2
   dogAtkDic: 1.2
@@ -710,6 +748,8 @@ MonoBehaviour:
   actRestTme: 1.2
   reRestTme: 0
   mobThinkTme: 2
+  canHitCount: 0
+  dropItem: {fileID: 7847104384881856875, guid: 06c2d3c404a644546ae15cd0e88d8034, type: 3}
 --- !u!1001 &6270836915789388581
 PrefabInstance:
   m_ObjectHideFlags: 0

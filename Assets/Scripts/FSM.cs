@@ -713,6 +713,9 @@ public class FSM : MonoBehaviour
 		isAttack = false;
 		isMove = false;
 		isSkill = false;
+		isSkillToDodge = false;
+		ChangeForword = false;
+		isAtkToMove = false;
 		zAttack = 0;
 		atkCount = 0;
 		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("DODGE"))

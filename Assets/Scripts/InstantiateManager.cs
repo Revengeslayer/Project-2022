@@ -29,6 +29,9 @@ public class InstantiateManager : MonoBehaviour
     public Object RW04;
     public int RWNums4;
     private List<InstantiateData> RWInsGoDataContainer4;
+    public Object DK01;
+    public int DKNums1;
+    private List<InstantiateData> DKInsGoDataContainer1;
     public static string stringTag;
     private List<SpawnData> SpawnedList;
     private GameObject[] SpawnPosContainer;
@@ -202,6 +205,10 @@ public class InstantiateManager : MonoBehaviour
         RWInsGoDataContainer3 = InitGoData(RW03, RWNums4);
         RWInsGoDataContainer4 = new List<InstantiateData>();
         RWInsGoDataContainer4 = InitGoData(RW04, RWNums4);
+
+        //DKInsGoDataContainer1 = new List<InstantiateData>();
+        //DKInsGoDataContainer1 = InitGoData(DK01, DKNums1);
+
         LoadedGo = new List<GameObject>();
         //SpawnPosList = new List<SpawnData>();
         SpawnedList = new List<SpawnData>();
@@ -241,9 +248,10 @@ public class InstantiateManager : MonoBehaviour
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 3);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 3);
-                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 2);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 2);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 1);
                 SetSpawnPos(RAInsGoDataContainer1, SpawnPosList, 1);
+                //SetSpawnPos(DKInsGoDataContainer1, SpawnPosList, 3);
             }
             else if (SpawnPos.Area == "SpawnB")
             {

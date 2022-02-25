@@ -59,6 +59,7 @@ public class CarrotController : MonoBehaviour
         Target = GameObject.Find("Character(Clone)");
         gameObject.transform.position = SetSpawnPos;
         gameObject.transform.forward *= -1;
+        //gameObject.transform.localScale = new Vector3(3, 3, 1);
         MaxTimer = 0;
     }
 

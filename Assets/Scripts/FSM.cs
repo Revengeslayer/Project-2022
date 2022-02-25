@@ -482,7 +482,7 @@ public class FSM : MonoBehaviour
 			}
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.LeftShift))
+		if (Input.GetKey(KeyCode.V))
 		{
 			isDodge = true;
 		}
@@ -527,7 +527,7 @@ public class FSM : MonoBehaviour
 			}
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.LeftShift))
+		if (Input.GetKey(KeyCode.V))
 		{
 			isDodge = true;
 		}
@@ -638,7 +638,7 @@ public class FSM : MonoBehaviour
 			}
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.LeftShift))
+		if (Input.GetKey(KeyCode.V))
 		{
 			isDodge = true;
 		}
@@ -698,7 +698,7 @@ public class FSM : MonoBehaviour
 			atkCount = 0;
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.LeftShift))
+		if (Input.GetKey(KeyCode.V))
 		{
 			if (isSkillToDodge == true)
 			{
@@ -768,7 +768,7 @@ public class FSM : MonoBehaviour
 			}
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.LeftShift))
+		if (Input.GetKey(KeyCode.V))
 		{
 			isDodge = true;
 		}

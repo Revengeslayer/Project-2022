@@ -330,6 +330,7 @@ public class EliteArcher : MonoBehaviour
         if (doESC)  //fix : esc for N sceonds && use updated forward && normalized speed
         {
             Debug.Log("esc");
+            rabaAnim.SetBool("isPA", false);
             CheckESC();
             gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, -Vec, 0.95f);
             gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 5;

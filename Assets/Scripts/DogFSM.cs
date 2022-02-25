@@ -127,9 +127,14 @@ public class DogFSM : MonoBehaviour
             float ToPlayerDic = Vector3.Distance(player.transform.position, gameObject.transform.position);
             if(ToPlayerDic<= dogAtkDic)
             {
+                lastActTime = Time.time;
                 canAttack = true;
             }
-            if (CanNextActionCheck(attackIdleTime) && canAttack)
+            if(PlayerInfo.playerHp<=0)
+            {
+                RandomAction();
+            }
+            else if (CanNextActionCheck(attackIdleTime) && canAttack)
             {
                 int num = UnityEngine.Random.Range(1, 3);
                 if (num == 1)

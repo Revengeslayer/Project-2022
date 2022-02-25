@@ -16,6 +16,6 @@ public class PickUp : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         Destroy(gameObject);
-        PlayerInfo.playerHp += 100;
+        PlayerInfo.playerHp += 300;
     }
 }

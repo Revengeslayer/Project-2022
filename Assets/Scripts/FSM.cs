@@ -782,11 +782,11 @@ public class FSM : MonoBehaviour
 		{
 			PlayerInfo.DizzyCount = 0;
 		}
-		Debug.Log("GetHit  "+ isGitHit);
+		//Debug.Log("GetHit  "+ isGitHit);
 		if (anim.GetCurrentAnimatorStateInfo(0).IsName("GetHit")
 			&& anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
 		{
-			Debug.Log("ถ]งน");
+			//Debug.Log("ถ]งน");
 			isGitHit = false;			
 			atkCount = 0;			
 		}

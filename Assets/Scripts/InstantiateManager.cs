@@ -240,40 +240,45 @@ public class InstantiateManager : MonoBehaviour
             if(SpawnPos.Area == "SpawnA")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
-                SetSpawnPos(RAInsGoDataContainer1, SpawnPosList , 1);
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 3);
                 SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 3);
-                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 3);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 2);
+                SetSpawnPos(RAInsGoDataContainer1, SpawnPosList, 1);
             }
             else if (SpawnPos.Area == "SpawnB")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 3);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                SetSpawnPos(RAInsGoDataContainer1, SpawnPosList, 1);
                 //SetSpawnPos()
             }
             else if (SpawnPos.Area == "SpawnC")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
-                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
                 SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 2);
-                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer1, SpawnPosList, 3);
                 //SetSpawnPos
             }
             else if (SpawnPos.Area == "SpawnD")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 3);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 2);
-                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 1);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                SetSpawnPos(RAInsGoDataContainer1, SpawnPosList, 2);
                 //SetSpawnPos
             }
             else if (SpawnPos.Area == "SpawnE")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
-                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 3);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 3);
-                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer1, SpawnPosList, 3);
                 //SetSpawnPos
             }
             //SetSpawnPos()

@@ -96,7 +96,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 907b8c6249439ae4ca6ec4fc985ca7d6, type: 3}
+  m_Motion: {fileID: 7400000, guid: 0f684f3c60c9ec44ea07723c9c49cadc, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -435,7 +435,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RabbitArcher
+  m_Name: EliteArcher
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: RanIDLE
@@ -943,7 +943,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ATTACK
-  m_Speed: 0.9
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5854237215233147169}
@@ -956,7 +956,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 7af158c105e5c6f42a5bca349c5e62bc, type: 3}
+  m_Motion: {fileID: 7400000, guid: 907b8c6249439ae4ca6ec4fc985ca7d6, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

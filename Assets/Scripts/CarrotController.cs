@@ -10,6 +10,7 @@ public class CarrotController : MonoBehaviour
     private static List<Vector3> SetTargetVecList;
     private GameObject Target;
     private float MaxTimer;
+    private static string ForATKtype;
 
 
     public static void InsCarrot(Vector3 SpawnPos , List<Vector3> TargetVecList , string ATKtype , Vector3 scale)
@@ -25,6 +26,7 @@ public class CarrotController : MonoBehaviour
             Basket.Add(carrotIns);
             SetSpawnPos = SpawnPos;
             SetTargetVecList.Add(TargetVecList[i]);
+            ForATKtype = ATKtype;
         }
         for (int n =0; n < a; n++)
         {
@@ -33,6 +35,7 @@ public class CarrotController : MonoBehaviour
         }
         
     }
+
     private void Recycle()
     {
         var TargetPos = Target.transform.position + new Vector3(0, 0.79f, 0);

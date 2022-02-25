@@ -99,7 +99,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     {
         rabaAnim = GetComponent<Animator>();
         rabaRig = GetComponent<Rigidbody>();
-        monsterHp = 100;
+        monsterHp = 200;
 
         mCurrentState = FSMState.Spawn;
         mCheckState = CheckSpawnState;
@@ -590,12 +590,13 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
     private void PlayerAttack(float zAttack, float skillAttack)
     {
+        DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
         var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward * 2);
         var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward * 2).magnitude;
         var cosValue = a / b;
 
 
-        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0)
+        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0&& DisToTarget <= 3.0f)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
             //dogAnimator.SetBool("gethit", true);
@@ -603,14 +604,14 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             getHurt = true;
             //Debug.Log("z1");
         }
-        else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0)
+        else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
             getHurt = true;
             zAttack = 0;
             //Debug.Log("z2");
         }
-        else if (cosValue >= 0.85 && zAttack == 3 && hpImage.fillAmount > 0)
+        else if (cosValue >= 0.85 && zAttack == 3 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
             hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
             getHurt = true;
@@ -621,7 +622,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         //人物技能X 傷害第一段
         if (skillAttack == 1)
         {
-            if (cosValue >= 0.8f && hpImage.fillAmount > 0)
+            if (cosValue >= 0.8f && hpImage.fillAmount > 0 && DisToTarget <= 2.8f)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
                 getHurt = true;
@@ -636,7 +637,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         }
 
         //人物技能X 傷害第二段
-        else if (skillAttack == 2)
+        else if (cosValue >= 0.7f && hpImage.fillAmount > 0 && DisToTarget <= 3.5f)
         {
 
             //前方一段距離的圓傷害判定用
@@ -659,7 +660,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                 //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
             }
         }
-        else if (skillAttack == 3)
+        else if (skillAttack == 3 && DisToTarget <= 2.3f)
         {
             if (hpImage.fillAmount > 0)
             {
@@ -691,10 +692,15 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         Debug.Log("目前狀態          " + mCurrentState);
 
         //Damage
-        if (DisToTarget < 2.3f)
+        //if (DisToTarget < 2.3f)
+        //{
+        //    PlayerAttack(zAttack, skillAttack);
+        //}
+        if(zAttack!=0 || skillAttack!=0)
         {
-            PlayerAttack(zAttack, skillAttack);
+             PlayerAttack(zAttack, skillAttack);
         }
+
         if (getHurt && Alife && Time.time > DamageTimer && !rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("POWERATTACK"))
         {
             DamageTimer = Time.time + 1;
@@ -739,7 +745,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         //狀態做甚麼
         mDoState();
 
-        DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
+        //DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
         monsterHpbar.transform.forward = -Camera.main.transform.forward;
 
         if (Shooted == true)
@@ -751,7 +757,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                 TargetVecList.Add(CarrotVec);
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward * 0.5F);
 
-                CarrotController.InsCarrot(SpawnPos, TargetVecList, SpawnArea);
+                CarrotController.InsCarrot(SpawnPos, TargetVecList, SpawnArea , new Vector3(0.5f, 0.5f, 0.5f));
                 Shooted = false;
             }
         }
@@ -767,7 +773,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                     var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position) + new Vector3(0, 0.08f, 0) + gameObject.transform.right + SectorVec * i;
                     TargetVecList.Add(CarrotVec);
                 }
-                CarrotController.InsCarrot(SpawnPos, TargetVecList, SpawnArea);
+                CarrotController.InsCarrot(SpawnPos, TargetVecList, SpawnArea , new Vector3(0.5f, 0.5f, 0.5f));
                 Debug.Log(TargetVecList.Count);
                 PAshooted = false;
             }

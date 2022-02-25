@@ -218,8 +218,8 @@ public class PlayerInfo : MonoBehaviour
     {
         if (!dodgeInv)
         {
-            playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 1) / playerMaxHp;
-            playerHp = playerHp - 1;
+            playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 10) / playerMaxHp;
+            playerHp = playerHp - 10;
             DizzyCount++;
             if (DizzyCount % 3 == 0 || DizzyCount % 50 == 0)
             {

@@ -12,7 +12,7 @@ public class CarrotController : MonoBehaviour
     private float MaxTimer;
 
 
-    public static void InsCarrot(Vector3 SpawnPos , List<Vector3> TargetVecList , string ATKtype)
+    public static void InsCarrot(Vector3 SpawnPos , List<Vector3> TargetVecList , string ATKtype , Vector3 scale)
     {
         var a = TargetVecList.Count;
         List<GameObject> Basket = new List<GameObject>();
@@ -21,6 +21,7 @@ public class CarrotController : MonoBehaviour
         {
             GameObject carrotIns = Instantiate(Resources.Load("Weapons/carrotarrow")) as GameObject;
             carrot = carrotIns;
+            carrot.transform.localScale = scale;
             Basket.Add(carrotIns);
             SetSpawnPos = SpawnPos;
             SetTargetVecList.Add(TargetVecList[i]);

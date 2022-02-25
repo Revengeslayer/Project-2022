@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1993332077045539764
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 312703557, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_Mass
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 312703557, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3552942358730493269, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512392, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 75599898ba8d66141ae08201ab7bf317, type: 2}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -56.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 18.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 46.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.037410222
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9993
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 184.288
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512393, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512397, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_Name
+      value: DogPBR Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314464392897512398, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+--- !u!1 &5938411465406849145 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5314464392897512397, guid: 01783af080f2b214cb8ec208012511d2, type: 3}
+  m_PrefabInstance: {fileID: 1993332077045539764}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1848798918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5938411465406849145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee88165d05ac5ce4dbfea99725cb2b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterHpbar: {fileID: 0}
+  hpImage: {fileID: 0}
+  hpImage0: {fileID: 0}
+  dogWalkSpeed: 1
+  dogRunSpeed: 2
+  dogAtkDic: 1.2
+  dogChaseDic: 3
+  dogWarnDic: 4
+  dogBackToInitDic: 5
+  actRestTme: 1.2
+  reRestTme: 0
+  mobThinkTme: 1
+  canHitCount: 0
+  dropItem: {fileID: 7847104384881856875, guid: 06c2d3c404a644546ae15cd0e88d8034, type: 3}

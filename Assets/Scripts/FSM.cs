@@ -495,6 +495,7 @@ public class FSM : MonoBehaviour
 		isAtkToMove = false;
 		anim.SetInteger("combo2", 0);
 		anim.SetInteger("combo3", 0);
+		anim.SetBool("isAttack", false);
 		//按下攻擊
 		if (Input.GetKeyDown(KeyCode.Z))
 		{			
@@ -727,6 +728,7 @@ public class FSM : MonoBehaviour
 	private void DoMoveState()
 	{
 		//isGitHit = false;
+		anim.SetBool("isAttack", false);
 		canMove = true;
 		//都不按方向鍵
 		if (!(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) == true)
@@ -778,6 +780,7 @@ public class FSM : MonoBehaviour
 		isSkillToDodge = false;
 		ChangeForword = false;
 		isAtkToMove = false;
+		anim.SetBool("isAttack", false);
 		if (PlayerInfo.DizzyCount>=50)
 		{
 			PlayerInfo.DizzyCount = 0;

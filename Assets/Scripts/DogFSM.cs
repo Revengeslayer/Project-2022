@@ -100,8 +100,8 @@ public class DogFSM : MonoBehaviour
         initDic = this.transform.position;
         monsterAlive = true;
         monsterHp = 300.0f;
-        player =GameObject.Find("Character");
-        //player=GameObject.Find("Character(Clone)");
+        //player =GameObject.Find("Character");
+        player=GameObject.Find("Character(Clone)");
         mCurrentState = DogFSMState.Idle_Battle;
         anim = GetComponent<Animator>();
     }

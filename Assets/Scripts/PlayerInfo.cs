@@ -82,8 +82,11 @@ public class PlayerInfo : MonoBehaviour
         RabbitArcherSteeringFSM.zAttack = zAttack;
         RabbitArcherSteeringFSM.skillAttack = skillAttack;
 
+        EliteArcher.zAttack = zAttack;
+        EliteArcher.skillAttack = skillAttack;
+
         DogFSM.zAttack = zAttack;
-        DogFSM.skillAttack = skillAttack;
+        DogFSM.skillAttack = skillAttack;   
     }
 
 
@@ -169,11 +172,35 @@ public class PlayerInfo : MonoBehaviour
             dodge = false;
         }
     }
+    private void DodgeCheck()
+    {
+        if (dodgeInv == false)
+        {
+            dodgeInv = true;
+        }
+        else
+        {
+            dodgeInv = false;
+        }
+
+    }
+    private void Hit()
+    {
+        attack1 = false;
+        attack2 = false;
+        attack3 = false;
+        skill_X = false;
+        dodge = false;
+        dodgeInv = false;
+    }
     private void Die()
     {
         attack1 = false;
         attack2 = false;
         attack3 = false;
+        skill_X = false;
+        dodge = false;
+        dodgeInv = false;
     }
     #endregion
     public static void PlayerHpCal(int a)
@@ -232,16 +259,5 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
-    private void DodgeCheck()
-    {
-        if (dodgeInv == false)
-        {
-            dodgeInv = true;
-        }
-        else
-        {
-            dodgeInv = false;
-        }
-
-    }
+    
 }

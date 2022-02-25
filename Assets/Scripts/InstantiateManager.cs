@@ -332,12 +332,14 @@ public class InstantiateManager : MonoBehaviour
             //Debug.Log(SpawnPos.Area);
             if(SpawnPos.Area == "SpawnA")
             {
+                RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 2);
                 SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 1);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 3);
             }
             else if (SpawnPos.Area == "SpawnB")
             {
+                RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
                 SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
@@ -345,6 +347,7 @@ public class InstantiateManager : MonoBehaviour
             }
             else if (SpawnPos.Area == "SpawnC")
             {
+                RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
                 SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
@@ -352,6 +355,7 @@ public class InstantiateManager : MonoBehaviour
             }
             else if (SpawnPos.Area == "SpawnD")
             {
+                RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
                 SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
@@ -359,6 +363,7 @@ public class InstantiateManager : MonoBehaviour
             }
             else if (SpawnPos.Area == "SpawnE")
             {
+                RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
                 SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
                 SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);

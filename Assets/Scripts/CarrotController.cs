@@ -12,12 +12,13 @@ public class CarrotController : MonoBehaviour
     private float MaxTimer;
 
 
-    public static void InsCarrot(Vector3 SpawnPos , Vector3 TargetVec)
+    public static void InsCarrot(Vector3 SpawnPos , Vector3 TargetVec , string ATKtype)
     {
         GameObject carrotIns = Instantiate(Resources.Load("Weapons/carrotarrow")) as GameObject;
         carrot = carrotIns;
         SetSpawnPos = SpawnPos;
         SetTargetVec = TargetVec;
+        
     }
     private void Recycle()
     {
@@ -48,11 +49,15 @@ public class CarrotController : MonoBehaviour
         gameObject.transform.forward = -SetTargetVec;
         MaxTimer = 0;
     }
-    
+
+    private void Update()
+    {
+        Recycle();
+    }
     private void FixedUpdate()
     {
         gameObject.transform.position -= gameObject.transform.forward * Time.deltaTime * 8;
-        Recycle();
+        //Recycle();
     }
     private void OnDrawGizmos()
     {

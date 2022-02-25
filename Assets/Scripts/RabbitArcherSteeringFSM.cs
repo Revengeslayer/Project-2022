@@ -23,6 +23,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     public static float zAttack;
     public static float skillAttack;
     private float playerHp;
+    public static string SpawnArea;
     float monsterHp;
     public GameObject dropItem;
 
@@ -338,7 +339,9 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         else if (toCHASE)
         {
             Debug.Log("chase");
-            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, Vec, 0.2f);
+            //var turnX = Vector3.Dot(gameObject.transform.forward, Vec);
+            //var turnZ = Vector3.Dot(gameObject.transform.right, Vec);
+            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward + (gameObject.transform.right * 0.1f), Vec, 1 * Time.deltaTime );
             gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 2;
             toCHASE = false;
             toMOVE = false;
@@ -453,8 +456,11 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     {
         if (toESC && EscTimer < 1.5)
         {
-            EscTimer += Time.deltaTime;
             doESC = true;
+            if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("MOVE"))
+            {
+                EscTimer += Time.deltaTime;
+            }
         }
         //else if (!toESC && !doESC)
         //{
@@ -727,7 +733,6 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         //ª¬ºA°µ¬Æ»ò
         mDoState();
 
-
         DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
         monsterHpbar.transform.forward = -Camera.main.transform.forward;
 
@@ -738,7 +743,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                 var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position);
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward * 0.5F);
 
-                CarrotController.InsCarrot(SpawnPos, CarrotVec);
+                CarrotController.InsCarrot(SpawnPos, CarrotVec , SpawnArea);
                 Shooted = false;
             }
         }
@@ -749,7 +754,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                 var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position) + new Vector3(0 ,0.08f, 0);
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.25f, 0) + gameObject.transform.forward * 0.3F);
 
-                CarrotController.InsCarrot(SpawnPos, CarrotVec);
+                CarrotController.InsCarrot(SpawnPos, CarrotVec, SpawnArea);
                 PAshooted = false;
             }
         }

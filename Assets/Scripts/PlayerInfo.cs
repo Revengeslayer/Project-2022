@@ -241,12 +241,42 @@ public class PlayerInfo : MonoBehaviour
 
     }
 
-    public static void CarrotArrowDamage()
+    public static void CarrotArrowDamage(string ATKtype)
     {
-        if (!dodgeInv)
+        if (!dodgeInv && ATKtype == "A")
         {
             playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 10) / playerMaxHp;
             playerHp = playerHp - 10;
+            DizzyCount++;
+            if (DizzyCount % 3 == 0 || DizzyCount % 50 == 0)
+            {
+                FSM.isGitHit = true;
+            }
+        }
+        if (!dodgeInv && ATKtype == "B")
+        {
+            playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 15) / playerMaxHp;
+            playerHp = playerHp - 15;
+            DizzyCount++;
+            if (DizzyCount % 3 == 0 || DizzyCount % 50 == 0)
+            {
+                FSM.isGitHit = true;
+            }
+        }
+        if (!dodgeInv && ATKtype == "C")
+        {
+            playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 25) / playerMaxHp;
+            playerHp = playerHp - 25;
+            DizzyCount++;
+            if (DizzyCount % 3 == 0 || DizzyCount % 50 == 0)
+            {
+                FSM.isGitHit = true;
+            }
+        }
+        if (!dodgeInv && ATKtype == "D")
+        {
+            playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 40) / playerMaxHp;
+            playerHp = playerHp - 40;
             DizzyCount++;
             if (DizzyCount % 3 == 0 || DizzyCount % 50 == 0)
             {

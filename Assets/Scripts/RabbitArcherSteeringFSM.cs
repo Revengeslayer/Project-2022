@@ -399,10 +399,10 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
 
         //掉落道具為怪物位置
-        Vector3 itemPosition = this.transform.position;
+        //Vector3 itemPosition = this.transform.position;
         //itemPosition += new Vector3(Random.Range(-2, 2), 0.2f, Random.Range(-2, 2));
 
-        Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
+        //Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
         gameObject.SetActive(false);
         hpImage.fillAmount = 1;
         mCurrentState = FSMState.Spawn;
@@ -757,7 +757,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                 TargetVecList.Add(CarrotVec);
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward * 0.5F);
 
-                CarrotController.InsCarrot(SpawnPos, TargetVecList, SpawnArea , new Vector3(0.5f, 0.5f, 0.5f));
+                CarrotController.InsCarrot(SpawnPos, TargetVecList, "A" , new Vector3(0.5f, 0.5f, 0.5f));
                 Shooted = false;
             }
         }
@@ -773,7 +773,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                     var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position) + new Vector3(0, 0.08f, 0) + gameObject.transform.right + SectorVec * i;
                     TargetVecList.Add(CarrotVec);
                 }
-                CarrotController.InsCarrot(SpawnPos, TargetVecList, SpawnArea , new Vector3(0.5f, 0.5f, 0.5f));
+                CarrotController.InsCarrot(SpawnPos, TargetVecList, "B" , new Vector3(0.5f, 0.5f, 0.5f));
                 Debug.Log(TargetVecList.Count);
                 PAshooted = false;
             }

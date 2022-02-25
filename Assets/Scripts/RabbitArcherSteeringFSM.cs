@@ -99,7 +99,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     {
         rabaAnim = GetComponent<Animator>();
         rabaRig = GetComponent<Rigidbody>();
-        monsterHp = 1000;
+        monsterHp = 100;
 
         mCurrentState = FSMState.Spawn;
         mCheckState = CheckSpawnState;
@@ -142,6 +142,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     }
     private void CheckBattleIdleState()
     {
+        toMOVE = false;
         CheckBattleAction();   //set bool by timer to control Action CD
         CheckNextAttackAction();   //NextAttack CD
         CheckTargetDist();
@@ -370,6 +371,10 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         NextAttack = false;
         PATimer = 0;
         AttackTimer = 0;
+        if(rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("POWERATTACK"))
+        {
+            getHurt = false;
+        }
     }
     private void DoKnockBackState()
     {
@@ -395,7 +400,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
 
         //掉落道具為怪物位置
         Vector3 itemPosition = this.transform.position;
-        itemPosition += new Vector3(Random.Range(-2, 2), 0.2f, Random.Range(-2, 2));
+        //itemPosition += new Vector3(Random.Range(-2, 2), 0.2f, Random.Range(-2, 2));
 
         Instantiate(dropItem, itemPosition, dropItem.transform.rotation);
         gameObject.SetActive(false);
@@ -457,6 +462,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         if (toESC && EscTimer < 1.5)
         {
             doESC = true;
+            toMOVE = true;
             if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("MOVE"))
             {
                 EscTimer += Time.deltaTime;
@@ -741,9 +747,11 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("ATTACK") && rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.35f)
             {
                 var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position);
+                List<Vector3> TargetVecList = new List<Vector3>();
+                TargetVecList.Add(CarrotVec);
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward * 0.5F);
 
-                CarrotController.InsCarrot(SpawnPos, CarrotVec , SpawnArea);
+                CarrotController.InsCarrot(SpawnPos, TargetVecList, SpawnArea);
                 Shooted = false;
             }
         }
@@ -751,10 +759,16 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         {
             if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("POWERATTACK") && rabaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.575f)
             {
-                var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position) + new Vector3(0 ,0.08f, 0);
+                List<Vector3> TargetVecList = new List<Vector3>();
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.25f, 0) + gameObject.transform.forward * 0.3F);
-
-                CarrotController.InsCarrot(SpawnPos, CarrotVec, SpawnArea);
+                for (int i = 0; i < 5; i++)
+                {
+                    var SectorVec = gameObject.transform.right * -0.5f;
+                    var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position) + new Vector3(0, 0.08f, 0) + gameObject.transform.right + SectorVec * i;
+                    TargetVecList.Add(CarrotVec);
+                }
+                CarrotController.InsCarrot(SpawnPos, TargetVecList, SpawnArea);
+                Debug.Log(TargetVecList.Count);
                 PAshooted = false;
             }
         }

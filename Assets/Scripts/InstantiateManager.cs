@@ -182,99 +182,6 @@ public class InstantiateManager : MonoBehaviour
             ID.insGo.SetActive(true);
             //Debug.Log(SpawnPosList.Count);
         }
-        //InsGoDataContainer = new List<InstantiateData>();
-        //SpawnPosList = new List<SpawnData>();
-        //if(InsGoDataContainer.Count > SpawnNums)
-        //{
-
-            //}
-            //var ContainerCount = InsGoDataContainer.Count;
-            //var SpawnPosCount = SpawnPosList.Count;
-
-            //if (ContainerCount > SpawnPosCount)
-            //{
-            //    ContainerCount = SpawnPosCount;
-            //}
-            //for (int i = 0; i < SpawnNums; i ++)
-            //{
-            //    int targetNum = Random.Range(0, InsGoDataContainer.Count);
-            //    var ID = InsGoDataContainer[targetNum];
-            //    if(!ID.setOn)
-            //    {
-            //        for(int x = 0; x < SpawnPosList.Count; x ++)
-            //        //foreach (SpawnData SD in SpawnPosList)
-            //        {
-            //            int spNum = Random.Range(0, SpawnPosList.Count);
-            //            SpawnData SD = SpawnPosList[spNum];
-            //            if (!SD.Spawned)
-            //            {
-            //                ID.insGo.transform.position = SD.Pos.transform.position;
-            //                ID.insGo.SetActive(true);
-            //                ID.setOn = true;
-            //                SD.Spawned = true;
-            //                break;
-            //            }
-            //            else if(SD.Spawned)
-            //            {
-            //                x--;
-            //            }
-            //            else
-            //            {
-            //                break;                    
-            //            }
-            //        }
-            //    }
-            //    else if(ID.setOn)
-            //    {
-            //        i--;
-            //    }
-            //    else
-            //    {
-            //        break;
-            //    }
-            //    //foreach (SpawnData SD in SpawnPosList)
-            //    //{
-            //    //    if (!SD.Spawned)
-            //    //    {
-
-            //    //    }
-            //    //    else
-            //    //    {
-            //    //        Debug.Log("SpawnedError");
-            //    //    }
-            //    //}
-            //    //Debug.Log("indexInFor");
-            //    //Debug.Log(InsGoDataContainer.Count);
-            //    //var ID = InsGoDataContainer[i];
-            //    //var SL = SpawnPosList[i];
-            //    //if(!SL.Spawned)
-            //    //{
-            //    //    ID.insGo.transform.position = SL.Pos.transform.position;
-            //    //    ID.insGo.SetActive(true);
-            //    //    ID.setOn = true;
-            //    //    SL.Spawned = true;
-            //    //}
-            //    //else
-            //    //{
-            //    //    Debug.Log("SpawnedError");
-            //    //}
-            //}
-            //for (int i = 0; i < SpawnPosList.Count; i ++)
-            //foreach (SpawnData SD in SpawnPosList)
-            //{
-            //    SD = SpawnPosList[i];
-            //    if (!SD.Spwaned)
-            //    {
-            //        a = SD.Pos;
-            //        rabaSpawn = a.transform.position;
-            //        SD.Spwaned = true;
-            //        SpawnedList.Add(SD);
-            //        SD.Pos.SetActive(false);
-            //        SpawnPosList.RemoveAt(i);
-            //        break;
-            //    }
-            //}
-            //return rabaSpawn;
     }
     private void Awake()
     {
@@ -333,8 +240,8 @@ public class InstantiateManager : MonoBehaviour
             if(SpawnPos.Area == "SpawnA")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
-                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 2);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 1);
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 3);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 3);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 3);
             }
             else if (SpawnPos.Area == "SpawnB")
@@ -348,24 +255,24 @@ public class InstantiateManager : MonoBehaviour
             else if (SpawnPos.Area == "SpawnC")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
-                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 2);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
                 //SetSpawnPos
             }
             else if (SpawnPos.Area == "SpawnD")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
-                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
-                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 3);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 2);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 4);
                 //SetSpawnPos
             }
             else if (SpawnPos.Area == "SpawnE")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
-                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 2);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 4);
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList, 3);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList, 3);
                 SetSpawnPos(RAInsGoDataContainer2, SpawnPosList, 3);
                 //SetSpawnPos
             }

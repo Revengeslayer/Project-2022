@@ -45,12 +45,12 @@ public class CarrotController : MonoBehaviour
         MaxTimer += Time.deltaTime;
         if (Dist < 0.3)
         {
-            PlayerInfo.CarrotArrowDamage();
+            PlayerInfo.CarrotArrowDamage(ForATKtype);
             Destroy(gameObject);
         }
         else if (Dist < 0.8 && HitCheckDot < 0)
         {
-            PlayerInfo.CarrotArrowDamage();
+            PlayerInfo.CarrotArrowDamage(ForATKtype);
             Destroy(gameObject);
         }
         else if(MaxTimer > 3)

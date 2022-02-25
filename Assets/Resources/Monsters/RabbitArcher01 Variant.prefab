@@ -380,4 +380,4 @@ MonoBehaviour:
   hpImage: {fileID: 105494333002571221}
   hpImage0: {fileID: 7279816772092353587}
   Target: {fileID: 0}
-  dropItem: {fileID: 1068125920851093220, guid: 5b9d7c17c0f86a74cb47d7a8556b3ccc, type: 3}
+  dropItem: {fileID: 7847104384881856875, guid: 06c2d3c404a644546ae15cd0e88d8034, type: 3}

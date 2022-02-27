@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MinMapMob : MonoBehaviour
 {
-    public GameObject test;
+    [Header("´å¼Ð¹Ï¥Ü")]
+    public GameObject prefab;
+    private GameObject test;
     private float mapStartx;
     private float mapStartz;
 
@@ -16,6 +18,8 @@ public class MinMapMob : MonoBehaviour
 
     private float miniEndx;
     private float miniEndz;
+
+    private int count =0;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,22 +34,28 @@ public class MinMapMob : MonoBehaviour
 
         miniEndx = GameObject.Find("MiniMapEnd").transform.position.x;
         miniEndz = GameObject.Find("MiniMapEnd").transform.position.z;
+
+        test = GameObject.Find("Cylinder");
     }
 
     // Update is called once per frame
     void Update()
     {
-        ShowCursor(test);
+        if (count <= 0)
+        {
+            ShowCursor(test);
+            count++;
+        }
     }
     void ShowCursor(GameObject mobPos)
     {
 
         Vector3 mobMiniPos = new Vector3(((mobPos.transform.position.x - mapStartx) / (mapEndx - mapStartx)) * (miniEndx - miniStartx) + miniStartx, this.transform.position.y, ((mobPos.transform.position.z - mapStartz) / (mapEndz - mapStartz)) * (miniEndz - miniStartz) + miniStartz);
 
-        Debug.Log(mobMiniPos);
-        this.transform.Rotate(0, 90, 0);
+        Instantiate(prefab, mobMiniPos, mobPos.transform.rotation);
+        //Debug.Log(mobMiniPos);
 
-        this.transform.position = mobMiniPos;
-        this.transform.forward = mobPos.transform.forward;
+        //this.transform.position = mobMiniPos;
+        //this.transform.forward = mobPos.transform.forward;
     }
 }

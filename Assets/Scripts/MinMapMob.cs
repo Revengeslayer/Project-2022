@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,15 @@ public class MinMapMob : MonoBehaviour
     private float miniEndx;
     private float miniEndz;
 
-    private int count =0;
+    List<MobsCursor> Cursors;
+    struct MobsCursor
+    {
+        public GameObject mob;
+        public GameObject cursor;
+    }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,27 +44,45 @@ public class MinMapMob : MonoBehaviour
         miniEndx = GameObject.Find("MiniMapEnd").transform.position.x;
         miniEndz = GameObject.Find("MiniMapEnd").transform.position.z;
 
-        test = GameObject.Find("Cylinder");
+        Cursors = new List<MobsCursor>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (count <= 0)
+        CursorAdjForword();
+        
+    }
+
+    private void CursorAdjForword()
+    {
+        if (Cursors == null)
         {
-            ShowCursor(test);
-            count++;
+            return;
+        }
+        else
+        {
+            foreach(var a in Cursors)
+            {
+                a.cursor.transform.forward = a.mob.transform.forward;
+                a.cursor.transform.position = GameToMapPos(a.mob);
+            }
         }
     }
-    void ShowCursor(GameObject mobPos)
+
+    public void InstantiateCursor(GameObject mob)
     {
+        Vector3 mobMiniPos = new Vector3(((mob.transform.position.x - mapStartx) / (mapEndx - mapStartx)) * (miniEndx - miniStartx) + miniStartx, this.transform.position.y+0.06f, ((mob.transform.position.z - mapStartz) / (mapEndz - mapStartz)) * (miniEndz - miniStartz) + miniStartz);
+        var cursor =Instantiate(prefab, mobMiniPos, mob.transform.rotation);
 
-        Vector3 mobMiniPos = new Vector3(((mobPos.transform.position.x - mapStartx) / (mapEndx - mapStartx)) * (miniEndx - miniStartx) + miniStartx, this.transform.position.y, ((mobPos.transform.position.z - mapStartz) / (mapEndz - mapStartz)) * (miniEndz - miniStartz) + miniStartz);
+        MobsCursor mobC = new MobsCursor();
+        mobC.mob = mob;
+        mobC.cursor = cursor;
+        Cursors.Add(mobC);
+    }
 
-        Instantiate(prefab, mobMiniPos, mobPos.transform.rotation);
-        //Debug.Log(mobMiniPos);
-
-        //this.transform.position = mobMiniPos;
-        //this.transform.forward = mobPos.transform.forward;
+    private Vector3 GameToMapPos(GameObject mob )
+    {
+        return  new Vector3(((mob.transform.position.x - mapStartx) / (mapEndx - mapStartx)) * (miniEndx - miniStartx) + miniStartx, this.transform.position.y + 0.06f, ((mob.transform.position.z - mapStartz) / (mapEndz - mapStartz)) * (miniEndz - miniStartz) + miniStartz); ;
     }
 }

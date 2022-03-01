@@ -219,6 +219,7 @@ public class InstantiateManager : MonoBehaviour
         //SpawnPosInitializer();
         //rabaSpawn = GameObject.FindGameObjectWithTag("rabaSpawn").transform.position;
         miniMapPlane = GameObject.Find("MiniMapPlane");
+
     }
     void Update()
     {

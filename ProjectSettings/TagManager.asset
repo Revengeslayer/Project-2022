@@ -24,6 +24,11 @@ TagManager:
   - SpawnC
   - SpawnD
   - SpawnE
+  - AreaWallA
+  - AreaWallB
+  - AreaWallC
+  - AreaWallD
+  - AreaWallE
   layers:
   - Default
   - TransparentFX

@@ -66,6 +66,14 @@ public class MinMapMob : MonoBehaviour
             {
                 a.cursor.transform.forward = a.mob.transform.forward;
                 a.cursor.transform.position = GameToMapPos(a.mob);
+                if(a.mob.activeSelf)
+                {
+                    a.cursor.SetActive(true);
+                }
+                else
+                {
+                    a.cursor.SetActive(false);
+                }
             }
         }
     }

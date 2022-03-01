@@ -10,7 +10,7 @@ Shader "LightWall/lightWall"
 		Pass
 		{
 			CGPROGRAM
-			// #pragma Type VariableName  (基本宣告 型態 變數名稱)
+			// #pragma Type MethodName  (基本宣告 型態 函式名稱)
 			ENDCG
 		}
 	}

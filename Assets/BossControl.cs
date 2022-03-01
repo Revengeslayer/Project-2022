@@ -19,6 +19,9 @@ public class BossControl : MonoBehaviour
 
     bool bossRoll = false;
     bool bossJump = false;
+    bool bossTurn = false;
+
+    Vector3 bossJumpVec;
     private void Start()
     {
         objPlayer = GameObject.Find("Character(Clone)");
@@ -47,8 +50,14 @@ public class BossControl : MonoBehaviour
 
         if (bossJump == true)
         {
-            objBoss.transform.LookAt(objPlayer.transform.position);
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 12;
+            //objBoss.transform.LookAt(objPlayer.transform.position);
+            //gameObject.transform.forward = bossJumpVec;
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 15;
+        }
+
+        if(bossTurn == true)
+        {
+            gameObject.transform.forward += (objPlayer.transform.position - gameObject.transform.position).normalized * Time.deltaTime * 5;
         }
 
 
@@ -168,10 +177,22 @@ public class BossControl : MonoBehaviour
         if (bossJump == false)
         {
             bossJump = true;
+            bossJumpVec = (objPlayer.transform.position - gameObject.transform.position).normalized;
         }
         else if (bossJump == true)
         {
             bossJump = false;
+        }
+    }
+    void BossJumpTurn()
+    {
+        if(bossTurn == false)
+        {
+            bossTurn = true;
+        }
+        else if(bossTurn == true)
+        {
+            bossTurn = false;
         }
     }
     //void BossLeftAtk()

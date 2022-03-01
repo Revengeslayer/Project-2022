@@ -10,7 +10,7 @@ public class PlayerEffect : MonoBehaviour
     public GameObject atklight3_2;
     public GameObject skillX_1;
     public GameObject skillX_2;
-
+    public GameObject skillC;
     void AtklightOpen1()
     {
         atklight1.SetActive(true);
@@ -63,6 +63,14 @@ public class PlayerEffect : MonoBehaviour
         skillX_2.SetActive(false);
     }
 
+    void SkillC_Open()
+    {
+        skillC.SetActive(true);
+    }
+    void SkillC_Close()
+    {
+        skillC.SetActive(false);
+    }
     void DieEffect()
     {
         AtklightClose1();

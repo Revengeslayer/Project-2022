@@ -348,7 +348,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6270836915349944841}
   - component: {fileID: 6270836915349944846}
-  - component: {fileID: 6270836915349944847}
   - component: {fileID: 6270836915349944840}
   m_Layer: 0
   m_Name: EarthElemental Variant
@@ -392,19 +391,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6270836915349944847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6270836915349944844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db7f8886577d454bae4e8ce682b8292, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DieAnim: {fileID: 113980667678103006, guid: 6d5bb85423fcbbe45b8b21710d65887c, type: 3}
 --- !u!114 &6270836915349944840
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class Trigger : MonoBehaviour
     private GameObject SpawnB;
     private GameObject SpawnC;
     private GameObject SpawnD;
+    //09-add
     private GameObject AirManager;
     // Start is called before the first frame update
 
@@ -32,6 +33,7 @@ public class Trigger : MonoBehaviour
         SpawnB = GameObject.Find("SpawnB");
         SpawnC = GameObject.Find("SpawnC");
         SpawnD = GameObject.Find("SpawnD");
+        //09-add 
         AirManager= GameObject.Find("AirManager");
     }
     void OnTriggerEnter(Collider other)
@@ -86,11 +88,12 @@ public class Trigger : MonoBehaviour
         {
             Destroy(other.gameObject);
             var tagName = other.tag;  //for SpawnArea
-            //InstantiateManager.stringTag = tagName;
-            //InstantiateManager.Spawn = true;  //for SpawnBool
+            InstantiateManager.stringTag = tagName;
+            InstantiateManager.Spawn = true;  //for SpawnBool
 
-
+            //09-add set Wall data
             var wallContainer = GameObject.FindGameObjectsWithTag("AreaWallA");
+            AirManager.GetComponent<AirWallManager>().openWall = true;
             AirManager.GetComponent<AirWallManager>().SetWalls(wallContainer, "AreaWallA");
             Debug.Log("¶i¤J°Ï°ì");
         }

@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AirWallManager : MonoBehaviour
 {
+    public bool openWall; 
     private List<AirWallState> airWalls;
     public struct AirWallState
     {
@@ -19,48 +21,44 @@ public class AirWallManager : MonoBehaviour
         {
             container.airWallType = airWallType;
             container.wall = walls[i];
-            container.display = walls[i].GetComponent<BoxCollider>().isTrigger;
+            if (walls[i].GetComponent<BoxCollider>().isTrigger == true)
+            {
+                walls[i].GetComponent<BoxCollider>().isTrigger = false;
+                container.display = walls[i].GetComponent<BoxCollider>().isTrigger;
+            }
             airWalls.Add(container);
         }
 
     }
 
-    private void Show()
+    private void CheckAirWall()
     {
-        if (airWalls == null)
+        if (openWall == false)
         {
             return;
         }
-        else
+        else if (openWall && InstantiateManager.aliveCount == 0)
         {
-            foreach( var container in airWalls)
-            { 
-                Debug.Log("門類型=  " + container.airWallType + "            門=  " + container.wall + "       門顯示=  " + container.display);
+            openWall = false;
+            
+            for (int i = 0; i < airWalls.Count; i++)
+            {
+                airWalls[i].wall.GetComponent<BoxCollider>().isTrigger = true;
             }
-        }
-
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            airWalls[0].wall.GetComponent<BoxCollider>().isTrigger = false;
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            airWalls[1].wall.GetComponent<BoxCollider>().isTrigger = false;
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            airWalls[2].wall.GetComponent<BoxCollider>().isTrigger = false;
+            airWalls.Clear();
         }
     }
 
     void Start()
     {
+        openWall = false;
         airWalls = new List<AirWallState>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Show();
+        CheckAirWall();
+        Debug.Log("數量            ="+airWalls.Count); ;
     }
 }

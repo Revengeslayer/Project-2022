@@ -725,6 +725,9 @@ public class EliteArcher : MonoBehaviour
         //MonsterDie
         if (hpImage.fillAmount <= 0 && Alife == true)
         {
+            //09-add  set aliveCount ot InstantiateManager
+            InstantiateManager.aliveCount--;
+
             Debug.Log("inDie");
             getHurt = false;
             Alife = false;

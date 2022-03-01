@@ -38,6 +38,8 @@ public class InstantiateManager : MonoBehaviour
     private Vector3 rabaSpawn;
     public static bool Spawn;
     public static float GetSpawnNums;
+    //09-add
+    public static int aliveCount;
     private GameObject miniMapPlane;
 
     #region ForINS
@@ -185,6 +187,9 @@ public class InstantiateManager : MonoBehaviour
             SpawnPosList.RemoveAt(ranPos);
             ID.insGo.SetActive(true);
 
+            //09-add set aliveCount
+            aliveCount++;
+            //09-add set MinMapMob Data
             miniMapPlane.GetComponent<MinMapMob>().InstantiateCursor(ID.insGo);
             //Debug.Log(SpawnPosList.Count);
         }
@@ -218,11 +223,15 @@ public class InstantiateManager : MonoBehaviour
         //SpawnPosContainer = GameObject.FindGameObjectsWithTag("rabaSpawn");
         //SpawnPosInitializer();
         //rabaSpawn = GameObject.FindGameObjectWithTag("rabaSpawn").transform.position;
+
+        //09-add
         miniMapPlane = GameObject.Find("MiniMapPlane");
+        aliveCount = 0;
 
     }
     void Update()
     {
+        Debug.Log("存活數量=       "+aliveCount);
         //if(Input.GetMouseButtonDown(0))
         ////if(Spawn)
         //{

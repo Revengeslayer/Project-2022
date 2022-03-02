@@ -99,7 +99,7 @@ public class EliteArcher : MonoBehaviour
     {
         rabaAnim = GetComponent<Animator>();
         rabaRig = GetComponent<Rigidbody>();
-        monsterHp = 1000;
+        monsterHp = 1;
 
         mCurrentState = FSMState.Spawn;
         mCheckState = CheckSpawnState;

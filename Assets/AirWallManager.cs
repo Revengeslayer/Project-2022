@@ -23,6 +23,7 @@ public class AirWallManager : MonoBehaviour
             container.wall = walls[i];
             if (walls[i].GetComponent<BoxCollider>().isTrigger == true)
             {
+                walls[i].transform.GetChild(0).gameObject.SetActive(true); 
                 walls[i].GetComponent<BoxCollider>().isTrigger = false;
                 container.display = walls[i].GetComponent<BoxCollider>().isTrigger;
             }

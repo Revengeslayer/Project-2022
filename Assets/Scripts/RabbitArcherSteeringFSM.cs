@@ -99,7 +99,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     {
         rabaAnim = GetComponent<Animator>();
         rabaRig = GetComponent<Rigidbody>();
-        monsterHp = 200;
+        monsterHp = 1;
 
         mCurrentState = FSMState.Spawn;
         mCheckState = CheckSpawnState;

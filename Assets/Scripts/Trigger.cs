@@ -95,7 +95,6 @@ public class Trigger : MonoBehaviour
             var wallContainer = GameObject.FindGameObjectsWithTag("AreaWallA");
             AirManager.GetComponent<AirWallManager>().openWall = true;
             AirManager.GetComponent<AirWallManager>().SetWalls(wallContainer, "AreaWallA");
-            Debug.Log("¶i¤J°Ï°ì");
         }
         else if (colliderTag == "SpawnB") 
         {
@@ -103,6 +102,11 @@ public class Trigger : MonoBehaviour
             var tagName = other.tag;  //for SpawnArea
             InstantiateManager.stringTag = tagName;
             InstantiateManager.Spawn = true;  //for SpawnBool
+
+            //09-add set Wall data
+            var wallContainer = GameObject.FindGameObjectsWithTag("AreaWallB");
+            AirManager.GetComponent<AirWallManager>().openWall = true;
+            AirManager.GetComponent<AirWallManager>().SetWalls(wallContainer, "AreaWallB");
         }
         else if (colliderTag == "SpawnC")
         {
@@ -110,6 +114,11 @@ public class Trigger : MonoBehaviour
             var tagName = other.tag;  //for SpawnArea
             InstantiateManager.stringTag = tagName;
             InstantiateManager.Spawn = true;  //for SpawnBool
+
+            //09-add set Wall data
+            var wallContainer = GameObject.FindGameObjectsWithTag("AreaWallC");
+            AirManager.GetComponent<AirWallManager>().openWall = true;
+            AirManager.GetComponent<AirWallManager>().SetWalls(wallContainer, "AreaWallC");
         }
         else if (colliderTag == "SpawnD")
         {
@@ -117,6 +126,11 @@ public class Trigger : MonoBehaviour
             var tagName = other.tag;  //for SpawnArea
             InstantiateManager.stringTag = tagName;
             InstantiateManager.Spawn = true;  //for SpawnBool
+
+            //09-add set Wall data
+            var wallContainer = GameObject.FindGameObjectsWithTag("AreaWallD");
+            AirManager.GetComponent<AirWallManager>().openWall = true;
+            AirManager.GetComponent<AirWallManager>().SetWalls(wallContainer, "AreaWallD");
         }
         else if (colliderTag == "SpawnE") 
         {
@@ -124,6 +138,11 @@ public class Trigger : MonoBehaviour
             var tagName = other.tag;  //for SpawnArea
             InstantiateManager.stringTag = tagName;
             InstantiateManager.Spawn = true;  //for SpawnBool
+
+            //09-add set Wall data
+            var wallContainer = GameObject.FindGameObjectsWithTag("AreaWallE");
+            AirManager.GetComponent<AirWallManager>().openWall = true;
+            AirManager.GetComponent<AirWallManager>().SetWalls(wallContainer, "AreaWallE");
         }
         //else if (colliderTag == "SpawnC")
         //{

@@ -592,8 +592,8 @@ public class EliteArcher : MonoBehaviour
     private void PlayerAttack(float zAttack, float skillAttack)
     {
         DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
-        var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward * 2);
-        var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward * 2).magnitude;
+        var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward );
+        var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward ).magnitude;
         var cosValue = a / b;
 
 
@@ -612,7 +612,7 @@ public class EliteArcher : MonoBehaviour
             zAttack = 0;
             //Debug.Log("z2");
         }
-        else if (cosValue >= 0.85 && zAttack == 3 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
+        else if (cosValue >= 0.7 && zAttack == 3 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
             hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
             getHurt = true;
@@ -648,20 +648,17 @@ public class EliteArcher : MonoBehaviour
             //playrerAtkPosition = objPlayer.transform.position + objPlayer.transform.forward * 1.0f;
             //dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
             //前方一段距離的圓傷害判定用
+            hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+            getHurt = true;
+            skillAttack = 0;
+            //dogAnimator.SetBool("Attack01", false);
+            //dogAnimator.SetBool("chase", false);
+            //Debug.Log("s2");
+            //Debug.Log("造成傷害 40");
+            //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
 
-            if (cosValue >= 0.7f && hpImage.fillAmount > 0)
-            {
-                hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
-                getHurt = true;
-                skillAttack = 0;
-                //dogAnimator.SetBool("Attack01", false);
-                //dogAnimator.SetBool("chase", false);
-                //Debug.Log("s2");
-                //Debug.Log("造成傷害 40");
-                //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
-            }
         }
-        else if (skillAttack == 3 && DisToTarget <= 2.3f)
+        else if (skillAttack == 3 && DisToTarget <= 2.8f)
         {
             if (hpImage.fillAmount > 0)
             {

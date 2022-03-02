@@ -71,6 +71,20 @@ public class PlayerEffect : MonoBehaviour
     {
         skillC.SetActive(false);
     }
+
+    void AtkEffectClose()
+    {
+        AtklightClose1();
+        AtklightClose2();
+        AtklightClose3_1();
+        AtklightClose3__2();
+    }
+
+    void SkillEffectClose()
+    {
+        SkillX_1_Close();
+        SkillX_2_Close();
+    }
     void DieEffect()
     {
         AtklightClose1();

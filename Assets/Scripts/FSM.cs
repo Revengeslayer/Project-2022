@@ -207,6 +207,8 @@ public class FSM : MonoBehaviour
         {
 			if(isMove == true)//攻擊轉移動
 			{
+				anim.SetInteger("combo2", 0);
+				anim.SetInteger("combo3", 0);
 				anim.SetBool("isAttack", false);
 				anim.SetBool("isWalkF", true);
 				mCurrentState = FSMState.Move;
@@ -215,6 +217,8 @@ public class FSM : MonoBehaviour
 			}
 			else if (isBattle == true)//不攻擊回歸BI
 			{
+				anim.SetInteger("combo2", 0);
+				anim.SetInteger("combo3", 0);
 				anim.SetBool("isAttack", false);
 				anim.SetBool("isBattle", true);
 				mCurrentState = FSMState.BattleIdle;
@@ -227,6 +231,8 @@ public class FSM : MonoBehaviour
 			//攻擊中轉Dodge
 			if (isDodge == true)
             {
+				anim.SetInteger("combo2", 0);
+				anim.SetInteger("combo3", 0);
 				isAttack = false;
 				anim.SetBool("isAttack", false);
 				anim.SetBool("isDodge", true);
@@ -237,6 +243,8 @@ public class FSM : MonoBehaviour
 			//攻擊中轉Skill
 			else if (isSkill == true)
 			{
+				anim.SetInteger("combo2", 0);
+				anim.SetInteger("combo3", 0);
 				isAttack = false;
 				anim.SetBool("isAttack", false);
 				anim.SetBool("isSkill", true);

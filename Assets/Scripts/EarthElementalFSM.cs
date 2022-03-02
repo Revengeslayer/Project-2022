@@ -356,19 +356,19 @@ public class EarthElementalFSM : MonoBehaviour
     {
         
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(this.transform.position, Target.transform.position);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
-        Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawLine(this.transform.position, Target.transform.position);
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
+    //    Gizmos.color = Color.cyan;
+    //    Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
+    //    Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
 
-    }
+    //}
 
     private void Update()
     {

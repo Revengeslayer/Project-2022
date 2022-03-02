@@ -670,13 +670,26 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             }
         }
 
-        else if (skillAttack == 4 )
+        else if (skillAttack == 4)
         {
-            if (hpImage.fillAmount > 0&& DisToTarget <= 10f && cosValue >= 0.85)
+            float disToMonster = (gameObject.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)).magnitude;
+            var c = Vector3.Dot((gameObject.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)), Target.transform.position - (Target.transform.position + Target.transform.forward * 7.0f));
+            var d = Vector3.Distance(gameObject.transform.position, (Target.transform.position + Target.transform.forward * 7.0f)) * (Target.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)).magnitude;
+            var cosValue2 = c / d;
+            if (hpImage.fillAmount > 0 && disToMonster <= 6.8f)
             {
-                hpImage.fillAmount = hpImage.fillAmount - (80.0f / monsterHp);
-                getHurt = true;
-                skillAttack = 0;
+                if (cosValue2 >= 0.98)
+                {
+                    hpImage.fillAmount = hpImage.fillAmount - (150.0f / monsterHp);
+                    getHurt = true;
+                    skillAttack = 0;
+                }
+                else if (cosValue2 >= 0.95)
+                {
+                    hpImage.fillAmount = hpImage.fillAmount - (80.0f / monsterHp);
+                    getHurt = true;
+                    skillAttack = 0;
+                }
                 //dogAnimator.SetBool("Attack01", false);
                 //dogAnimator.SetBool("chase", false);
                 //Debug.Log("s3");

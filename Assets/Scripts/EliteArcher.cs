@@ -638,7 +638,7 @@ public class EliteArcher : MonoBehaviour
         }
 
         //人物技能X 傷害第二段
-        else if (cosValue >= 0.7f && hpImage.fillAmount > 0 && DisToTarget <= 3.5f)
+        else if (skillAttack == 2 && cosValue >= 0.7f && hpImage.fillAmount > 0 && DisToTarget <= 3.5f)
         {
 
             //前方一段距離的圓傷害判定用

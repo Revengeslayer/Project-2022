@@ -594,9 +594,8 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward * 2);
         var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward * 2).magnitude;
         var cosValue = a / b;
-
-
-        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0&& DisToTarget <= 3.0f)
+        Debug.Log("---------++++++++++---------" + DisToTarget);
+        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 0.1f)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
             //dogAnimator.SetBool("gethit", true);
@@ -637,7 +636,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         }
 
         //人物技能X 傷害第二段
-        else if (cosValue >= 0.7f && hpImage.fillAmount > 0 && DisToTarget <= 3.5f)
+        else if (skillAttack == 2 && cosValue >= 0.7f && hpImage.fillAmount > 0 && DisToTarget <= 3.5f)
         {
 
             //前方一段距離的圓傷害判定用
@@ -665,6 +664,20 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             if (hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
+                getHurt = true;
+                skillAttack = 0;
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                //Debug.Log("s3");
+                //Debug.Log("造成傷害 20");
+            }
+        }
+
+        else if (skillAttack == 4 )
+        {
+            if (hpImage.fillAmount > 0&& DisToTarget <= 10f && cosValue >= 0.85)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (80.0f / monsterHp);
                 getHurt = true;
                 skillAttack = 0;
                 //dogAnimator.SetBool("Attack01", false);

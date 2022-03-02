@@ -20,6 +20,7 @@ public class PlayerInfo : MonoBehaviour
     //public int reBirth;
     bool attack1 = false;
     bool attack2 = false;
+    [SerializeField]
     bool attack3 = false;
     bool dodge = false;
     bool skill_X = false;
@@ -204,6 +205,12 @@ public class PlayerInfo : MonoBehaviour
             dodgeInv = false;
         }
 
+    }
+    private void AtkMove()
+    {
+        attack1 = false;
+        attack2 = false;
+        attack3 = false;
     }
     private void Hit()
     {

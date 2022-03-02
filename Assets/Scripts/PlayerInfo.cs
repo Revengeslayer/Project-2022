@@ -92,7 +92,9 @@ public class PlayerInfo : MonoBehaviour
         EliteArcher.skillAttack = skillAttack;
 
         DogFSM.zAttack = zAttack;
-        DogFSM.skillAttack = skillAttack;   
+        DogFSM.skillAttack = skillAttack;
+
+        CarrotController.skillAttack = skillAttack;
     }
 
 

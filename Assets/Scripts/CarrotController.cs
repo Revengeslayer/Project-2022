@@ -11,6 +11,8 @@ public class CarrotController : MonoBehaviour
     private GameObject Target;
     private float MaxTimer;
     private static string ForATKtype;
+    //09 add
+    public static float skillAttack;
 
 
     public static void InsCarrot(Vector3 SpawnPos , List<Vector3> TargetVecList , string ATKtype , Vector3 scale)
@@ -36,7 +38,7 @@ public class CarrotController : MonoBehaviour
         
     }
 
-    private void Recycle(int skillAttack)
+    private void Recycle(float skillAttack)
     {
         var TargetPos = Target.transform.position + new Vector3(0, 0.79f, 0);
         var Dist = (TargetPos- gameObject.transform.position).magnitude;
@@ -72,8 +74,8 @@ public class CarrotController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("s                      "+PlayerInfo.skillAttack);
-        Recycle(PlayerInfo.skillAttack);
+        Debug.Log("s                      "+skillAttack);
+        Recycle(skillAttack);
     }
     private void FixedUpdate()
     {

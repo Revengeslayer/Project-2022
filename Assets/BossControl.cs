@@ -6,6 +6,8 @@ public class BossControl : MonoBehaviour
 {
     private GameObject objPlayer;
     private GameObject objBoss;
+    private Animator EEAnim;
+
 
     public GameObject atkWave;
     public GameObject jumpWave;
@@ -13,6 +15,9 @@ public class BossControl : MonoBehaviour
     public GameObject jumpHint;
 
     private float bossHp;
+    private float RollAtkTime;
+    private float SpellTime;
+    private float SpellRate;
 
     private int bossState;
     private int bossDo;
@@ -22,12 +27,17 @@ public class BossControl : MonoBehaviour
     bool bossTurn = false;
 
     Vector3 bossJumpVec;
+    Vector3 bossAtkPosition0;
+    float bossAtkDistance0;
     private void Start()
     {
+        EEAnim = GetComponent<Animator>();
         objPlayer = GameObject.Find("Character(Clone)");
         objBoss = this.gameObject;
         bossState = 0;
         bossHp = 1000;
+        SpellTime = Time.time;
+        SpellRate = 0;
 
         BossFSM.mCurrentState = BossFSM.BossFSMState.Active;
     }
@@ -46,18 +56,28 @@ public class BossControl : MonoBehaviour
         if(bossRoll == true)
         {
             this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 4;
+            //BossRollAtk();
         }
 
         if (bossJump == true)
         {
             //objBoss.transform.LookAt(objPlayer.transform.position);
             //gameObject.transform.forward = bossJumpVec;
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 15;
+            if (EEAnim.GetCurrentAnimatorStateInfo(0).IsName("JumpAtk"))
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime *6f ;
+            }
+            else
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 15;
+            }
         }
 
         if(bossTurn == true)
         {
-            gameObject.transform.forward += (objPlayer.transform.position - gameObject.transform.position).normalized * Time.deltaTime * 5;
+            var a = (objPlayer.transform.position - gameObject.transform.position).normalized;
+            //a.y = 0;
+            gameObject.transform.forward += a * Time.deltaTime * 5;
         }
 
 
@@ -97,16 +117,30 @@ public class BossControl : MonoBehaviour
         {
             BossFSM.mCurrentState = BossFSM.BossFSMState.Die;
         }
+
+        if (Time.time > SpellTime && EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack02"))
+        {
+            EEAnim.speed = 1;
+        }
+        if (EEAnim.speed <1 && EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack02"))
+        {
+            SpellRate += Time.deltaTime;
+            if (SpellRate > 0.5f)
+            {
+                GameObject SpikeIns = Instantiate(Resources.Load("VTX/SpikeIns")) as GameObject;
+                SpellRate = 0;
+            }
+        }
     }
 
     void BossNormalAtk()
     {
-        Vector3 bossAtkPosition0;
-        float bossAtkDistance0;
+        //Vector3 bossAtkPosition0;
+        //float bossAtkDistance0;
 
         bossAtkPosition0 = objBoss.transform.position + objBoss.transform.forward * 6.0f;
         bossAtkDistance0 = Vector3.Distance(bossAtkPosition0, objPlayer.transform.position);
-        if (bossAtkDistance0 < 3.0f)
+        if (bossAtkDistance0 < 3.2f)
         {
             PlayerInfo.PlayerHpCal(10);
         }
@@ -177,11 +211,13 @@ public class BossControl : MonoBehaviour
         if (bossJump == false)
         {
             bossJump = true;
+            gameObject.GetComponent<BoxCollider>().enabled = false;
             bossJumpVec = (objPlayer.transform.position - gameObject.transform.position).normalized;
         }
         else if (bossJump == true)
         {
             bossJump = false;
+            gameObject.GetComponent<BoxCollider>().enabled = true;
         }
     }
     void BossJumpTurn()
@@ -212,7 +248,7 @@ public class BossControl : MonoBehaviour
     //}
     void BossRollAtk()
     {
-        objBoss.transform.LookAt(objPlayer.transform.position);
+        //objBoss.transform.LookAt(objPlayer.transform.position);
         float bossAtkHorizontalDistance;//¾î¦V¶ZÂ÷
         float bossAtkDistance;//ª½¦V¶ZÂ÷
 
@@ -229,7 +265,7 @@ public class BossControl : MonoBehaviour
                           - bossAtkDistance * bossAtkDistance);
 
         //¶ZÂ÷­È«í¥¿
-        if(bossAtkDistance< 0)
+        if (bossAtkDistance< 0)
         {
             bossAtkDistance = -bossAtkDistance;
         }
@@ -256,6 +292,11 @@ public class BossControl : MonoBehaviour
             bossRoll = false;
         }               
     }
+    void WaitForSpell()
+    {
+        EEAnim.speed = 0;
+        SpellTime  = Time.time + 3;
+    }
 
     private int BossBehavior(int bossState)
     {
@@ -272,10 +313,11 @@ public class BossControl : MonoBehaviour
     }
 
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.blue;
+    private void OnDrawGizmos()
+    {
 
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(bossAtkPosition0, 3.2f);
     //    Gizmos.DrawWireSphere(objBoss.transform.position, 6.0f);
-    //}
+    }
 }

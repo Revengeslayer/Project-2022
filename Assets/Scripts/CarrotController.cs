@@ -36,7 +36,7 @@ public class CarrotController : MonoBehaviour
         
     }
 
-    private void Recycle()
+    private void Recycle(int skillAttack)
     {
         var TargetPos = Target.transform.position + new Vector3(0, 0.79f, 0);
         var Dist = (TargetPos- gameObject.transform.position).magnitude;
@@ -51,6 +51,10 @@ public class CarrotController : MonoBehaviour
         else if (Dist < 0.8 && HitCheckDot < 0)
         {
             PlayerInfo.CarrotArrowDamage(ForATKtype);
+            Destroy(gameObject);
+        }
+        else if(Dist<=3f && skillAttack==3)
+        {
             Destroy(gameObject);
         }
         else if(MaxTimer > 3)
@@ -68,7 +72,8 @@ public class CarrotController : MonoBehaviour
 
     private void Update()
     {
-        Recycle();
+        Debug.Log("s                      "+PlayerInfo.skillAttack);
+        Recycle(PlayerInfo.skillAttack);
     }
     private void FixedUpdate()
     {

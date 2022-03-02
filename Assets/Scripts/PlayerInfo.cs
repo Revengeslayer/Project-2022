@@ -317,5 +317,12 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
-    
+
+    private void OnDrawGizmos()
+    {
+        
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(this.transform.position, 3f);
+    }
+
 }

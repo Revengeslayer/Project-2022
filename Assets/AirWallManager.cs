@@ -45,6 +45,7 @@ public class AirWallManager : MonoBehaviour
             for (int i = 0; i < airWalls.Count; i++)
             {
                 airWalls[i].wall.GetComponent<BoxCollider>().isTrigger = true;
+                airWalls[i].wall.transform.GetChild(0).gameObject.SetActive(false);
             }
             airWalls.Clear();
         }

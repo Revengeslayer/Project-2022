@@ -257,6 +257,7 @@ public class FSM : MonoBehaviour
 				anim.SetBool("isSkill", false);
 				anim.SetBool("Skill1", false);
 				anim.SetBool("Skill2", false);
+				anim.SetBool("Skill3", false);
 				anim.SetBool("isDodge", true);
 				mCurrentState = FSMState.Dodge;
 				mCheckState = CheckDodgeState;
@@ -272,6 +273,7 @@ public class FSM : MonoBehaviour
 				anim.SetBool("isSkill", false);
 				anim.SetBool("Skill1", false);
 				anim.SetBool("Skill2", false);
+				anim.SetBool("Skill3", false);
 				anim.SetBool("isWalkF", true);
 				mCurrentState = FSMState.Move;
 				mCheckState = CheckMoveState;
@@ -282,6 +284,7 @@ public class FSM : MonoBehaviour
 				anim.SetBool("isSkill", false);
 				anim.SetBool("Skill1", false);
 				anim.SetBool("Skill2", false);
+				anim.SetBool("Skill3", false);
 				anim.SetBool("isBattle", true);
 				mCurrentState = FSMState.BattleIdle;
 				mCheckState = CheckBattleIdleState;
@@ -466,7 +469,7 @@ public class FSM : MonoBehaviour
 			atkCount = 0;
 		}
 		//Ä²µoSkill
-		if(Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		if(Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C)|| Input.GetKey(KeyCode.V))
 		{
 			isBattle = true;
 			isSkill = true;
@@ -480,9 +483,14 @@ public class FSM : MonoBehaviour
 				isAttack = false;
 				anim.SetBool("Skill2", true);
 			}
+			if(Input.GetKey(KeyCode.V))
+			{
+				isAttack = false;
+				anim.SetBool("Skill3", true);
+			}
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.V))
+		if (Input.GetKey(KeyCode.Space))
 		{
 			isDodge = true;
 		}
@@ -512,7 +520,7 @@ public class FSM : MonoBehaviour
 			atkCount = 0;
 		}
 		//Ä²µoSkill
-		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C)|| Input.GetKey(KeyCode.V))
 		{			
 			isSkill = true;
 			if (Input.GetKey(KeyCode.X))
@@ -525,9 +533,14 @@ public class FSM : MonoBehaviour
 				isAttack = false;
 				anim.SetBool("Skill2", true);
 			}
+			if (Input.GetKey(KeyCode.V))
+			{
+				isAttack = false;
+				anim.SetBool("Skill3", true);
+			}
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.V))
+		if (Input.GetKey(KeyCode.Space))
 		{
 			isDodge = true;
 		}
@@ -624,7 +637,7 @@ public class FSM : MonoBehaviour
 			//}
 		}
 		//Ä²µoSkill
-		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C)|| Input.GetKey(KeyCode.V))
 		{
 			isBattle = true;
 			isSkill = true;
@@ -636,9 +649,14 @@ public class FSM : MonoBehaviour
 			{
 				anim.SetBool("Skill2", true);
 			}
+			if (Input.GetKey(KeyCode.V))
+			{
+				isAttack = false;
+				anim.SetBool("Skill3", true);
+			}
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.V))
+		if (Input.GetKey(KeyCode.Space))
 		{
 			isDodge = true;
 		}
@@ -666,7 +684,7 @@ public class FSM : MonoBehaviour
 	}
     private void DoSkillState()
 	{
-		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1 &&(anim.GetCurrentAnimatorStateInfo(0).IsName("Skill1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Skill2")))
+		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1 &&(anim.GetCurrentAnimatorStateInfo(0).IsName("Skill1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Skill2") || anim.GetCurrentAnimatorStateInfo(0).IsName("Skill3")))
 		{
 			isSkill = false;			
 		}
@@ -698,7 +716,7 @@ public class FSM : MonoBehaviour
 			atkCount = 0;
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.V))
+		if (Input.GetKey(KeyCode.Space))
 		{
 			if (isSkillToDodge == true)
 			{
@@ -751,7 +769,7 @@ public class FSM : MonoBehaviour
 			}
 		}
 		//Ä²µoSkill
-		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C))
+		if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.V))
 		{			
 			if (Input.GetKey(KeyCode.X))
 			{
@@ -769,9 +787,16 @@ public class FSM : MonoBehaviour
 				isSkill = true;
 				anim.SetBool("Skill2", true);
 			}
+			if (Input.GetKey(KeyCode.V))
+			{
+				isAttack = false;
+				isBattle = true;
+				isSkill = true;
+				anim.SetBool("Skill3", true);
+			}
 		}
 		//Ä²µoÂ½ºu
-		if (Input.GetKey(KeyCode.V))
+		if (Input.GetKey(KeyCode.Space))
 		{
 			isDodge = true;
 		}

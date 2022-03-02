@@ -23,6 +23,7 @@ public class PlayerInfo : MonoBehaviour
     bool attack3 = false;
     bool dodge = false;
     bool skill_X = false;
+    bool skill_V = false;
     private float at3Time;
     //·w¯t¦¸¼Æ
     public static float DizzyCount;
@@ -71,6 +72,10 @@ public class PlayerInfo : MonoBehaviour
         {
             this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6;
         }
+        if (skill_V)
+        {
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
+        }
         if (dodge)
         {
             this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
@@ -116,6 +121,10 @@ public class PlayerInfo : MonoBehaviour
     {
         skillAttack = 3;
     }
+    private void Skill3Hurt()
+    {
+        skillAttack = 4;
+    }
     private void Attack1Move()
     {
         if (attack1 == false)
@@ -159,6 +168,18 @@ public class PlayerInfo : MonoBehaviour
         else if (skill_X == true)
         {
             skill_X = false;
+        }
+    }
+
+    private void Skill_V_Move()
+    {
+        if (skill_V == false)
+        {
+            skill_V = true;
+        }
+        else if (skill_V == true)
+        {
+            skill_V = false;
         }
     }
     private void DodgeMove()

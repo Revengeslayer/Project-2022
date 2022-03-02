@@ -15,6 +15,7 @@ public class EarthElementalFSM : MonoBehaviour
 
     private Animator EEAnim;
     private Rigidbody EERig;
+    private BoxCollider EEBox;
     //public GameObject monsterHpbar;
     //public Image hpImage;
     //public Image hpImage0;
@@ -37,16 +38,24 @@ public class EarthElementalFSM : MonoBehaviour
 
     //Vector
     private Vector3 ActionVec;
+
     //Timer
     private float ActionTimer;
+    private float RollCDTimer;
+    private float Atk02CDTimer;
+    private int JumpAtkCDForTimes;
 
     //DoTimer
     private float ActivateTime;
+    private float RollTime;
+    private float Atk02Time;
+    private float JumpAtkTime;
+
     //Bool
     private bool toIdleActivate;
     private bool toActivate;
     private bool toIdle;
-    private bool toRolll;
+    private bool toRoll;
     private bool toJumpAttack;
     private bool toWalk;
     private bool toAtk01;
@@ -54,6 +63,7 @@ public class EarthElementalFSM : MonoBehaviour
     private bool toHit;
     private bool toDie;
     private bool ActionBool;
+    private bool AtkSwitch;
     public enum FSMState
     {
         NONE = -1,
@@ -72,6 +82,8 @@ public class EarthElementalFSM : MonoBehaviour
     {
         EEAnim = GetComponent<Animator>();
         EERig = GetComponent<Rigidbody>();
+        EEBox = GetComponent<BoxCollider>();
+
         monsterHp = 200;
 
         Target = GameObject.Find("Character(Clone)");
@@ -82,12 +94,18 @@ public class EarthElementalFSM : MonoBehaviour
 
         //Timer
         ActivateTime = 0;
-        ActionTimer = 0;
+        ActionTimer = 1;
+        RollTime = Time.time;
+        RollCDTimer = Time.time;
+        Atk02CDTimer = Time.time;
+        Atk02Time = Time.time;
+        JumpAtkTime = Time.time;
+        JumpAtkCDForTimes = 0;
 
         //Dist
         DisToTarget = 0;
         DisForActivate = 13;
-        DisForCHASE = 0;
+        DisForCHASE = 30;
         DisForATTACK = 6;
         DisForRockShoot = 0;
 
@@ -118,7 +136,6 @@ public class EarthElementalFSM : MonoBehaviour
     private void CheckActivateState()
     {
         ActivateTime += Time.deltaTime;
-        Debug.Log(ActivateTime);
         if (ActivateTime > 5.2f)
         {
             EEAnim.SetBool("isActivate", false);
@@ -132,8 +149,21 @@ public class EarthElementalFSM : MonoBehaviour
     {
         CheckDistToTarget();
         CheckActionTimer();
+        if(JumpAtkCDForTimes ==2 && ActionBool)
+        {
+            EEAnim.SetBool("isJumpAtk", true);
 
-        if (DisToTarget < DisForATTACK && ActionBool)
+            mCurrentState = FSMState.JumpAttack;
+            mCheckState = CheckJumpAttackState;
+            mDoState = DoJumpAttackState;
+
+            ActionBool = false;
+            ActionTimer = 0;
+            JumpAtkCDForTimes = 0;
+            JumpAtkTime = Time.time + 1.95f;
+            toJumpAttack = true;
+        }
+        else if (DisToTarget < DisForATTACK && ActionBool)
         {
             EEAnim.SetBool("isAtk01", true);
 
@@ -143,18 +173,93 @@ public class EarthElementalFSM : MonoBehaviour
             toAtk01 = true;
             ActionBool = false;
             ActionTimer = 0;
+            JumpAtkCDForTimes += 1;
+        }
+        else if (!ActionBool && EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            EEAnim.SetBool("isWalk", true);
+
+            mCurrentState = FSMState.Walk;
+            mCheckState = CheckWalkState;
+            mDoState = DoWalkState;
+        }
+        else if (DisToTarget < DisForCHASE && ActionBool && Time.time > RollCDTimer)
+        {
+            EEAnim.SetBool("isRoll", true);
+
+            mCurrentState = FSMState.Roll;
+            mCheckState = CheckRollState;
+            mDoState = DoRollState;
+
+            toRoll = true;
+            RollTime = Time.time + 5.8f;
+
+            JumpAtkCDForTimes += 1;
+        }
+        else if (DisToTarget > DisForATTACK && Time.time > Atk02CDTimer && ActionBool)
+        {
+            EEAnim.SetBool("isAtk02", true);
+
+            mCurrentState = FSMState.Attack02;
+            mCheckState = CheckAttack02State;
+            mDoState = DoAttack02State;
+
+            toAtk02 = true;
+            Atk02Time = Time.time + 3.2f;
+            ActionBool = false;
+            ActionTimer = 0;
+            JumpAtkCDForTimes += 1;
+        }
+        else
+        {
+
         }
     }
     private void CheckRollState()
     {
+        if (!toRoll)
+        {
+            EEAnim.SetBool("isRoll", false);
 
+            ActionBool = false;
+            ActionTimer = 0;
+
+            mCurrentState = FSMState.Idle;
+            mCheckState = CheckIdleState;
+            mDoState = DoIdleState;
+            RollCDTimer += Time.time + 10;
+        }
     }
     private void CheckJumpAttackState()
     {
+        if(!toJumpAttack)
+        {
+            EEAnim.SetBool("isJumpAtk", false);
 
+            mCurrentState = FSMState.Idle;
+            mCheckState = CheckIdleState;
+            mDoState = DoIdleState;
+        }
     }
     private void CheckWalkState()
     {
+        CheckDistToTarget();
+
+        if (DisToTarget > DisForATTACK)
+        {
+            RollCDTimer -= Time.deltaTime;
+            Debug.Log(RollCDTimer);
+        }
+
+        CheckActionTimer();
+        if(ActionBool)
+        {
+            EEAnim.SetBool("isWalk", false);
+
+            mCurrentState = FSMState.Idle;
+            mCheckState = CheckIdleState;
+            mDoState = DoIdleState;
+        }
 
     }
     private void CheckAttack01State()
@@ -170,7 +275,18 @@ public class EarthElementalFSM : MonoBehaviour
     }
     private void CheckAttack02State()
     {
+        if(!toAtk02)
+        {
+            EEAnim.SetBool("isAtk02", false);
 
+            mCurrentState = FSMState.Idle;
+            mCheckState = CheckIdleState;
+            mDoState = DoIdleState;
+            Atk02CDTimer += Time.time + 8;
+
+            ActionBool = false;
+            ActionTimer = 0;
+        }
     }
     #endregion
     #region DoState
@@ -185,31 +301,42 @@ public class EarthElementalFSM : MonoBehaviour
     }
     private void DoIdleState()
     {
-        gameObject.transform.forward += (Target.transform.position - gameObject.transform.position).normalized * Time.deltaTime *1.2f;
-        gameObject.transform.position += gameObject.transform.forward * Time.deltaTime *0.8f;
     }
     private void DoRollState()
     {
-
+        var a = (Target.transform.position - gameObject.transform.position).normalized;
+        //a.y = 0;
+        gameObject.transform.forward += a * Time.deltaTime * 1.2f;
+        if (Time.time > RollTime)
+        {
+            toRoll = false;
+        }
     }
     private void DoJumpAttackState()
     {
-
+        if(Time.time > JumpAtkTime)
+        {
+            toJumpAttack = false;
+        }
     }
     private void DoWalkState()
     {
-
+        gameObject.transform.forward += ((Target.transform.position - gameObject.transform.position).normalized +new Vector3 (0.1f,0,0)) * Time.deltaTime * 2f;
+        gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 0.8f;
     }
     private void DoAttack01State()
     {
-        if (EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack01") && EEAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.83)
+        if (EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack01")/* && EEAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.83*/)
         {
             toAtk01 = false;
         }
     }
     private void DoAttack02State()
     {
-
+        if (Time.time > Atk02Time) 
+        {
+            toAtk02 = false;
+        }
     }
     #endregion
 
@@ -225,24 +352,28 @@ public class EarthElementalFSM : MonoBehaviour
             ActionBool = true;
         }
     }
+    private void CheckAttackType()
+    {
+        
+    }
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawLine(this.transform.position, Target.transform.position);
-        //Gizmos.color = Color.blue;
-        //Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
-        //Gizmos.color = Color.cyan;
-        //Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
-        //Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(this.transform.position, Target.transform.position);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
+        Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
 
     }
 
     private void Update()
     {
         Debug.Log("目前狀態          " + mCurrentState);
-
+        
         mCheckState();
         //狀態做甚麼
         mDoState();

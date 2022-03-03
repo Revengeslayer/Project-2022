@@ -20,6 +20,7 @@ public class EarthElementalFSM : MonoBehaviour
     public Image hpImage;
     public Image hpImage0;
     private GameObject Target;
+    public GameObject DieAnim;
 
     //Add
     public static float zAttack;
@@ -46,6 +47,7 @@ public class EarthElementalFSM : MonoBehaviour
     private float Atk02CDTimer;
     private int JumpAtkCDForTimes;
     private int Atk02CDForTimes;
+    private float DieTimer;
 
     //DoTimer
     private float ActivateTime;
@@ -68,6 +70,7 @@ public class EarthElementalFSM : MonoBehaviour
     private bool AtkSwitch;
     private bool getHurt;
     private bool WalkForTurn;
+    private bool Alife;
     public enum FSMState
     {
         NONE = -1,
@@ -78,7 +81,8 @@ public class EarthElementalFSM : MonoBehaviour
         JumpAttack,
         Walk,
         Attack01,
-        Attack02
+        Attack02,
+        Die
     }
 
     
@@ -87,7 +91,7 @@ public class EarthElementalFSM : MonoBehaviour
         EEAnim = GetComponent<Animator>();
         EERig = GetComponent<Rigidbody>();
         EEBox = GetComponent<BoxCollider>();
-
+        Alife = true;
         monsterHp = 1000;
 
         Target = GameObject.Find("Character(Clone)");
@@ -107,6 +111,7 @@ public class EarthElementalFSM : MonoBehaviour
         JumpAtkTime = Time.time;
         JumpAtkCDForTimes = 0;
         Atk02CDForTimes = 0;
+        DieTimer = 0;
 
         //Dist
         DisToTarget = 0;
@@ -155,7 +160,11 @@ public class EarthElementalFSM : MonoBehaviour
     {
         CheckDistToTarget();
         CheckActionTimer();
-        if(Atk02CDForTimes == 3 && ActionBool)
+        if (playerHp <= 0)
+        {
+            return;
+        }
+        if (Atk02CDForTimes == 3 && ActionBool)
         {
             EEAnim.SetBool("isAtk02", true);
 
@@ -325,6 +334,10 @@ public class EarthElementalFSM : MonoBehaviour
             ActionTimer = 0;
         }
     }
+    private void CheckDieState()
+    {
+
+    }
     #endregion
     #region DoState
 
@@ -374,8 +387,6 @@ public class EarthElementalFSM : MonoBehaviour
             gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 1.2f;
         }
         
-        
-
     }
     private void DoAttack01State()
     {
@@ -390,6 +401,10 @@ public class EarthElementalFSM : MonoBehaviour
         {
             toAtk02 = false;
         }
+    }
+    private void DoDieState()
+    {
+        EEAnim.Play("Die");
     }
     #endregion
 
@@ -424,6 +439,16 @@ public class EarthElementalFSM : MonoBehaviour
         else
         {
             WalkForTurn = true;
+        }
+    }
+    void DieEvent()
+    {
+        GameObject G = (GameObject)Instantiate(DieAnim, gameObject.transform.position, gameObject.transform.rotation);
+        G.transform.localScale = new Vector3(3, 3, 3);
+        //if (DieTimer > 0.5)
+        {
+            gameObject.SetActive(false);
+            G.SetActive(true);
         }
     }
     private void PlayerAttack(float zAttack, float skillAttack)
@@ -557,7 +582,25 @@ public class EarthElementalFSM : MonoBehaviour
         {
             PlayerAttack(zAttack, skillAttack);
         }
-        Debug.Log(JumpAtkCDForTimes);
+
+        if(hpImage.fillAmount <= 0 && Alife)
+        {
+            mCurrentState = FSMState.Die;
+            mCheckState = CheckDieState;
+            mDoState = DoDieState;
+        }
+        //PlayDie
+        playerHp = PlayerInfo.playerHp;
+        if (playerHp <= 0)
+        {
+            //Target = ReSetTarget;
+            //DisForESCAPE = 0;
+            //DisForATTACK = 0;
+            //DisForSIGHT = 0;
+            //DisForCHASE = 0;
+            //TargetInSight = false;
+        }
+        
 
         Debug.Log("¥Ø«eª¬ºA          " + mCurrentState);
         

@@ -782,7 +782,7 @@ public class EliteArcher : MonoBehaviour
                     var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position) + new Vector3(0, 0.08f, 0) + gameObject.transform.right + SectorVec * i;
                     TargetVecList.Add(CarrotVec);
                 }
-                CarrotController.InsCarrot(SpawnPos, TargetVecList, "C" , new Vector3(2f, 2f, 0.8f));
+                CarrotController.InsEliteArrow(SpawnPos, TargetVecList, "C" , new Vector3(2f, 2f, 0.8f));
                 Debug.Log(TargetVecList.Count);
                 Shooted = false;
             }
@@ -796,7 +796,7 @@ public class EliteArcher : MonoBehaviour
                 TargetVecList.Add(CarrotVec);
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward * 0.5F);
 
-                CarrotController.InsCarrot(SpawnPos, TargetVecList, "D" , new Vector3(4f, 4f, 1.5f));
+                CarrotController.InsEliteArrow(SpawnPos, TargetVecList, "D" , new Vector3(4f, 4f, 1.5f));
                 PAshooted = false;
             }
         }

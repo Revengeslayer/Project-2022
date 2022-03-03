@@ -5,20 +5,30 @@ using UnityEngine;
 public class PlayerAudio : MonoBehaviour
 {
     // Start is called before the first frame update
-    AudioSource Audio;
+    AudioSource []Audios;
+    AudioSource Attack;
+    AudioSource Skill;
     void Start()
     {
-        Audio = gameObject.GetComponent<AudioSource>();
+        Audios = gameObject.GetComponents<AudioSource>();
+        Attack = Audios[0];
+        Skill = Audios[1];
     }
 
     // Update is called once per frame
     void Update()
     {
- 
+       
     }
 
-    void PlayAudioZ1()
+    void PlayAudioZ()
     {
-        Audio.Play();
+        Debug.Log("77777777777");
+        Attack.Play();
+    }
+
+    void PlayAudioSkill2()
+    {
+        Skill.Play();
     }
 }

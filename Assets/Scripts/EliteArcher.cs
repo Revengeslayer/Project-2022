@@ -796,7 +796,7 @@ public class EliteArcher : MonoBehaviour
                 TargetVecList.Add(CarrotVec);
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward * 0.5F);
 
-                CarrotController.InsEliteArrow(SpawnPos, TargetVecList, "D" , new Vector3(4f, 4f, 1.5f));
+                CarrotController.InsEliteArrow(SpawnPos, TargetVecList, "D" , new Vector3(2f, 2f, 1f));
                 PAshooted = false;
             }
         }

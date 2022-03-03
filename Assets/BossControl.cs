@@ -25,6 +25,7 @@ public class BossControl : MonoBehaviour
     bool bossRoll = false;
     bool bossJump = false;
     bool bossTurn = false;
+    bool WalkForTurn;
 
     Vector3 bossJumpVec;
     Vector3 bossAtkPosition0;
@@ -280,7 +281,19 @@ public class BossControl : MonoBehaviour
         }
     }
 
-
+    private void CheckWalkTurn()
+    {
+        var a = (objPlayer.transform.position - gameObject.transform.position).normalized;
+        var b = Vector3.Dot(gameObject.transform.forward, a);
+        if (b > 0)
+        {
+            WalkForTurn = false;
+        }
+        else
+        {
+            WalkForTurn = true;
+        }
+    }
     void BossRollMove()
     {
         if (bossRoll == false)

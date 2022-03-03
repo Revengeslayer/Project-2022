@@ -44,7 +44,7 @@ public class PlayerEffect : MonoBehaviour
     {
         atklight3_2.SetActive(true);
     }
-    void AtklightClose3__2()
+    void AtklightClose3_2()
     {
         atklight3_2.SetActive(false);
     }
@@ -96,7 +96,7 @@ public class PlayerEffect : MonoBehaviour
         AtklightClose1();
         AtklightClose2();
         AtklightClose3_1();
-        AtklightClose3__2();
+        AtklightClose3_2();
     }
 
     void SkillEffectClose()
@@ -112,7 +112,7 @@ public class PlayerEffect : MonoBehaviour
         AtklightClose1();
         AtklightClose2();
         AtklightClose3_1();
-        AtklightClose3__2();
+        AtklightClose3_2();
 
 
         SkillX_1_Close();

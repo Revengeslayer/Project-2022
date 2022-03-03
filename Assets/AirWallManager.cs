@@ -61,6 +61,6 @@ public class AirWallManager : MonoBehaviour
     void Update()
     {
         CheckAirWall();
-        Debug.Log("數量            ="+airWalls.Count); ;
+        //Debug.Log("數量            ="+airWalls.Count); ;
     }
 }

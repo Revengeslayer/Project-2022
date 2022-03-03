@@ -231,7 +231,7 @@ public class InstantiateManager : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log("存活數量=       "+aliveCount);
+        //Debug.Log("存活數量=       "+aliveCount);
         //if(Input.GetMouseButtonDown(0))
         ////if(Spawn)
         //{

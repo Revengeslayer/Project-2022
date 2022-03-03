@@ -692,6 +692,7 @@ public class FSM : MonoBehaviour
 	}
     private void DoSkillState()
 	{
+		isSkillToDodge = false;
 		if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime>1 &&(anim.GetCurrentAnimatorStateInfo(0).IsName("Skill1") || anim.GetCurrentAnimatorStateInfo(0).IsName("Skill2") || anim.GetCurrentAnimatorStateInfo(0).IsName("Skill3")))
 		{
 			isSkill = false;			
@@ -856,7 +857,7 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//°»´úª¬ºA
-		//Debug.Log("¥Ø«eª¬ºA          " + mCurrentState);
+		Debug.Log("¥Ø«eª¬ºA          " + mCurrentState);
 
 		//§PÂ_­þ¤@­ÓAttack
 		zAttack = 0;

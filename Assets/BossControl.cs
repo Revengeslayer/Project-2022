@@ -197,7 +197,11 @@ public class BossControl : MonoBehaviour
 
         bossAtkPosition0 = objBoss.transform.position;
         bossAtkDistance0 = Vector3.Distance(bossAtkPosition0, objPlayer.transform.position);
-        if (bossAtkDistance0 < 6.0f)
+        if (bossAtkDistance0 < 6.0f && !EEAnim.GetCurrentAnimatorStateInfo(0).IsName("JumpAtk"))
+        {
+            PlayerInfo.PlayerHpCal(12);
+        }
+        else if(bossAtkDistance0 < 5 && EEAnim.GetCurrentAnimatorStateInfo(0).IsName("JumpAtk"))
         {
             PlayerInfo.PlayerHpCal(12);
         }

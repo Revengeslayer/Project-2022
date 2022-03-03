@@ -90084,8 +90084,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.06666667
+    functionName: AtkMove
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.13333334
-    functionName: Skill_V_Move
+    functionName: Skill_V_MoveOpen
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -90113,7 +90120,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.6333333
-    functionName: Skill_V_Move
+    functionName: Skill_V_MoveClose
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

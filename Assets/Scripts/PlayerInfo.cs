@@ -131,73 +131,54 @@ public class PlayerInfo : MonoBehaviour
     {
         skillAttack = 4;
     }
-    private void Attack1Move()
+    private void Attack1MoveOpen()
     {
-        if (attack1 == false)
-        {
-            attack1 = true;
-        }
-        else if (attack1 == true)
-        {
-            attack1 = false;
-        }
+        attack1 = true;
     }
-    private void Attack2Move()
+    private void Attack1MoveClose()
     {
-        if (attack2 == false)
-        {
-            attack2 = true;
-        }
-        else if (attack2 == true)
-        {
-            attack2 = false;
-        }
+        attack1 = false;
     }
-    private void Attack3Move()
+    private void Attack2MoveOpen()
     {
-        if (attack3 == false)
-        {
-            attack3 = true;
-        }
-        else if (attack3 == true)
-        {
-            attack3 = false;
-        }
+        attack2 = true;
+    }    private void Attack2MoveClose()
+    {
+        attack2 = false;
+    }
+    private void Attack3MoveOpen()
+    {
+        attack3 = true;
+    }
+    private void Attack3MoveClose()
+    {
+        attack3 = false;
     }
 
-    private void Skill_X_Move()
+    private void Skill_X_MoveOpen()
+    {       
+        skill_X = true;
+    }
+    private void Skill_X_MoveClose()
     {
-        if (skill_X == false)
-        {
-            skill_X = true;
-        }
-        else if (skill_X == true)
-        {
-            skill_X = false;
-        }
+        skill_X = false;
     }
 
-    private void Skill_V_Move()
+    private void Skill_V_MoveOpen()
     {
-        if (skill_V == false)
-        {
-            skill_V = true;
-        }
-        else if (skill_V == true)
-        {
-            skill_V = false;
-        }
+        skill_V = true;
     }
-    private void DodgeMove()
+    private void Skill_V_MoveClose()
     {
-        if (dodge == false)
-        {
-            dodge = true;
-        }
-        else if (dodge == true)
-        {
-            dodge = false;
-        }
+        skill_V = false;
+    }
+    private void DodgeMoveOpen()
+    {
+        dodge = true;
+    }
+    private void DodgeMoveClose()
+    {
+        dodge = false;
     }
     private void DodgeCheck()
     {
@@ -223,6 +204,7 @@ public class PlayerInfo : MonoBehaviour
         attack2 = false;
         attack3 = false;
         skill_X = false;
+        skill_V = false;
         dodge = false;
         dodgeInv = false;
     }
@@ -232,6 +214,7 @@ public class PlayerInfo : MonoBehaviour
         attack2 = false;
         attack3 = false;
         skill_X = false;
+        skill_V = false;
         dodge = false;
         dodgeInv = false;
     }

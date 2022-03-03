@@ -19282,7 +19282,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.033333335
-    functionName: Attack1Move
+    functionName: Attack1MoveOpen
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -19296,7 +19296,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.13333334
-    functionName: Attack1Move
+    functionName: Attack1MoveClose
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

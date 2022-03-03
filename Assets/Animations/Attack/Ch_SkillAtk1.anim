@@ -96268,6 +96268,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.06666667
+    functionName: AtkMove
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.2
     functionName: PlayerSkillChangeForword
     data: 
@@ -96276,7 +96283,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.36666667
-    functionName: Skill_X_Move
+    functionName: Skill_X_MoveOpen
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -96346,7 +96353,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.2
-    functionName: Skill_X_Move
+    functionName: Skill_X_MoveClose
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

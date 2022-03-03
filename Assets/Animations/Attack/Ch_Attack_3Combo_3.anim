@@ -42245,7 +42245,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.06666667
-    functionName: Attack3Move
+    functionName: Attack3MoveOpen
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -42301,7 +42301,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.6333333
-    functionName: Attack3Move
+    functionName: Attack3MoveClose
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

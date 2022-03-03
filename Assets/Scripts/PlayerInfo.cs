@@ -253,6 +253,13 @@ public class PlayerInfo : MonoBehaviour
                 DizzyCount += 20;
                 FSM.isGitHit = true;
             }
+            //Spike
+            else if (a == 13)
+            {
+                playerHp = playerHp - 50;
+                DizzyCount += 10;
+                FSM.isGitHit = true;
+            }
         }
 
     }

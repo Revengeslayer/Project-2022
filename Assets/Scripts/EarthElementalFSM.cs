@@ -173,7 +173,7 @@ public class EarthElementalFSM : MonoBehaviour
             toAtk01 = true;
             ActionBool = false;
             ActionTimer = 0;
-            JumpAtkCDForTimes += 1;
+            JumpAtkCDForTimes += 2;
         }
         else if (!ActionBool && EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
@@ -210,10 +210,21 @@ public class EarthElementalFSM : MonoBehaviour
             ActionTimer = 0;
             JumpAtkCDForTimes += 1;
         }
-        else
-        {
+        //else
+        //{
+        //    EEAnim.SetBool("isJumpAtk", true);
 
-        }
+        //    mCurrentState = FSMState.JumpAttack;
+        //    mCheckState = CheckJumpAttackState;
+        //    mDoState = DoJumpAttackState;
+
+        //    ActionBool = false;
+        //    ActionTimer = 0;
+        //    JumpAtkCDForTimes = 0;
+        //    JumpAtkTime = Time.time + 1.95f;
+        //    toJumpAttack = true;
+        //}
+        
     }
     private void CheckRollState()
     {
@@ -248,7 +259,7 @@ public class EarthElementalFSM : MonoBehaviour
         if (DisToTarget > DisForATTACK)
         {
             RollCDTimer -= Time.deltaTime;
-            Debug.Log(RollCDTimer);
+            //Debug.Log(RollCDTimer);
         }
 
         CheckActionTimer();
@@ -282,7 +293,7 @@ public class EarthElementalFSM : MonoBehaviour
             mCurrentState = FSMState.Idle;
             mCheckState = CheckIdleState;
             mDoState = DoIdleState;
-            Atk02CDTimer += Time.time + 8;
+            Atk02CDTimer = Time.time + 8;
 
             ActionBool = false;
             ActionTimer = 0;
@@ -354,21 +365,21 @@ public class EarthElementalFSM : MonoBehaviour
     }
     private void CheckAttackType()
     {
-        
-    }
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawLine(this.transform.position, Target.transform.position);
-    //    Gizmos.color = Color.blue;
-    //    Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
-    //    Gizmos.color = Color.cyan;
-    //    Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
-    //    Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
 
-    //}
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(this.transform.position, Target.transform.position);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
+        Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
+
+    }
 
     private void Update()
     {
@@ -377,6 +388,6 @@ public class EarthElementalFSM : MonoBehaviour
         mCheckState();
         //ª¬ºA°µ¬Æ»ò
         mDoState();
-
+        //Debug.Log(Time.time - Atk02CDTimer);
     }
 }

@@ -7,8 +7,11 @@ public class SpikeController : MonoBehaviour
     GameObject Target;
     private float MaxTimer;
     private float LocationTimer;
+    private float Dist;
     GameObject DustSmoke_A;
     GameObject Spikes_attack;
+
+    private bool OnHit;
     //private Queue<GameObject> SpikeContainer;
     // Start is called before the first frame update
     void Start()
@@ -28,10 +31,16 @@ public class SpikeController : MonoBehaviour
     {
         MaxTimer += Time.deltaTime;
         //LocationTimer += Time.deltaTime;
+        Dist = (Target.transform.position - gameObject.transform.position).magnitude;
         if(MaxTimer > 0.5)
         {
             DustSmoke_A.SetActive(false);
             Spikes_attack.SetActive(true);
+            if (Dist < 1 && !OnHit)
+            {
+                PlayerInfo.PlayerHpCal(13);
+                OnHit = true;
+            }
         }
         if (MaxTimer > 1.8)
         {
@@ -43,5 +52,10 @@ public class SpikeController : MonoBehaviour
             //gameObject.transform.position = Target.transform.position;
             //LocationTimer = Time.time + 100;
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.transform.position, 1f);
     }
 }

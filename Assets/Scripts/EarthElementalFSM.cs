@@ -26,6 +26,7 @@ public class EarthElementalFSM : MonoBehaviour
     public static float skillAttack;
     private float playerHp;
     float monsterHp;
+    GameObject Smoke;
 
     private FSMState mCurrentState;
 
@@ -44,6 +45,7 @@ public class EarthElementalFSM : MonoBehaviour
     private float RollCDTimer;
     private float Atk02CDTimer;
     private int JumpAtkCDForTimes;
+    private int Atk02CDForTimes;
 
     //DoTimer
     private float ActivateTime;
@@ -65,6 +67,7 @@ public class EarthElementalFSM : MonoBehaviour
     private bool ActionBool;
     private bool AtkSwitch;
     private bool getHurt;
+    private bool WalkForTurn;
     public enum FSMState
     {
         NONE = -1,
@@ -88,6 +91,7 @@ public class EarthElementalFSM : MonoBehaviour
         monsterHp = 1000;
 
         Target = GameObject.Find("Character(Clone)");
+        Smoke = gameObject.transform.Find("DustSmoke_A").gameObject;
 
         mCurrentState = FSMState.IdleActivate;
         mCheckState = CheckIdleActivateState;
@@ -102,6 +106,7 @@ public class EarthElementalFSM : MonoBehaviour
         Atk02Time = Time.time;
         JumpAtkTime = Time.time;
         JumpAtkCDForTimes = 0;
+        Atk02CDForTimes = 0;
 
         //Dist
         DisToTarget = 0;
@@ -150,7 +155,21 @@ public class EarthElementalFSM : MonoBehaviour
     {
         CheckDistToTarget();
         CheckActionTimer();
-        if(JumpAtkCDForTimes ==2 && ActionBool)
+        if(Atk02CDForTimes == 3 && ActionBool)
+        {
+            EEAnim.SetBool("isAtk02", true);
+
+            mCurrentState = FSMState.Attack02;
+            mCheckState = CheckAttack02State;
+            mDoState = DoAttack02State;
+
+            toAtk02 = true;
+            Atk02Time = Time.time + 3.2f;
+            ActionBool = false;
+            ActionTimer = 0;
+            Atk02CDForTimes = 0;
+        }
+        else if(JumpAtkCDForTimes ==2 && ActionBool)
         {
             EEAnim.SetBool("isJumpAtk", true);
 
@@ -176,6 +195,7 @@ public class EarthElementalFSM : MonoBehaviour
             ActionTimer = 0;
             JumpAtkCDForTimes = 0;
             JumpAtkCDForTimes += 2;
+            Atk02CDForTimes ++ ;
         }
         else if (!ActionBool && EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
@@ -184,6 +204,7 @@ public class EarthElementalFSM : MonoBehaviour
             mCurrentState = FSMState.Walk;
             mCheckState = CheckWalkState;
             mDoState = DoWalkState;
+            CheckWalkTurn();
         }
         else if (DisToTarget < DisForCHASE && ActionBool && Time.time > RollCDTimer)
         {
@@ -265,6 +286,7 @@ public class EarthElementalFSM : MonoBehaviour
         }
 
         CheckActionTimer();
+        
         if(ActionBool)
         {
             EEAnim.SetBool("isWalk", false);
@@ -272,6 +294,8 @@ public class EarthElementalFSM : MonoBehaviour
             mCurrentState = FSMState.Idle;
             mCheckState = CheckIdleState;
             mDoState = DoIdleState;
+            WalkForTurn = false;
+            //Smoke.SetActive(false);
         }
 
     }
@@ -336,8 +360,22 @@ public class EarthElementalFSM : MonoBehaviour
     {
         var a = (Target.transform.position - gameObject.transform.position).normalized;
         a.y = 0;
-        gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 5f;
-        gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 3f;
+        //Smoke.SetActive(true);
+        if (WalkForTurn)
+        {
+            gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 3f;
+        }
+        else
+        {
+            gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 0.8f;
+        }
+        if(DisToTarget > 3)
+        {
+            gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 1.2f;
+        }
+        
+        
+
     }
     private void DoAttack01State()
     {
@@ -362,7 +400,11 @@ public class EarthElementalFSM : MonoBehaviour
     private void CheckActionTimer()
     {
         ActionTimer += Time.deltaTime;
-        if(ActionTimer > 3)
+        if (DisToTarget < 3)
+        {
+            ActionTimer += (Time.deltaTime * 0.5f);
+        }
+        if (ActionTimer > 3)
         {
             ActionBool = true;
         }
@@ -370,6 +412,19 @@ public class EarthElementalFSM : MonoBehaviour
     private void CheckAttackType()
     {
 
+    }
+    private void CheckWalkTurn()
+    {
+        var a = (Target.transform.position - gameObject.transform.position).normalized;
+        var b = Vector3.Dot(gameObject.transform.forward, a);
+        if(b > 0)
+        {
+            WalkForTurn = false;
+        }
+        else
+        {
+            WalkForTurn = true;
+        }
     }
     private void PlayerAttack(float zAttack, float skillAttack)
     {

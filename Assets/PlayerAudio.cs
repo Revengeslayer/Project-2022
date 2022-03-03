@@ -59,4 +59,8 @@ public class PlayerAudio : MonoBehaviour
     {
         Skill3_Voice.Play();
     }
+    void PlayAudioSkill3()
+    {
+        Skill3.Play();
+    }
 }

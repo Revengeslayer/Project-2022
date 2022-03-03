@@ -11,6 +11,7 @@ public class PlayerEffect : MonoBehaviour
     public GameObject skillX_1;
     public GameObject skillX_2;
     public GameObject skillC;
+    public GameObject skillV0;
     public GameObject skillV;
     void AtklightOpen1()
     {
@@ -73,6 +74,14 @@ public class PlayerEffect : MonoBehaviour
         skillC.SetActive(false);
     }
 
+    void SkillV0_Open()
+    {
+        skillV0.SetActive(true);
+    }
+    void SkillV0_Close()
+    {
+        skillV0.SetActive(false);
+    }
     void SkillV_Open()
     {
         skillV.SetActive(true);
@@ -94,6 +103,9 @@ public class PlayerEffect : MonoBehaviour
     {
         SkillX_1_Close();
         SkillX_2_Close();
+        SkillC_Close();
+        SkillV0_Close();
+        SkillV_Close();
     }
     void DieEffect()
     {
@@ -105,5 +117,8 @@ public class PlayerEffect : MonoBehaviour
 
         SkillX_1_Close();
         SkillX_2_Close();
+        SkillC_Close();
+        SkillV0_Close();
+        SkillV_Close();
     }
 }

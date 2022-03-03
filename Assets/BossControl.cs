@@ -76,7 +76,7 @@ public class BossControl : MonoBehaviour
         if(bossTurn == true)
         {
             var a = (objPlayer.transform.position - gameObject.transform.position).normalized;
-            //a.y = 0;
+            a.y = 0;
             gameObject.transform.forward += a * Time.deltaTime * 5;
         }
 
@@ -286,10 +286,12 @@ public class BossControl : MonoBehaviour
         if (bossRoll == false)
         {
             bossRoll = true;
+            gameObject.GetComponent<BoxCollider>().enabled = false;
         }
         else if (bossRoll == true)
         {
             bossRoll = false;
+            gameObject.GetComponent<BoxCollider>().enabled = true;
         }               
     }
     void WaitForSpell()

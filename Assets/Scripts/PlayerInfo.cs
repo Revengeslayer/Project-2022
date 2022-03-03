@@ -94,6 +94,9 @@ public class PlayerInfo : MonoBehaviour
         DogFSM.zAttack = zAttack;
         DogFSM.skillAttack = skillAttack;
 
+        EarthElementalFSM.zAttack = zAttack;
+        EarthElementalFSM.skillAttack = skillAttack;
+
         CarrotController.skillAttack = skillAttack;
     }
 

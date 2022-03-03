@@ -16,9 +16,9 @@ public class EarthElementalFSM : MonoBehaviour
     private Animator EEAnim;
     private Rigidbody EERig;
     private BoxCollider EEBox;
-    //public GameObject monsterHpbar;
-    //public Image hpImage;
-    //public Image hpImage0;
+    public GameObject monsterHpbar;
+    public Image hpImage;
+    public Image hpImage0;
     private GameObject Target;
 
     //Add
@@ -64,6 +64,7 @@ public class EarthElementalFSM : MonoBehaviour
     private bool toDie;
     private bool ActionBool;
     private bool AtkSwitch;
+    private bool getHurt;
     public enum FSMState
     {
         NONE = -1,
@@ -84,7 +85,7 @@ public class EarthElementalFSM : MonoBehaviour
         EERig = GetComponent<Rigidbody>();
         EEBox = GetComponent<BoxCollider>();
 
-        monsterHp = 200;
+        monsterHp = 1000;
 
         Target = GameObject.Find("Character(Clone)");
 
@@ -173,6 +174,7 @@ public class EarthElementalFSM : MonoBehaviour
             toAtk01 = true;
             ActionBool = false;
             ActionTimer = 0;
+            JumpAtkCDForTimes = 0;
             JumpAtkCDForTimes += 2;
         }
         else if (!ActionBool && EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
@@ -194,7 +196,7 @@ public class EarthElementalFSM : MonoBehaviour
             toRoll = true;
             RollTime = Time.time + 5.8f;
 
-            JumpAtkCDForTimes += 1;
+            JumpAtkCDForTimes ++ ;
         }
         else if (DisToTarget > DisForATTACK && Time.time > Atk02CDTimer && ActionBool)
         {
@@ -208,7 +210,7 @@ public class EarthElementalFSM : MonoBehaviour
             Atk02Time = Time.time + 3.2f;
             ActionBool = false;
             ActionTimer = 0;
-            JumpAtkCDForTimes += 1;
+            JumpAtkCDForTimes ++ ;
         }
         //else
         //{
@@ -238,7 +240,7 @@ public class EarthElementalFSM : MonoBehaviour
             mCurrentState = FSMState.Idle;
             mCheckState = CheckIdleState;
             mDoState = DoIdleState;
-            RollCDTimer += Time.time + 10;
+            RollCDTimer = Time.time + 10;
         }
     }
     private void CheckJumpAttackState()
@@ -316,8 +318,8 @@ public class EarthElementalFSM : MonoBehaviour
     private void DoRollState()
     {
         var a = (Target.transform.position - gameObject.transform.position).normalized;
-        //a.y = 0;
-        gameObject.transform.forward += a * Time.deltaTime * 1.2f;
+        a.y = 0;
+        gameObject.transform.forward += a * Time.deltaTime * 2.4f;
         if (Time.time > RollTime)
         {
             toRoll = false;
@@ -332,8 +334,10 @@ public class EarthElementalFSM : MonoBehaviour
     }
     private void DoWalkState()
     {
-        gameObject.transform.forward += ((Target.transform.position - gameObject.transform.position).normalized +new Vector3 (0.1f,0,0)) * Time.deltaTime * 2f;
-        gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 0.8f;
+        var a = (Target.transform.position - gameObject.transform.position).normalized;
+        a.y = 0;
+        gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 5f;
+        gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 3f;
     }
     private void DoAttack01State()
     {
@@ -367,6 +371,116 @@ public class EarthElementalFSM : MonoBehaviour
     {
 
     }
+    private void PlayerAttack(float zAttack, float skillAttack)
+    {
+        DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
+        var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward);
+        var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward).magnitude;
+        var cosValue = a / b;
+
+
+        if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
+            //dogAnimator.SetBool("gethit", true);
+            zAttack = 0;
+            getHurt = true;
+            //Debug.Log("z1");
+        }
+        else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
+            getHurt = true;
+            zAttack = 0;
+            //Debug.Log("z2");
+        }
+        else if (cosValue >= 0.7 && zAttack == 3 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
+        {
+            hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
+            getHurt = true;
+            zAttack = 0;
+            //Debug.Log("z3");
+        }
+
+        //人物技能X 傷害第一段
+        if (skillAttack == 1)
+        {
+            if (cosValue >= 0.8f && hpImage.fillAmount > 0 && DisToTarget <= 2.8f)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
+                getHurt = true;
+                skillAttack = 0;
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                //Debug.Log("s1");
+                //Debug.Log("造成傷害 40");
+
+                //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
+            }
+        }
+
+        //人物技能X 傷害第二段
+        else if (skillAttack == 2 && cosValue >= 0.7f && hpImage.fillAmount > 0 && DisToTarget <= 3.5f)
+        {
+
+            //前方一段距離的圓傷害判定用
+            //Vector3 playrerAtkPosition;
+            //float dogMonsterkDistance;
+
+            //playrerAtkPosition = objPlayer.transform.position + objPlayer.transform.forward * 1.0f;
+            //dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
+            //前方一段距離的圓傷害判定用
+            hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+            getHurt = true;
+            skillAttack = 0;
+            //dogAnimator.SetBool("Attack01", false);
+            //dogAnimator.SetBool("chase", false);
+            //Debug.Log("s2");
+            //Debug.Log("造成傷害 40");
+            //objMonster.transform.position = objMonster.transform.position + new Vector3(objMonster.transform.position.x - objPlayer.transform.position.x, 0, objMonster.transform.position.z - objPlayer.transform.position.z) * 0.1f; //受擊位移
+
+        }
+        else if (skillAttack == 3 && DisToTarget <= 2.8f)
+        {
+            if (hpImage.fillAmount > 0)
+            {
+                hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
+                getHurt = true;
+                skillAttack = 0;
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                //Debug.Log("s3");
+                //Debug.Log("造成傷害 20");
+            }
+        }
+        else if (skillAttack == 4)
+        {
+            float disToMonster = (gameObject.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)).magnitude;
+            var c = Vector3.Dot((gameObject.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)), Target.transform.position - (Target.transform.position + Target.transform.forward * 7.0f));
+            var d = Vector3.Distance(gameObject.transform.position, (Target.transform.position + Target.transform.forward * 7.0f)) * (Target.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)).magnitude;
+            var cosValue2 = c / d;
+            if (hpImage.fillAmount > 0 && disToMonster <= 6.8f)
+            {
+                if (cosValue2 >= 0.98)
+                {
+                    hpImage.fillAmount = hpImage.fillAmount - (150.0f / monsterHp);
+                    getHurt = true;
+                    skillAttack = 0;
+                }
+                else if (cosValue2 >= 0.95)
+                {
+                    hpImage.fillAmount = hpImage.fillAmount - (80.0f / monsterHp);
+                    getHurt = true;
+                    skillAttack = 0;
+                }
+                //dogAnimator.SetBool("Attack01", false);
+                //dogAnimator.SetBool("chase", false);
+                //Debug.Log("s3");
+                //Debug.Log("造成傷害 20");
+            }
+        }
+
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -383,6 +497,13 @@ public class EarthElementalFSM : MonoBehaviour
 
     private void Update()
     {
+        //Damage
+        if (zAttack != 0 || skillAttack != 0)
+        {
+            PlayerAttack(zAttack, skillAttack);
+        }
+        Debug.Log(JumpAtkCDForTimes);
+
         Debug.Log("目前狀態          " + mCurrentState);
         
         mCheckState();

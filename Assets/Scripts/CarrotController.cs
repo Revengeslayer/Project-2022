@@ -9,6 +9,8 @@ public class CarrotController : MonoBehaviour
     private static GameObject Smoke;
     private static GameObject Flash;
     private static GameObject Fire;
+    private static GameObject Green;
+    private static GameObject Thunder;
     private static Vector3 SetSpawnPos;
     private static List<Vector3> SetTargetVecList;
     private GameObject Target;
@@ -81,8 +83,10 @@ public class CarrotController : MonoBehaviour
             GameObject carrotIns = Instantiate(Resources.Load("Weapons/EliteArrow")) as GameObject;
             carrot = carrotIns;
             Smoke = carrot.transform.Find("smoke_thick").gameObject;
-            Flash = carrot.transform.Find("MuzzleFlash").gameObject;
-            Fire = carrot.transform.Find("Fire_A").gameObject;
+            //Flash = carrot.transform.Find("MuzzleFlash").gameObject;
+            //Fire = carrot.transform.Find("Fire_A").gameObject;
+            Green = carrot.transform.Find("ArrowAOE").gameObject;
+            Thunder = carrot.transform.Find("EnergyAccumulation").gameObject;
             //Smoke.transform.localScale = scale;
             //Flash.transform.localScale = scale;
             //Fire.transform.localScale = scale;
@@ -104,17 +108,21 @@ public class CarrotController : MonoBehaviour
                 Flash.SetActive(false);
                 Fire.SetActive(true);
             }
+            else if (ForATKtype == "D")
+            {
+                Smoke.SetActive(false);
+                //Flash.SetActive(false);
+                //Fire.SetActive(false);
+                Green.SetActive(true);
+                Thunder.SetActive(false);
+            }
             else if (ForATKtype == "C")
             {
                 Smoke.SetActive(true);
-                Flash.SetActive(false);
-                Fire.SetActive(true);
-            }
-            else if (ForATKtype == "D")
-            {
-                Smoke.SetActive(true);
-                Flash.SetActive(true);
-                Fire.SetActive(false);
+                //Flash.SetActive(false);
+                //Fire.SetActive(false);
+                Green.SetActive(false);
+                Thunder.SetActive(false);
             }
 
         }
@@ -124,8 +132,67 @@ public class CarrotController : MonoBehaviour
             Basket[n].transform.position = SetSpawnPos;
         }
     }
+    public static void InsVTXArrow(Vector3 SpawnPos, List<Vector3> TargetVecList, string ATKtype, Vector3 scale)
+    {
+        var a = TargetVecList.Count;
+        List<GameObject> Basket = new List<GameObject>();
+        SetTargetVecList = new List<Vector3>();
+        for (int i = 0; i < a; i++)
+        {
+            GameObject carrotIns = Instantiate(Resources.Load("Weapons/VTXArrow")) as GameObject;
+            carrot = carrotIns;
+            //Smoke = carrot.transform.Find("smoke_thick").gameObject;
+            //Flash = carrot.transform.Find("MuzzleFlash").gameObject;
+            //Fire = carrot.transform.Find("Fire_A").gameObject;
+            //Green = carrot.transform.Find("ArrowAOE").gameObject;
+            //Thunder = carrot.transform.Find("EnergyAccumulation").gameObject;
+            //Smoke.transform.localScale = scale;
+            //Flash.transform.localScale = scale;
+            //Fire.transform.localScale = scale;
 
-        private void Recycle(float skillAttack)
+            carrot.transform.localScale = scale;
+            Basket.Add(carrotIns);
+            SetSpawnPos = SpawnPos;
+            SetTargetVecList.Add(TargetVecList[i]);
+            ForATKtype = ATKtype;
+            //if (ForATKtype == "A")
+            //{
+            //    Smoke.SetActive(false);
+            //    Flash.SetActive(false);
+            //    Fire.SetActive(false);
+            //}
+            //else if (ForATKtype == "B")
+            //{
+            //    Smoke.SetActive(true);
+            //    Flash.SetActive(false);
+            //    Fire.SetActive(true);
+            //}
+            //else if (ForATKtype == "C")
+            //{
+            //    Smoke.SetActive(false);
+            //    //Flash.SetActive(false);
+            //    //Fire.SetActive(false);
+            //    Green.SetActive(true);
+            //    Thunder.SetActive(false);
+            //}
+            //if (ForATKtype == "D")
+            //{
+            //    Smoke.SetActive(true);
+            //    //Flash.SetActive(false);
+            //    //Fire.SetActive(false);
+            //    Green.SetActive(false);
+            //    Thunder.SetActive(true);
+            //}
+
+        }
+        for (int n = 0; n < a; n++)
+        {
+            Basket[n].transform.forward = SetTargetVecList[n];
+            Basket[n].transform.position = SetSpawnPos;
+        }
+    }
+
+    private void Recycle(float skillAttack)
     {
         var TargetPos = Target.transform.position + new Vector3(0, 0.79f, 0);
         var Dist = (TargetPos- gameObject.transform.position).magnitude;

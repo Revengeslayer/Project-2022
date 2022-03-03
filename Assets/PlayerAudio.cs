@@ -5,8 +5,11 @@ using UnityEngine;
 public class PlayerAudio : MonoBehaviour
 {
     // Start is called before the first frame update
+    AudioSource[] BGMAudios;
+
     AudioSource []Audios;
     AudioSource Attack;
+
     AudioSource Skill1_Voice;
     AudioSource Skill1_First;
     AudioSource Skill1_Second;
@@ -15,8 +18,15 @@ public class PlayerAudio : MonoBehaviour
 
     AudioSource Skill3_Voice;
     AudioSource Skill3;
+
+    AudioSource GetHit;
+
+    AudioSource Dodge;
+
     void Start()
     {
+        //BGMAudios=GameObject.Find("Main")
+
         Audios = gameObject.GetComponents<AudioSource>();
         Attack = Audios[0];
         Skill1_Voice = Audios[1];
@@ -25,6 +35,8 @@ public class PlayerAudio : MonoBehaviour
         Skill2 = Audios[4];
         Skill3_Voice= Audios[5];
         Skill3 = Audios[6];
+        GetHit = Audios[7];
+        Dodge = Audios[8];
     }
 
     // Update is called once per frame
@@ -62,5 +74,13 @@ public class PlayerAudio : MonoBehaviour
     void PlayAudioSkill3()
     {
         Skill3.Play();
+    }
+    void PlayAudioGetHit()
+    {
+        GetHit.Play();
+    }
+    void PlayAudioDodge()
+    {
+        Dodge.Play();
     }
 }

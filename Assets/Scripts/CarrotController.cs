@@ -199,7 +199,11 @@ public class CarrotController : MonoBehaviour
         var ToTargetVec = TargetPos- gameObject.transform.position;
         var HitCheckDot = Vector3.Dot(ToTargetVec, gameObject.transform.forward);
         MaxTimer += Time.deltaTime;
-        if (Dist < 0.3)
+        if (Dist <= 3f && skillAttack == 3)
+        {
+            Destroy(gameObject);
+        }
+        else if (Dist < 0.3)
         {
             PlayerInfo.CarrotArrowDamage(ForATKtype);
             Destroy(gameObject);
@@ -209,10 +213,7 @@ public class CarrotController : MonoBehaviour
             PlayerInfo.CarrotArrowDamage(ForATKtype);
             Destroy(gameObject);
         }
-        else if(Dist<=3f && skillAttack==3)
-        {
-            Destroy(gameObject);
-        }
+        
         else if(MaxTimer > 3)
         {
             Destroy(gameObject);

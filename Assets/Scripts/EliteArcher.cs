@@ -782,7 +782,7 @@ public class EliteArcher : MonoBehaviour
                     var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position) + new Vector3(0, 0.08f, 0) + gameObject.transform.right + SectorVec * i;
                     TargetVecList.Add(CarrotVec);
                 }
-                CarrotController.InsEliteArrow(SpawnPos, TargetVecList, "C" , new Vector3(2f, 2f, 0.8f));
+                CarrotController.InsEliteArrow(SpawnPos, TargetVecList, "C" , new Vector3(1.2f, 1.2f, 0.8f));
                 Debug.Log(TargetVecList.Count);
                 Shooted = false;
             }

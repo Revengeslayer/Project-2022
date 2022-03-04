@@ -18,6 +18,7 @@ public class BossControl : MonoBehaviour
     private float RollAtkTime;
     private float SpellTime;
     private float SpellRate;
+    private float PathLife;
 
     private int bossState;
     private int bossDo;
@@ -132,6 +133,10 @@ public class BossControl : MonoBehaviour
                 SpellRate = 0;
             }
         }
+        //if(EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+        //{
+        //    PathLife += Time.deltaTime;
+        //}
     }
 
     void BossNormalAtk()
@@ -329,6 +334,11 @@ public class BossControl : MonoBehaviour
         //    reBossDo = Random.Range(3, 5);
         //}
         return reBossDo;
+    }
+
+    private void PathDust()
+    {
+        //GameObject Dust = Instantiate(Resources.Load("VTX/Path")) as GameObject;
     }
 
 

@@ -27,7 +27,7 @@ public class CarrotController : MonoBehaviour
         SetTargetVecList = new List<Vector3>();
         for (int i = 0; i < a; i++)
         {
-            GameObject carrotIns = Instantiate(Resources.Load("Weapons/carrotarrow")) as GameObject;
+            GameObject carrotIns = Instantiate(Resources.Load("Weapons/carrotarrow_Variant_1")) as GameObject;
             carrot = carrotIns;
             Smoke = carrot.transform.Find("smoke_thick").gameObject;
             Flash = carrot.transform.Find("MuzzleFlash").gameObject;

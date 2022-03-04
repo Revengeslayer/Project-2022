@@ -21,12 +21,20 @@ public class EarthElementalFSM : MonoBehaviour
     public Image hpImage0;
     private GameObject Target;
     public GameObject DieAnim;
+    private Vector3 HitBox1;
+    public GameObject HitBox2;
+    public GameObject HitBox3;
+    private float HitBoxDist1;
+    private float HitBoxDist2;
+    private float HitBoxDist3;
+    private float Fever;
 
     //Add
     public static float zAttack;
     public static float skillAttack;
     private float playerHp;
     float monsterHp;
+    float monsterMaxHp;
     GameObject Smoke;
 
     private FSMState mCurrentState;
@@ -54,6 +62,7 @@ public class EarthElementalFSM : MonoBehaviour
     private float RollTime;
     private float Atk02Time;
     private float JumpAtkTime;
+    private float ChargeTime;
 
     //Bool
     private bool toIdleActivate;
@@ -71,6 +80,7 @@ public class EarthElementalFSM : MonoBehaviour
     private bool getHurt;
     private bool WalkForTurn;
     private bool Alife;
+    private bool bHpCharge;
     public enum FSMState
     {
         NONE = -1,
@@ -91,8 +101,12 @@ public class EarthElementalFSM : MonoBehaviour
         EEAnim = GetComponent<Animator>();
         EERig = GetComponent<Rigidbody>();
         EEBox = GetComponent<BoxCollider>();
+
+        Fever = 1;
         Alife = true;
-        monsterHp = 1000;
+        monsterHp = 0;
+        monsterMaxHp = 3000;     
+        monsterHpbar.SetActive(false);
 
         Target = GameObject.Find("Character(Clone)");
         Smoke = gameObject.transform.Find("DustSmoke_A").gameObject;
@@ -112,6 +126,7 @@ public class EarthElementalFSM : MonoBehaviour
         JumpAtkCDForTimes = 0;
         Atk02CDForTimes = 0;
         DieTimer = 0;
+        ChargeTime = Time.time;
 
         //Dist
         DisToTarget = 0;
@@ -121,12 +136,10 @@ public class EarthElementalFSM : MonoBehaviour
         DisForRockShoot = 0;
 
 
-    //Target = GameObject.Find("Character(Clone)");
-
-    //Timer
+        //Timer
 
 
-    //Dist
+        //Dist
 
 }
     #region CheckState
@@ -142,6 +155,13 @@ public class EarthElementalFSM : MonoBehaviour
             mDoState = DoIdleActivateState;
 
             ActionVec = (Target.transform.position - gameObject.transform.position);
+
+            monsterHpbar.SetActive(true);
+            bHpCharge = true;
+            //ChargeTime = Time.time + 5;
+            //monsterHp += Time.deltaTime;
+            //monsterHp = Mathf.Clamp(monsterHp + Time.deltaTime * 100 , 0, 1000);
+
         }
     }
     private void CheckActivateState()
@@ -164,7 +184,7 @@ public class EarthElementalFSM : MonoBehaviour
         {
             return;
         }
-        if (Atk02CDForTimes == 3 && ActionBool)
+        if (Atk02CDForTimes == 2 && ActionBool)
         {
             EEAnim.SetBool("isAtk02", true);
 
@@ -177,6 +197,19 @@ public class EarthElementalFSM : MonoBehaviour
             ActionBool = false;
             ActionTimer = 0;
             Atk02CDForTimes = 0;
+        }
+        else if (DisToTarget < DisForCHASE && ActionBool && Time.time > RollCDTimer)
+        {
+            EEAnim.SetBool("isRoll", true);
+
+            mCurrentState = FSMState.Roll;
+            mCheckState = CheckRollState;
+            mDoState = DoRollState;
+
+            toRoll = true;
+            RollTime = Time.time + 5.8f;
+
+            JumpAtkCDForTimes++;
         }
         else if(JumpAtkCDForTimes ==2 && ActionBool)
         {
@@ -191,6 +224,7 @@ public class EarthElementalFSM : MonoBehaviour
             JumpAtkCDForTimes = 0;
             JumpAtkTime = Time.time + 1.95f;
             toJumpAttack = true;
+            Atk02CDForTimes ++;
         }
         else if (DisToTarget < DisForATTACK && ActionBool)
         {
@@ -270,7 +304,7 @@ public class EarthElementalFSM : MonoBehaviour
             mCurrentState = FSMState.Idle;
             mCheckState = CheckIdleState;
             mDoState = DoIdleState;
-            RollCDTimer = Time.time + 10;
+            RollCDTimer = Time.time + 25;
         }
     }
     private void CheckJumpAttackState()
@@ -328,7 +362,7 @@ public class EarthElementalFSM : MonoBehaviour
             mCurrentState = FSMState.Idle;
             mCheckState = CheckIdleState;
             mDoState = DoIdleState;
-            Atk02CDTimer = Time.time + 8;
+            Atk02CDTimer = Time.time + 5;
 
             ActionBool = false;
             ActionTimer = 0;
@@ -356,7 +390,7 @@ public class EarthElementalFSM : MonoBehaviour
     {
         var a = (Target.transform.position - gameObject.transform.position).normalized;
         a.y = 0;
-        gameObject.transform.forward += a * Time.deltaTime * 2.4f;
+        gameObject.transform.forward += a * Time.deltaTime * 5f;
         if (Time.time > RollTime)
         {
             toRoll = false;
@@ -374,11 +408,11 @@ public class EarthElementalFSM : MonoBehaviour
         var a = (Target.transform.position - gameObject.transform.position).normalized;
         a.y = 0;
         //Smoke.SetActive(true);
-        if (WalkForTurn)
+        //if (WalkForTurn)
         {
-            gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 3f;
+            //gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 3f;
         }
-        else
+        //else
         {
             gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 0.8f;
         }
@@ -441,6 +475,29 @@ public class EarthElementalFSM : MonoBehaviour
             WalkForTurn = true;
         }
     }
+
+    private void HpCharge()
+    {
+        //monsterHp = Mathf.Clamp(monsterHp + Time.deltaTime * 100 , 0, 1000);
+        monsterHp += Time.deltaTime * (monsterMaxHp / 3);
+        hpImage.fillAmount = ( monsterHp / monsterMaxHp);
+        Debug.Log("Docharge");
+        Debug.Log(monsterHp);
+        if (monsterHp >= monsterMaxHp)
+        {
+            bHpCharge = false;
+        }
+    }
+    private void GetHitBox()
+    {
+        HitBox1 = gameObject.transform.position - (gameObject.transform.forward ) + new Vector3 (0,0.6f,0);
+        //HitBox2 = gameObject.transform.position - (gameObject.transform.right * 1) + gameObject.transform.forward;
+        //HitBox3 = gameObject.transform.position + (gameObject.transform.right * 1) + gameObject.transform.forward;
+    }
+    private void GetHurtDist()
+    {
+
+    }
     void DieEvent()
     {
         GameObject G = (GameObject)Instantiate(DieAnim, gameObject.transform.position, gameObject.transform.rotation);
@@ -451,13 +508,17 @@ public class EarthElementalFSM : MonoBehaviour
             G.SetActive(true);
         }
     }
-    private void PlayerAttack(float zAttack, float skillAttack)
+    private void PlayerAttack(float zAttack, float skillAttack , Vector3 HitBoxPos)
     {
-        DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
-        var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward);
-        var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward).magnitude;
-        var cosValue = a / b;
+        if (getHurt)
+        {
+            return ;
+        }
 
+        var DisToTarget = (Target.transform.position - HitBoxPos).magnitude;
+        var a = Vector3.Dot((HitBoxPos - Target.transform.position), Target.transform.forward);
+        var b = Vector3.Distance(HitBoxPos, Target.transform.position) * (Target.transform.forward).magnitude;
+        var cosValue = a / b;
 
         if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
@@ -535,9 +596,9 @@ public class EarthElementalFSM : MonoBehaviour
         }
         else if (skillAttack == 4)
         {
-            float disToMonster = (gameObject.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)).magnitude;
-            var c = Vector3.Dot((gameObject.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)), Target.transform.position - (Target.transform.position + Target.transform.forward * 7.0f));
-            var d = Vector3.Distance(gameObject.transform.position, (Target.transform.position + Target.transform.forward * 7.0f)) * (Target.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)).magnitude;
+            float disToMonster = (HitBoxPos - (Target.transform.position + Target.transform.forward * 7.0f)).magnitude;
+            var c = Vector3.Dot((HitBoxPos - (Target.transform.position + Target.transform.forward * 7.0f)), Target.transform.position - (Target.transform.position + Target.transform.forward * 7.0f));
+            var d = Vector3.Distance(HitBoxPos, (Target.transform.position + Target.transform.forward * 7.0f)) * (Target.transform.position - (Target.transform.position + Target.transform.forward * 7.0f)).magnitude;
             var cosValue2 = c / d;
             if (hpImage.fillAmount > 0 && disToMonster <= 6.8f)
             {
@@ -559,28 +620,37 @@ public class EarthElementalFSM : MonoBehaviour
                 //Debug.Log("造成傷害 20");
             }
         }
-
     }
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawLine(this.transform.position, Target.transform.position);
-    //    Gizmos.color = Color.blue;
-    //    Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
-    //    Gizmos.color = Color.cyan;
-    //    Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
-    //    Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
-
-    //}
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        //Gizmos.DrawLine(this.transform.position, Target.transform.position);
+        //Gizmos.color = Color.blue;
+        //Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
+        //Gizmos.color = Color.cyan;
+        //Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
+        //Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
+        Gizmos.DrawWireSphere(HitBox1, 1.2f);
+        Gizmos.DrawWireSphere(HitBox2.transform.position, 1);
+        Gizmos.DrawWireSphere(HitBox3.transform.position, 1);
+        //Debug.DrawRay(HitBox1, Target.transform.position - HitBox1 , Color.blue , 2 , false);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(HitBox1, HitBox1 +(Target.transform.position - HitBox1).normalized * 3);
+        Gizmos.DrawLine(HitBox2.transform.position, HitBox2.transform.position + (Target.transform.position - HitBox2.transform.position).normalized * 3) ;
+        Gizmos.DrawLine(HitBox3.transform.position, HitBox3.transform.position + (Target.transform.position - HitBox3.transform.position).normalized * 3) ;
+    }
 
     private void Update()
     {
         //Damage
         if (zAttack != 0 || skillAttack != 0)
         {
-            PlayerAttack(zAttack, skillAttack);
+            PlayerAttack(zAttack, skillAttack , HitBox1);
+            PlayerAttack(zAttack, skillAttack, HitBox2.transform.position);
+            PlayerAttack(zAttack, skillAttack, HitBox3.transform.position);
+            getHurt = false;
         }
 
         if(hpImage.fillAmount <= 0 && Alife)
@@ -600,7 +670,14 @@ public class EarthElementalFSM : MonoBehaviour
             //DisForCHASE = 0;
             //TargetInSight = false;
         }
-        
+        //HpCharge
+        if(bHpCharge)
+        {
+            HpCharge();
+        }
+        GetHitBox();
+
+        Debug.Log(hpImage.fillAmount);
 
         Debug.Log("目前狀態          " + mCurrentState);
         

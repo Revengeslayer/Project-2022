@@ -760,7 +760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cec4ebb3e7d1ca4290f1b1e86faf56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4716011123679528230
+--- !u!114 &3097483588174185867
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -769,7 +769,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8973378805753796538}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73bfa6a9c7d8e124a868476b34b12bd4, type: 3}
+  m_Script: {fileID: 11500000, guid: e9ea476c9d6e3c3499732e6e069ff126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   monsterHpbar: {fileID: 5070401192130995961}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RabbitArcherSteeringFSM : MonoBehaviour
+public class GreenRBFSM : MonoBehaviour
 {
     //ÀË¬dª¬ºAªºdelegate
     private delegate void CheckState();
@@ -342,7 +342,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
             Debug.Log("chase");
             //var turnX = Vector3.Dot(gameObject.transform.forward, Vec);
             //var turnZ = Vector3.Dot(gameObject.transform.right, Vec);
-            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward + (gameObject.transform.right * 0.1f), Vec, 1 * Time.deltaTime );
+            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward + (gameObject.transform.right * 0.1f), Vec, 1 * Time.deltaTime);
             gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 2;
             toCHASE = false;
             toMOVE = false;
@@ -371,7 +371,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         NextAttack = false;
         PATimer = 0;
         AttackTimer = 0;
-        if(rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("POWERATTACK"))
+        if (rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("POWERATTACK"))
         {
             getHurt = false;
         }
@@ -591,8 +591,8 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
     private void PlayerAttack(float zAttack, float skillAttack)
     {
         DisToTarget = (Target.transform.position - gameObject.transform.position).magnitude;
-        var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward );
-        var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward ).magnitude;
+        var a = Vector3.Dot((gameObject.transform.position - Target.transform.position), Target.transform.forward);
+        var b = Vector3.Distance(gameObject.transform.position, Target.transform.position) * (Target.transform.forward).magnitude;
         var cosValue = a / b;
 
         if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
@@ -719,9 +719,9 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
         //{
         //    PlayerAttack(zAttack, skillAttack);
         //}
-        if(zAttack!=0 || skillAttack!=0)
+        if (zAttack != 0 || skillAttack != 0)
         {
-             PlayerAttack(zAttack, skillAttack);
+            PlayerAttack(zAttack, skillAttack);
         }
 
         if (getHurt && Alife && Time.time > DamageTimer && !rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("POWERATTACK"))
@@ -783,7 +783,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                 TargetVecList.Add(CarrotVec);
                 var SpawnPos = gameObject.transform.position + (new Vector3(0, 0.45f, 0) + gameObject.transform.forward * 0.5F);
 
-                CarrotController.InsCarrot(SpawnPos, TargetVecList, "A" , new Vector3(0.5f, 0.5f, 0.5f) , "Weapons/carrotarrow");
+                CarrotController.InsCarrot(SpawnPos, TargetVecList, "A", new Vector3(0.5f, 0.5f, 0.5f), "Weapons/carrotarrow_Variant");
                 Shooted = false;
             }
         }
@@ -799,7 +799,7 @@ public class RabbitArcherSteeringFSM : MonoBehaviour
                     var CarrotVec = Vector3.Normalize(Target.transform.position - gameObject.transform.position) + new Vector3(0, 0.08f, 0) + gameObject.transform.right + SectorVec * i;
                     TargetVecList.Add(CarrotVec);
                 }
-                CarrotController.InsCarrot(SpawnPos, TargetVecList, "B" , new Vector3(0.5f, 0.5f, 0.5f) , "Weapons/carrotarrow");
+                CarrotController.InsCarrot(SpawnPos, TargetVecList, "B", new Vector3(0.5f, 0.5f, 0.5f), "Weapons/carrotarrow_Variant");
                 Debug.Log(TargetVecList.Count);
                 PAshooted = false;
             }

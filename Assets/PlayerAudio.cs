@@ -1,11 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAudio : MonoBehaviour
 {
+    private float time;
     // Start is called before the first frame update
     AudioSource[] BGMAudios;
+
+    AudioSource Normal;
+    AudioSource Battle;
+    AudioSource Boss;
 
     AudioSource []Audios;
     AudioSource Attack;
@@ -23,9 +29,14 @@ public class PlayerAudio : MonoBehaviour
 
     AudioSource Dodge;
 
+    AudioSource Die;
+
     void Start()
     {
-        //BGMAudios=GameObject.Find("Main")
+        BGMAudios = GameObject.Find("Main").GetComponents<AudioSource>();
+        Normal = BGMAudios[0];
+        Battle = BGMAudios[1];
+        Boss = BGMAudios[2];
 
         Audios = gameObject.GetComponents<AudioSource>();
         Attack = Audios[0];
@@ -37,14 +48,122 @@ public class PlayerAudio : MonoBehaviour
         Skill3 = Audios[6];
         GetHit = Audios[7];
         Dodge = Audios[8];
+        Die = Audios[9];
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+        CheckBGM();
     }
 
+    private void CheckBGM()
+    {
+        if(InstantiateManager.aliveCount==0 && Normal.isPlaying ==true)
+        {
+            return;
+        }
+        else if(InstantiateManager.aliveCount == 0 && Battle.isPlaying == true)
+        {
+            Normal.volume = 0f;
+            StartCoroutine(BattleStop());
+            StartCoroutine(ChangeToNormal());         
+        }
+
+    }
+    IEnumerator NormalPause()
+    {
+        yield return new WaitUntil(NormalVolumeDown);
+        Normal.Pause();
+    }
+    IEnumerator BattleStop()
+    {
+        yield return new WaitUntil(BattleVolumeDown);
+        Battle.Stop();
+    }
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(0.2f);
+        Battle.volume = 0f;
+        StartCoroutine(BattleFadeIn());
+    }
+    IEnumerator ChangeToNormal()
+    {
+        Normal.Play();
+        yield return new WaitUntil(NormalVolumeUP);
+    }
+
+    IEnumerator BattleFadeIn()
+    {
+        Battle.Play();
+        yield return new WaitUntil(BattleVolumeUP);
+    }
+    bool NormalVolumeUP()
+    {
+        Normal.volume += Time.deltaTime*0.1f;
+        Normal.volume = Mathf.Clamp(Normal.volume, 0f, 0.7f);
+        if (Normal.volume>=0.7f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool BattleVolumeUP()
+    {
+        Battle.volume += Time.deltaTime * 0.5f;
+        Battle.volume = Mathf.Clamp(Battle.volume, 0f, 0.7f);
+        if (Battle.volume >= 0.7f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool NormalVolumeDown()
+    {
+        Normal.volume -= Time.deltaTime * 0.5f;
+        Normal.volume = Mathf.Clamp(Normal.volume, 0f, 0.7f);
+        if (Normal.volume == 0f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool BattleVolumeDown()
+    {
+        Battle.volume -= Time.deltaTime * 0.5f;
+        Battle.volume = Mathf.Clamp(Battle.volume, 0f, 0.7f);
+        if (Battle.volume == 0f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if ((other.name == "SpawnA"|| other.name == "SpawnB"|| other.name == "SpawnC"|| other.name == "SpawnD"|| other.name == "SpawnE"))
+        {
+            StartCoroutine(NormalPause());
+            StartCoroutine(Wait());
+        }
+    }
+    #region Audio
     void PlayAudioZ()
     {
         Attack.Play();
@@ -83,4 +202,11 @@ public class PlayerAudio : MonoBehaviour
     {
         Dodge.Play();
     }
+
+    void PlayAudiDie()
+    {
+        Die.Play();
+    }
+    #endregion
+
 }

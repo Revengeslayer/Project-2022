@@ -144,6 +144,10 @@ public class Trigger : MonoBehaviour
             AirManager.GetComponent<AirWallManager>().openWall = true;
             AirManager.GetComponent<AirWallManager>().SetWalls(wallContainer, "AreaWallE");
         }
+        else if (colliderTag == "AreaBoss")
+        {
+            Destroy(other.gameObject);
+        }
         //else if (colliderTag == "SpawnC")
         //{
         //    InstantiateManager.SpawnC = true;

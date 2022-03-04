@@ -623,23 +623,23 @@ public class EarthElementalFSM : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        //Gizmos.DrawLine(this.transform.position, Target.transform.position);
-        //Gizmos.color = Color.blue;
-        //Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
         //Gizmos.color = Color.red;
-        //Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
+        ////Gizmos.DrawLine(this.transform.position, Target.transform.position);
+        ////Gizmos.color = Color.blue;
+        ////Gizmos.DrawWireSphere(this.transform.position, DisForActivate);
+        ////Gizmos.color = Color.red;
+        ////Gizmos.DrawWireSphere(this.transform.position, DisForATTACK);
+        ////Gizmos.color = Color.cyan;
+        ////Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
+        ////Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
+        //Gizmos.DrawWireSphere(HitBox1, 1.2f);
+        //Gizmos.DrawWireSphere(HitBox2.transform.position, 1);
+        //Gizmos.DrawWireSphere(HitBox3.transform.position, 1);
+        ////Debug.DrawRay(HitBox1, Target.transform.position - HitBox1 , Color.blue , 2 , false);
         //Gizmos.color = Color.cyan;
-        //Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
-        //Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
-        Gizmos.DrawWireSphere(HitBox1, 1.2f);
-        Gizmos.DrawWireSphere(HitBox2.transform.position, 1);
-        Gizmos.DrawWireSphere(HitBox3.transform.position, 1);
-        //Debug.DrawRay(HitBox1, Target.transform.position - HitBox1 , Color.blue , 2 , false);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(HitBox1, HitBox1 +(Target.transform.position - HitBox1).normalized * 3);
-        Gizmos.DrawLine(HitBox2.transform.position, HitBox2.transform.position + (Target.transform.position - HitBox2.transform.position).normalized * 3) ;
-        Gizmos.DrawLine(HitBox3.transform.position, HitBox3.transform.position + (Target.transform.position - HitBox3.transform.position).normalized * 3) ;
+        //Gizmos.DrawLine(HitBox1, HitBox1 +(Target.transform.position - HitBox1).normalized * 3);
+        //Gizmos.DrawLine(HitBox2.transform.position, HitBox2.transform.position + (Target.transform.position - HitBox2.transform.position).normalized * 3) ;
+        //Gizmos.DrawLine(HitBox3.transform.position, HitBox3.transform.position + (Target.transform.position - HitBox3.transform.position).normalized * 3) ;
     }
 
     private void Update()

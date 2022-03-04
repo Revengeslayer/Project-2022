@@ -29,6 +29,7 @@ TagManager:
   - AreaWallC
   - AreaWallD
   - AreaWallE
+  - AreaBoss
   layers:
   - Default
   - TransparentFX

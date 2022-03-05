@@ -33,6 +33,7 @@ public class PlayerInfo : MonoBehaviour
     private static bool dodgeInv;
     void Start()
     {
+        DizzyCount = 0;
         playerHp = playerMaxHp;
         playerHpbar = GameObject.Find("PlayerHpBar");
         PlayerDizzyBar = GameObject.Find("PlayerDizzyBar");

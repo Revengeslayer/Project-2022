@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FSM : MonoBehaviour
 {
@@ -849,6 +850,12 @@ public class FSM : MonoBehaviour
 		ChangeForword = false;
 		isAtkToMove = false;
 		anim.Play("Die");
+
+		StartCoroutine(Wait());
+		if(Input.anyKey)
+		{
+			SceneManager.LoadScene(0);
+		}
 	}
 	#endregion
 
@@ -909,6 +916,11 @@ public class FSM : MonoBehaviour
 		{
 			ChangeForword = false;
 		}
+	}
+
+	IEnumerator Wait()
+	{
+		yield return new WaitForSeconds(5.0f);		
 	}
 }
 

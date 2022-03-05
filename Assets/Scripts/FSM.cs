@@ -68,7 +68,7 @@ public class FSM : MonoBehaviour
 	//BItoI check
 	private float BItoITime;
 
-	private int DizzyCount;
+	public static float DizzyCount;
 
 	private GameObject GameOver;
 	private GameObject GameOverText;
@@ -112,6 +112,7 @@ public class FSM : MonoBehaviour
 		if (isGitHit == true)
 		{
 			anim.Play("GetHit");
+			isGitHit = false;
 			anim.SetBool("isGetHit", true);
 			mCurrentState = FSMState.GetHit;
 			mCheckState = CheckGetHitState;
@@ -158,6 +159,7 @@ public class FSM : MonoBehaviour
 		{
 			BItoITime = 0;
 			anim.Play("GetHit");
+			isGitHit = false;
 			anim.SetBool("isGetHit", true);
 			mCurrentState = FSMState.GetHit;
 			mCheckState = CheckGetHitState;
@@ -238,9 +240,23 @@ public class FSM : MonoBehaviour
 			}
 		}
 		if (isAttack == true)
-		{			
+		{	
+			if(isGitHit==true &&(PlayerInfo.DizzyCount%3==1))
+            {
+				anim.SetInteger("combo2", 0);
+				anim.SetInteger("combo3", 0);
+				isAttack = false;
+				anim.SetBool("isAttack", false);
+				anim.Play("GetHit");
+				isGitHit = false;
+				anim.SetBool("isGetHit", true);
+				mCurrentState = FSMState.GetHit;
+				mCheckState = CheckGetHitState;
+				mDoState = DoGetHitState;
+
+			}
 			//攻擊中轉Dodge
-			if (isDodge == true)
+			else if (isDodge == true)
             {
 				anim.SetInteger("combo2", 0);
 				anim.SetInteger("combo3", 0);
@@ -873,6 +889,7 @@ public class FSM : MonoBehaviour
 	{
 		//偵測狀態
 		//Debug.Log("目前狀態          " + mCurrentState);
+		Debug.Log("DI                      "+PlayerInfo.DizzyCount);
 		//判斷哪一個Attack
 		zAttack = 0;
 		//如果死亡了

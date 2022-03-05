@@ -7,8 +7,6 @@ public class BossControl : MonoBehaviour
     private GameObject objPlayer;
     private GameObject objBoss;
     private Animator EEAnim;
-    public GameObject Lefthand;
-    public GameObject Righthand;
 
     public GameObject atkWave;
     public GameObject jumpWave;
@@ -243,15 +241,11 @@ public class BossControl : MonoBehaviour
         {
             bossJump = true;
             gameObject.GetComponent<BoxCollider>().enabled = false;
-            Lefthand.GetComponent<SphereCollider>().enabled = false;
-            Righthand.GetComponent<SphereCollider>().enabled = false;
             bossJumpVec = (objPlayer.transform.position - gameObject.transform.position).normalized;
         }
         else if (bossJump == true)
         {
             bossJump = false;
-            Lefthand.GetComponent<SphereCollider>().enabled = true;
-            Righthand.GetComponent<SphereCollider>().enabled = true;
             gameObject.GetComponent<BoxCollider>().enabled = true;
         }
     }
@@ -334,15 +328,13 @@ public class BossControl : MonoBehaviour
         {
             bossRoll = true;
             gameObject.GetComponent<BoxCollider>().enabled = false;
-            Lefthand.GetComponent<SphereCollider>().enabled = false;
-            Righthand.GetComponent<SphereCollider>().enabled = false;
+           
         }
         else if (bossRoll == true)
         {
             bossRoll = false;
             gameObject.GetComponent<BoxCollider>().enabled = true;
-            Lefthand.GetComponent<SphereCollider>().enabled = true;
-            Righthand.GetComponent<SphereCollider>().enabled = true;
+           
         }               
     }
     void WaitForSpell()

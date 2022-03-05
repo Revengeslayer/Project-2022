@@ -112,8 +112,8 @@ public class PlayerAudio : MonoBehaviour
     bool NormalVolumeUP()
     {
         Normal.volume += Time.deltaTime*0.1f;
-        Normal.volume = Mathf.Clamp(Normal.volume, 0f, 0.7f);
-        if (Normal.volume>=0.7f)
+        Normal.volume = Mathf.Clamp(Normal.volume, 0f, 0.5f);
+        if (Normal.volume>=0.5f)
         {
             return true;
         }
@@ -126,8 +126,8 @@ public class PlayerAudio : MonoBehaviour
     bool BattleVolumeUP()
     {
         Battle.volume += Time.deltaTime * 0.5f;
-        Battle.volume = Mathf.Clamp(Battle.volume, 0f, 0.7f);
-        if (Battle.volume >= 0.7f)
+        Battle.volume = Mathf.Clamp(Battle.volume, 0f, 0.5f);
+        if (Battle.volume >= 0.5f)
         {
             return true;
         }
@@ -139,8 +139,8 @@ public class PlayerAudio : MonoBehaviour
     bool BossVolumeUP()
     {
         Boss.volume += Time.deltaTime * 0.2f;
-        Boss.volume = Mathf.Clamp(Boss.volume, 0f, 0.7f);
-        if (Boss.volume >= 0.7f)
+        Boss.volume = Mathf.Clamp(Boss.volume, 0f, 0.5f);
+        if (Boss.volume >= 0.5f)
         {
             return true;
         }
@@ -153,7 +153,7 @@ public class PlayerAudio : MonoBehaviour
     bool NormalVolumeDown()
     {
         Normal.volume -= Time.deltaTime * 0.5f;
-        Normal.volume = Mathf.Clamp(Normal.volume, 0f, 0.7f);
+        Normal.volume = Mathf.Clamp(Normal.volume, 0f, 0.5f);
         if (Normal.volume == 0f)
         {
             return true;
@@ -167,7 +167,7 @@ public class PlayerAudio : MonoBehaviour
     bool BattleVolumeDown()
     {
         Battle.volume -= Time.deltaTime * 0.5f;
-        Battle.volume = Mathf.Clamp(Battle.volume, 0f, 0.7f);
+        Battle.volume = Mathf.Clamp(Battle.volume, 0f, 0.5f);
         if (Battle.volume == 0f)
         {
             return true;

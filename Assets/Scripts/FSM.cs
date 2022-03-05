@@ -87,6 +87,7 @@ public class FSM : MonoBehaviour
 	{
 		isGitHit = false;
 		isDeath = false;
+
 		katana = GameObject.Find("Hoshi_katana");
 		katana.SetActive(false);
 		mCurrentState = FSMState.Idle;
@@ -852,10 +853,7 @@ public class FSM : MonoBehaviour
 		anim.Play("Die");
 
 		StartCoroutine(Wait());
-		if(Input.anyKey)
-		{
-			SceneManager.LoadScene(0);
-		}
+		
 	}
 	#endregion
 
@@ -920,7 +918,12 @@ public class FSM : MonoBehaviour
 
 	IEnumerator Wait()
 	{
-		yield return new WaitForSeconds(5.0f);		
+		yield return new WaitForSeconds(5.0f);
+
+		if (Input.anyKey)
+		{
+			SceneManager.LoadScene(0);
+		}
 	}
 }
 

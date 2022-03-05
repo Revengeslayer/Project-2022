@@ -839,8 +839,9 @@ public class EarthElementalFSM : MonoBehaviour
             getHurt = false;
         }
 
-        if(hpImage.fillAmount <= 0 && Alife)
+        if(monsterTotalHp <= 0 && Alife)
         {
+            hpImage.fillAmount = 0;
             mCurrentState = FSMState.Die;
             mCheckState = CheckDieState;
             mDoState = DoDieState;

@@ -87,6 +87,8 @@ public class EarthElementalFSM : MonoBehaviour
     private bool Alife;
     private bool bHpCharge;
     private bool immortal;
+
+    GameObject Win;
     public enum FSMState
     {
         NONE = -1,
@@ -104,6 +106,9 @@ public class EarthElementalFSM : MonoBehaviour
     
     void Start()
     {
+        Win = GameObject.Find("Win");
+        Win.SetActive(false);
+
         EEAnim = GetComponent<Animator>();
         EERig = GetComponent<Rigidbody>();
         EEBox = GetComponent<BoxCollider>();
@@ -450,6 +455,7 @@ public class EarthElementalFSM : MonoBehaviour
     private void DoDieState()
     {
         EEAnim.Play("Die");
+        Win.SetActive(true);
     }
     #endregion
 

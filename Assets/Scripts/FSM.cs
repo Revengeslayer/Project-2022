@@ -69,6 +69,9 @@ public class FSM : MonoBehaviour
 	private float BItoITime;
 
 	private int DizzyCount;
+
+	private GameObject GameOver;
+	private GameObject GameOverText;
 	// Start is called before the first frame update
 	public enum FSMState
 	{
@@ -87,6 +90,12 @@ public class FSM : MonoBehaviour
 	{
 		isGitHit = false;
 		isDeath = false;
+
+		GameOver= GameObject.Find("GameOver");
+		GameOver.SetActive(false);
+		GameOverText = GameObject.Find("GameOverText");
+		GameOverText.SetActive(false);
+
 
 		katana = GameObject.Find("Hoshi_katana");
 		katana.SetActive(false);
@@ -852,6 +861,7 @@ public class FSM : MonoBehaviour
 		isAtkToMove = false;
 		anim.Play("Die");
 
+		GameOver.SetActive(true);
 		StartCoroutine(Wait());
 		
 	}
@@ -862,8 +872,7 @@ public class FSM : MonoBehaviour
 	void Update()
 	{
 		//偵測狀態
-		Debug.Log("目前狀態          " + mCurrentState);
-
+		//Debug.Log("目前狀態          " + mCurrentState);
 		//判斷哪一個Attack
 		zAttack = 0;
 		//如果死亡了
@@ -919,7 +928,7 @@ public class FSM : MonoBehaviour
 	IEnumerator Wait()
 	{
 		yield return new WaitForSeconds(5.0f);
-
+		GameOverText.SetActive(true);
 		if (Input.anyKey)
 		{
 			SceneManager.LoadScene(0);

@@ -10,7 +10,7 @@ public class PlayerInfo : MonoBehaviour
     private static GameObject playerHpbar;
     private static GameObject PlayerDizzyBar;
     //public Image hpImage;
-    public static float playerMaxHp = 800;
+    public static float playerMaxHp = 80000;
     public static float playerHp;
     float playerDistance;//人物與怪物的距離
     //傳Skill給怪物

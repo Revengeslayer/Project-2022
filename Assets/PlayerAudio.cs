@@ -87,6 +87,12 @@ public class PlayerAudio : MonoBehaviour
         Battle.volume = 0f;
         StartCoroutine(BattleFadeIn());
     }
+    IEnumerator Wait2()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Boss.volume = 0f;
+        StartCoroutine(BossFadeIn());
+    }
     IEnumerator ChangeToNormal()
     {
         Normal.Play();
@@ -97,6 +103,11 @@ public class PlayerAudio : MonoBehaviour
     {
         Battle.Play();
         yield return new WaitUntil(BattleVolumeUP);
+    }
+    IEnumerator BossFadeIn()
+    {
+        Boss.Play();
+        yield return new WaitUntil(BossVolumeUP);
     }
     bool NormalVolumeUP()
     {
@@ -125,7 +136,20 @@ public class PlayerAudio : MonoBehaviour
             return false;
         }
     }
+    bool BossVolumeUP()
+    {
+        Boss.volume += Time.deltaTime * 0.2f;
+        Boss.volume = Mathf.Clamp(Boss.volume, 0f, 0.7f);
+        if (Boss.volume >= 0.7f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
+    }
     bool NormalVolumeDown()
     {
         Normal.volume -= Time.deltaTime * 0.5f;
@@ -161,6 +185,12 @@ public class PlayerAudio : MonoBehaviour
         {
             StartCoroutine(NormalPause());
             StartCoroutine(Wait());
+        }
+        
+        if (other.name == "AreaBoss")
+        {
+            StartCoroutine(NormalPause());
+            StartCoroutine(Wait2());
         }
     }
     #region Audio

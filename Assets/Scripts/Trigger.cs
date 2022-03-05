@@ -18,6 +18,7 @@ public class Trigger : MonoBehaviour
     private GameObject SpawnD;
     //09-add
     private GameObject AirManager;
+    private GameObject BossCollider;
     // Start is called before the first frame update
 
 
@@ -35,6 +36,8 @@ public class Trigger : MonoBehaviour
         SpawnD = GameObject.Find("SpawnD");
         //09-add 
         AirManager= GameObject.Find("AirManager");
+        BossCollider= GameObject.Find("BossLightWall");
+
     }
     void OnTriggerEnter(Collider other)
     {
@@ -146,6 +149,7 @@ public class Trigger : MonoBehaviour
         }
         else if (colliderTag == "AreaBoss")
         {
+            //StartCoroutine(BossArea());
             Destroy(other.gameObject);
         }
         //else if (colliderTag == "SpawnC")
@@ -191,5 +195,10 @@ public class Trigger : MonoBehaviour
         }
     }
 
+    IEnumerator BossArea()
+    {
+        BossCollider.SetActive(true);
+        yield return new WaitForSeconds(1f);
 
+    }
 }

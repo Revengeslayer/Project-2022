@@ -62978,6 +62978,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.4
+    functionName: PlayAudioRoll
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.43333334
     functionName: BossJumpTurn
     data: 
@@ -62985,8 +62992,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 1.8333334
+    functionName: PlayAudioDebut
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 2
     functionName: BossJumpTurn
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.1
+    functionName: PlayAudioDebut
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -63006,6 +63027,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 3.0333333
+    functionName: CloseAudioRoll
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 3.7333333
     functionName: BossJumpMove
     data: 
@@ -63015,6 +63043,13 @@ AnimationClip:
     messageOptions: 0
   - time: 3.7666667
     functionName: BossJumpWaveOpen
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 3.7666667
+    functionName: PlayAudioJump
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

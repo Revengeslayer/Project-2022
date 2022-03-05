@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpikeController : MonoBehaviour
 {
+    AudioSource[] Audios;
+    AudioSource Track;
     GameObject Target;
     private float MaxTimer;
     private float LocationTimer;
@@ -16,6 +18,8 @@ public class SpikeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Audios = gameObject.GetComponents<AudioSource>();
+        Track = Audios[0];
         //SpikeContainer = new Queue<GameObject>();
         //SpikeContainer.Enqueue(gameObject);
         Target = GameObject.Find("Character(Clone)");

@@ -16941,6 +16941,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.46666667
+    functionName: PlayAudioAtk
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.8333333
     functionName: BossNAtkWaveClose
     data: 

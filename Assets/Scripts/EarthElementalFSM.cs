@@ -455,7 +455,7 @@ public class EarthElementalFSM : MonoBehaviour
     private void DoDieState()
     {
         EEAnim.Play("Die");
-        Win.SetActive(true);
+        
     }
     #endregion
 
@@ -873,5 +873,10 @@ public class EarthElementalFSM : MonoBehaviour
         //ª¬ºA°µ¬Æ»ò
         mDoState();
         //Debug.Log(Time.time - Atk02CDTimer);
+    }
+
+    private void ShowGameWin()
+    {
+        Win.SetActive(true);
     }
 }

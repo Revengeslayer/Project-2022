@@ -49,7 +49,7 @@ public class PlayerInfo : MonoBehaviour
         skillAttack = 0;
         zAttack = 0;
         playerHpbar.GetComponent<Image>().fillAmount = playerHp / playerMaxHp;
-        PlayerDizzyBar.GetComponent<Image>().fillAmount = DizzyCount / playerMaxDizzy;
+        //PlayerDizzyBar.GetComponent<Image>().fillAmount = DizzyCount / playerMaxDizzy;
         playerHp = Mathf.Clamp(playerHp, 0, playerMaxHp);
 
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)

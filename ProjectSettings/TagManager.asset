@@ -30,6 +30,7 @@ TagManager:
   - AreaWallD
   - AreaWallE
   - AreaBoss
+  - redPotion
   layers:
   - Default
   - TransparentFX

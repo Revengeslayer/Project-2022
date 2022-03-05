@@ -18,6 +18,8 @@ public class EarthElementalFSM : MonoBehaviour
     private BoxCollider EEBox;
     public GameObject monsterHpbar;
     public Image hpImage;
+    public Image hpImage1;
+    public Image hpImage2;
     public Image hpImage0;
     private GameObject Target;
     public GameObject DieAnim;
@@ -34,6 +36,9 @@ public class EarthElementalFSM : MonoBehaviour
     public static float skillAttack;
     private float playerHp;
     float monsterHp;
+    float monsterHp1;
+    float monsterHp2;
+    float monsterTotalHp;
     float monsterMaxHp;
     GameObject Smoke;
 
@@ -81,6 +86,7 @@ public class EarthElementalFSM : MonoBehaviour
     private bool WalkForTurn;
     private bool Alife;
     private bool bHpCharge;
+    private bool immortal;
     public enum FSMState
     {
         NONE = -1,
@@ -104,8 +110,11 @@ public class EarthElementalFSM : MonoBehaviour
 
         Fever = 1;
         Alife = true;
-        monsterHp = 0;
-        monsterMaxHp = 3000;     
+        monsterMaxHp = 3000;
+        monsterTotalHp = 0;
+        monsterHp = monsterMaxHp / 3;
+        monsterHp1 = monsterMaxHp / 3;
+        monsterHp2 = monsterMaxHp / 3;
         monsterHpbar.SetActive(false);
 
         Target = GameObject.Find("Character(Clone)");
@@ -135,6 +144,8 @@ public class EarthElementalFSM : MonoBehaviour
         DisForATTACK = 6;
         DisForRockShoot = 0;
 
+        //Bool
+        immortal = true;
 
         //Timer
 
@@ -479,13 +490,35 @@ public class EarthElementalFSM : MonoBehaviour
     private void HpCharge()
     {
         //monsterHp = Mathf.Clamp(monsterHp + Time.deltaTime * 100 , 0, 1000);
-        monsterHp += Time.deltaTime * (monsterMaxHp / 3);
-        hpImage.fillAmount = ( monsterHp / monsterMaxHp);
+
+        monsterTotalHp += Time.deltaTime * (monsterMaxHp / 3);
+        if (monsterTotalHp < monsterHp)
+        {
+            hpImage.fillAmount = (monsterTotalHp / monsterHp);
+            //monsterHp --;
+        }
+        else if (monsterTotalHp < monsterHp + monsterHp1)
+        {
+            hpImage.fillAmount = 1;
+            hpImage1.fillAmount = ((monsterTotalHp - monsterHp )/ monsterHp1);
+            //monsterHp1--;
+        }
+        else if (monsterTotalHp < monsterHp + monsterHp1 + monsterHp2)
+        {
+            hpImage1.fillAmount = 1;
+            hpImage2.fillAmount = ((monsterTotalHp - (monsterHp + monsterHp1)) / monsterHp2);
+            //monsterHp2--;
+        }
+
+
         Debug.Log("Docharge");
         Debug.Log(monsterHp);
-        if (monsterHp >= monsterMaxHp)
+        if (monsterTotalHp >= monsterMaxHp)
         {
+            monsterTotalHp = monsterMaxHp;
+            hpImage2.fillAmount = 1;
             bHpCharge = false;
+            immortal = false;
         }
     }
     private void GetHitBox()
@@ -514,6 +547,22 @@ public class EarthElementalFSM : MonoBehaviour
         {
             return ;
         }
+        if(immortal)
+        {
+            return ;
+        }
+        if(monsterTotalHp <= monsterMaxHp / 3 * 2)
+        {
+            hpImage2.fillAmount = 0;
+        }
+        if(monsterTotalHp <= monsterMaxHp / 3)
+        {
+            hpImage1.fillAmount = 0;
+        }
+        if(monsterTotalHp <= 0)
+        {
+            hpImage0.fillAmount = 0;
+        }
 
         var DisToTarget = (Target.transform.position - HitBoxPos).magnitude;
         var a = Vector3.Dot((HitBoxPos - Target.transform.position), Target.transform.forward);
@@ -522,22 +571,68 @@ public class EarthElementalFSM : MonoBehaviour
 
         if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
-            hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
-            //dogAnimator.SetBool("gethit", true);
+            if (monsterTotalHp > monsterHp + monsterHp1)
+            {
+                hpImage2.fillAmount = ((monsterHp2 - 25.0f) / (monsterMaxHp / 3));
+                monsterHp2 -= 25.0f;
+            }
+            else if (monsterTotalHp > monsterHp)
+            {
+                hpImage1.fillAmount = ((monsterHp1 - 25.0f) / (monsterMaxHp / 3));
+                monsterHp1 -= 25.0f;
+            }
+            else if (monsterTotalHp >= 0)
+            {
+                hpImage.fillAmount = ((monsterHp - 25.0f) / (monsterMaxHp / 3));
+                monsterHp -= 25.0f;
+            }
+            //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
+            monsterTotalHp -= 25.0f;
             zAttack = 0;
             getHurt = true;
-            //Debug.Log("z1");
         }
         else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
-            hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
+            if (monsterTotalHp > monsterHp + monsterHp1)
+            {
+                hpImage2.fillAmount = ((monsterHp2 - 25.0f) / (monsterMaxHp / 3));
+                monsterHp2 -= 25.0f;
+            }
+            else if (monsterTotalHp > monsterHp)
+            {
+                hpImage1.fillAmount = ((monsterHp1 - 25.0f) / (monsterMaxHp / 3));
+                monsterHp1 -= 25.0f;
+            }
+            else if (monsterTotalHp >= 0)
+            {
+                hpImage.fillAmount = ((monsterHp - 25.0f) / (monsterMaxHp / 3));
+                monsterHp -= 25.0f;
+            }
+            //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
+            monsterTotalHp -= 25.0f;
             getHurt = true;
             zAttack = 0;
             //Debug.Log("z2");
         }
         else if (cosValue >= 0.7 && zAttack == 3 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
-            hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
+            if (monsterTotalHp > monsterHp + monsterHp1)
+            {
+                hpImage2.fillAmount = ((monsterHp2 - 50.0f) / (monsterMaxHp / 3));
+                monsterHp2 -= 50.0f;
+            }
+            else if (monsterTotalHp > monsterHp)
+            {
+                hpImage1.fillAmount = ((monsterHp1 - 50.0f) / (monsterMaxHp / 3));
+                monsterHp1 -= 50.0f;
+            }
+            else if (monsterTotalHp >= 0)
+            {
+                hpImage.fillAmount = ((monsterHp - 50.0f) / (monsterMaxHp / 3));
+                monsterHp -= 50.0f;
+            }
+            //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
+            monsterTotalHp -= 50.0f;
             getHurt = true;
             zAttack = 0;
             //Debug.Log("z3");
@@ -548,7 +643,23 @@ public class EarthElementalFSM : MonoBehaviour
         {
             if (cosValue >= 0.8f && hpImage.fillAmount > 0 && DisToTarget <= 2.8f)
             {
-                hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
+                if (monsterTotalHp > monsterHp + monsterHp1)
+                {
+                    hpImage2.fillAmount = ((monsterHp2 - 40.0f) / (monsterMaxHp / 3));
+                    monsterHp2 -= 40.0f;
+                }
+                else if (monsterTotalHp > monsterHp)
+                {
+                    hpImage1.fillAmount = ((monsterHp1 - 40.0f) / (monsterMaxHp / 3));
+                    monsterHp1 -= 40.0f;
+                }
+                else if (monsterTotalHp >= 0)
+                {
+                    hpImage.fillAmount = ((monsterHp - 40.0f) / (monsterMaxHp / 3));
+                    monsterHp -= 40.0f;
+                }
+                //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
+                monsterTotalHp -= 40.0f;
                 getHurt = true;
                 skillAttack = 0;
                 //dogAnimator.SetBool("Attack01", false);
@@ -571,7 +682,23 @@ public class EarthElementalFSM : MonoBehaviour
             //playrerAtkPosition = objPlayer.transform.position + objPlayer.transform.forward * 1.0f;
             //dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
             //前方一段距離的圓傷害判定用
-            hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+            if (monsterTotalHp > monsterHp + monsterHp1)
+            {
+                hpImage2.fillAmount = ((monsterHp2 - 60.0f) / (monsterMaxHp / 3));
+                monsterHp2 -= 60.0f;
+            }
+            else if (monsterTotalHp > monsterHp)
+            {
+                hpImage1.fillAmount = ((monsterHp1 - 60.0f) / (monsterMaxHp / 3));
+                monsterHp1 -= 60.0f;
+            }
+            else if (monsterTotalHp >= 0)
+            {
+                hpImage.fillAmount = ((monsterHp - 60.0f) / (monsterMaxHp / 3));
+                monsterHp -= 60.0f;
+            }
+            //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
+            monsterTotalHp -= 60.0f;
             getHurt = true;
             skillAttack = 0;
             //dogAnimator.SetBool("Attack01", false);
@@ -585,7 +712,23 @@ public class EarthElementalFSM : MonoBehaviour
         {
             if (hpImage.fillAmount > 0)
             {
-                hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
+                if (monsterTotalHp > monsterHp + monsterHp1)
+                {
+                    hpImage2.fillAmount = ((monsterHp2 - 20.0f) / (monsterMaxHp / 3));
+                    monsterHp2 -= 20.0f;
+                }
+                else if (monsterTotalHp > monsterHp)
+                {
+                    hpImage1.fillAmount = ((monsterHp1 - 20.0f) / (monsterMaxHp / 3));
+                    monsterHp1 -= 20.0f;
+                }
+                else if (monsterTotalHp >= 0)
+                {
+                    hpImage.fillAmount = ((monsterHp - 20.0f) / (monsterMaxHp / 3));
+                    monsterHp -= 20.0f;
+                }
+                //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
+                monsterTotalHp -= 20.0f;
                 getHurt = true;
                 skillAttack = 0;
                 //dogAnimator.SetBool("Attack01", false);
@@ -604,13 +747,45 @@ public class EarthElementalFSM : MonoBehaviour
             {
                 if (cosValue2 >= 0.98)
                 {
-                    hpImage.fillAmount = hpImage.fillAmount - (150.0f / monsterHp);
+                    if (monsterTotalHp > monsterHp + monsterHp1)
+                    {
+                        hpImage2.fillAmount = ((monsterHp2 - 150.0f) / (monsterMaxHp / 3));
+                        monsterHp2 -= 150.0f;
+                    }
+                    else if (monsterTotalHp > monsterHp)
+                    {
+                        hpImage1.fillAmount = ((monsterHp1 - 150.0f) / (monsterMaxHp / 3));
+                        monsterHp1 -= 150.0f;
+                    }
+                    else if (monsterTotalHp >= 0)
+                    {
+                        hpImage.fillAmount = ((monsterHp - 150.0f) / (monsterMaxHp / 3));
+                        monsterHp -= 150.0f;
+                    }
+                    //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
+                    monsterTotalHp -= 150.0f;
                     getHurt = true;
                     skillAttack = 0;
                 }
                 else if (cosValue2 >= 0.95)
                 {
-                    hpImage.fillAmount = hpImage.fillAmount - (80.0f / monsterHp);
+                    if (monsterTotalHp > monsterHp + monsterHp1)
+                    {
+                        hpImage2.fillAmount = ((monsterHp2 - 80.0f) / (monsterMaxHp / 3));
+                        monsterHp2 -= 80.0f;
+                    }
+                    else if (monsterTotalHp > monsterHp)
+                    {
+                        hpImage1.fillAmount = ((monsterHp1 - 80.0f) / (monsterMaxHp / 3));
+                        monsterHp1 -= 80.0f;
+                    }
+                    else if (monsterTotalHp >= 0)
+                    {
+                        hpImage.fillAmount = ((monsterHp - 80.0f) / (monsterMaxHp / 3));
+                        monsterHp -= 80.0f;
+                    }
+                    //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
+                    monsterTotalHp -= 80.0f;
                     getHurt = true;
                     skillAttack = 0;
                 }
@@ -620,6 +795,11 @@ public class EarthElementalFSM : MonoBehaviour
                 //Debug.Log("造成傷害 20");
             }
         }
+    }
+
+    private float EEdamageCul(float damage)
+    {
+        return 1.0f;
     }
     private void OnDrawGizmos()
     {
@@ -678,7 +858,8 @@ public class EarthElementalFSM : MonoBehaviour
         GetHitBox();
 
         Debug.Log(hpImage.fillAmount);
-
+        Debug.Log(monsterTotalHp);
+        Debug.Log(bHpCharge);
         Debug.Log("目前狀態          " + mCurrentState);
         
         mCheckState();

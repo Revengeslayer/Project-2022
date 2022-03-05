@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerAudio : MonoBehaviour
 {
+    int start = 0;
     private float time;
     // Start is called before the first frame update
     AudioSource[] BGMAudios;
@@ -33,6 +34,7 @@ public class PlayerAudio : MonoBehaviour
 
     void Start()
     {
+        start = 0;
         BGMAudios = GameObject.Find("Main").GetComponents<AudioSource>();
         Normal = BGMAudios[0];
         Battle = BGMAudios[1];
@@ -59,8 +61,13 @@ public class PlayerAudio : MonoBehaviour
 
     private void CheckBGM()
     {
-        if(InstantiateManager.aliveCount==0 && Normal.isPlaying ==true)
+        if (start == 0)
         {
+            StartCoroutine(Wait3());
+        }
+        if (InstantiateManager.aliveCount==0 && Normal.isPlaying ==true)
+        {
+            
             return;
         }
         else if(InstantiateManager.aliveCount == 0 && Battle.isPlaying == true)
@@ -92,6 +99,12 @@ public class PlayerAudio : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         Boss.volume = 0f;
         StartCoroutine(BossFadeIn());
+    }
+
+    IEnumerator Wait3()
+    {
+        yield return new WaitUntil(StartVolumeUp);
+        start++;
     }
     IEnumerator ChangeToNormal()
     {
@@ -178,11 +191,26 @@ public class PlayerAudio : MonoBehaviour
         }
     }
 
+    bool StartVolumeUp()
+    {
+        Normal.volume += Time.deltaTime * 0.01f;
+        Normal.volume = Mathf.Clamp(Normal.volume, 0f, 0.5f);
+        if(Normal.volume>=0.5f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if ((other.name == "SpawnA"|| other.name == "SpawnB"|| other.name == "SpawnC"|| other.name == "SpawnD"|| other.name == "SpawnE"))
         {
+            start++;
             StartCoroutine(NormalPause());
             StartCoroutine(Wait());
         }

@@ -10,7 +10,7 @@ public class PlayerInfo : MonoBehaviour
     private static GameObject playerHpbar;
     private static GameObject PlayerDizzyBar;
     //public Image hpImage;
-    static float playerMaxHp = 800;
+    public static float playerMaxHp = 800;
     public static float playerHp;
     float playerDistance;//人物與怪物的距離
     //傳Skill給怪物
@@ -36,7 +36,6 @@ public class PlayerInfo : MonoBehaviour
         playerHp = playerMaxHp;
         playerHpbar = GameObject.Find("PlayerHpBar");
         PlayerDizzyBar = GameObject.Find("PlayerDizzyBar");
-
     }
 
     // Update is called once per frame
@@ -87,6 +86,12 @@ public class PlayerInfo : MonoBehaviour
     {
         RabbitArcherSteeringFSM.zAttack = zAttack;
         RabbitArcherSteeringFSM.skillAttack = skillAttack;
+
+        BlueRBFSM.zAttack = zAttack;
+        BlueRBFSM.skillAttack = skillAttack;
+
+        GreenRBFSM.zAttack = zAttack;
+        GreenRBFSM.skillAttack = skillAttack;
 
         EliteArcher.zAttack = zAttack;
         EliteArcher.skillAttack = skillAttack;

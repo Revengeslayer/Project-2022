@@ -7,7 +7,8 @@ public class BossControl : MonoBehaviour
     private GameObject objPlayer;
     private GameObject objBoss;
     private Animator EEAnim;
-
+    public GameObject Lefthand;
+    public GameObject Righthand;
 
     public GameObject atkWave;
     public GameObject jumpWave;
@@ -27,7 +28,7 @@ public class BossControl : MonoBehaviour
     bool bossJump = false;
     bool bossTurn = false;
     bool WalkForTurn;
-
+    
     Vector3 bossJumpVec;
     Vector3 bossAtkPosition0;
     float bossAtkDistance0;
@@ -40,6 +41,7 @@ public class BossControl : MonoBehaviour
         bossHp = 1000;
         SpellTime = Time.time;
         SpellRate = 0;
+        
 
         BossFSM.mCurrentState = BossFSM.BossFSMState.Active;
     }
@@ -57,7 +59,7 @@ public class BossControl : MonoBehaviour
         //}
         if(bossRoll == true)
         {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 4;
+            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 2.8f;
             //BossRollAtk();
         }
 
@@ -137,6 +139,25 @@ public class BossControl : MonoBehaviour
         //{
         //    PathLife += Time.deltaTime;
         //}
+        //if(EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack02") || EEAnim.GetCurrentAnimatorStateInfo(0).IsName("ROLL"))
+        //{
+        //    Lefthand.GetComponent<SphereCollider>().enabled = false;
+        //}
+        //else
+        //{
+        //    Lefthand.GetComponent<SphereCollider>().enabled = true;
+        //}
+        //if (EEAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack01") || EEAnim.GetCurrentAnimatorStateInfo(0).IsName("ROLL"))
+        //{
+        //    Righthand.GetComponent<SphereCollider>().enabled = false;
+        //}
+        //else
+        //{
+        //    Righthand.GetComponent<SphereCollider>().enabled = true;
+        //}
+
+
+
     }
 
     void BossNormalAtk()
@@ -222,11 +243,15 @@ public class BossControl : MonoBehaviour
         {
             bossJump = true;
             gameObject.GetComponent<BoxCollider>().enabled = false;
+            Lefthand.GetComponent<SphereCollider>().enabled = false;
+            Righthand.GetComponent<SphereCollider>().enabled = false;
             bossJumpVec = (objPlayer.transform.position - gameObject.transform.position).normalized;
         }
         else if (bossJump == true)
         {
             bossJump = false;
+            Lefthand.GetComponent<SphereCollider>().enabled = true;
+            Righthand.GetComponent<SphereCollider>().enabled = true;
             gameObject.GetComponent<BoxCollider>().enabled = true;
         }
     }
@@ -309,11 +334,15 @@ public class BossControl : MonoBehaviour
         {
             bossRoll = true;
             gameObject.GetComponent<BoxCollider>().enabled = false;
+            Lefthand.GetComponent<SphereCollider>().enabled = false;
+            Righthand.GetComponent<SphereCollider>().enabled = false;
         }
         else if (bossRoll == true)
         {
             bossRoll = false;
             gameObject.GetComponent<BoxCollider>().enabled = true;
+            Lefthand.GetComponent<SphereCollider>().enabled = true;
+            Righthand.GetComponent<SphereCollider>().enabled = true;
         }               
     }
     void WaitForSpell()
@@ -335,6 +364,32 @@ public class BossControl : MonoBehaviour
         //}
         return reBossDo;
     }
+    //private void RighthandColider()
+    //{
+    //    if(RightCo)
+    //    {
+    //        Righthand.GetComponent<SphereCollider>().enabled = false;
+    //        RightCo = false;
+    //    }
+    //    else
+    //    {
+    //        Righthand.GetComponent<SphereCollider>().enabled = true;
+    //        RightCo = true;
+    //    }
+    //}
+    //private void LefthandColider()
+    //{
+    //    if(LeftCo)
+    //    {
+    //        Lefthand.GetComponent<SphereCollider>().enabled = false;
+    //        LeftCo = false;
+    //    }
+    //    else
+    //    {
+    //        Lefthand.GetComponent<SphereCollider>().enabled = true;
+    //        LeftCo = true;
+    //    }
+    //}
 
     private void PathDust()
     {

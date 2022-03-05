@@ -122,10 +122,10 @@ public class Main : MonoBehaviour
             //}
         }
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            SceneManager.LoadScene(0);
-        }
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    SceneManager.LoadScene(0);
+        //}
 
         if (Time.time - atkLastTime > 1.2f)
         {

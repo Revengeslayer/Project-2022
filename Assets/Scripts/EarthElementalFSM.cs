@@ -88,7 +88,7 @@ public class EarthElementalFSM : MonoBehaviour
     private bool bHpCharge;
     private bool immortal;
 
-    GameObject Win;
+    private GameObject Win;
     public enum FSMState
     {
         NONE = -1,
@@ -103,12 +103,12 @@ public class EarthElementalFSM : MonoBehaviour
         Die
     }
 
-    
+
     void Start()
     {
-        Win = GameObject.Find("Win");
-        Win.SetActive(false);
 
+        Win = GameObject.Find("GameWin");
+        Win.SetActive(false);
         EEAnim = GetComponent<Animator>();
         EERig = GetComponent<Rigidbody>();
         EEBox = GetComponent<BoxCollider>();
@@ -839,7 +839,7 @@ public class EarthElementalFSM : MonoBehaviour
             getHurt = false;
         }
 
-        if(monsterTotalHp <= 0 && Alife)
+        if(monsterTotalHp < 0 && Alife)
         {
             hpImage.fillAmount = 0;
             mCurrentState = FSMState.Die;

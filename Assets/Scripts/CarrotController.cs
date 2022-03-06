@@ -16,6 +16,7 @@ public class CarrotController : MonoBehaviour
     private GameObject Target;
     private float MaxTimer;
     private static string ForATKtype;
+    private static string ECarrotType;
     //09 add
     public static float skillAttack;
 
@@ -28,14 +29,13 @@ public class CarrotController : MonoBehaviour
         for (int i = 0; i < a; i++)
         {
             GameObject carrotIns = Instantiate(Resources.Load(CarrotType)) as GameObject;
-            //GameObject carrotIns = Instantiate(Resources.Load("Weapons/carrotarrow_Variant_1")) as GameObject;
+            
             carrot = carrotIns;
             Smoke = carrot.transform.Find("smoke_thick").gameObject;
             Flash = carrot.transform.Find("MuzzleFlash").gameObject;
             Fire = carrot.transform.Find("Fire_A").gameObject;
-            //Smoke.transform.localScale = scale;
-            //Flash.transform.localScale = scale;
-            //Fire.transform.localScale = scale;
+
+            ECarrotType = CheckCarrotType(CarrotType);
 
             carrot.transform.localScale = scale;
             Basket.Add(carrotIns);
@@ -47,6 +47,7 @@ public class CarrotController : MonoBehaviour
                 Smoke.SetActive(false);
                 Flash.SetActive(false);
                 Fire.SetActive(false);
+                ECarrotType = "Noraml";
             }
             else if (ForATKtype == "B")
             {
@@ -73,6 +74,25 @@ public class CarrotController : MonoBehaviour
             Basket[n].transform.position = SetSpawnPos;
         }
         
+    }
+    private static string CheckCarrotType(string CarrotType)
+    {
+        if (CarrotType == ("Weapons/carrotarrow_Variant"))
+        {
+            return "Green";
+        }
+        else if (CarrotType == ("Weapons/carrotarrow_Variant_1"))
+        {
+            return "Blue";
+        }
+        else if (CarrotType == ("Weapons/carrotarrow"))
+        {
+            return "Red";
+        }
+        else
+        {
+            return "Normal";
+        }
     }
     public static void InsEliteArrow(Vector3 SpawnPos, List<Vector3> TargetVecList, string ATKtype, Vector3 scale)
     {
@@ -147,13 +167,21 @@ public class CarrotController : MonoBehaviour
         }
         else if (Dist < 0.3)
         {
-            PlayerInfo.CarrotArrowDamage(ForATKtype);
+            PlayerInfo.CarrotArrowDamage(ForATKtype , ECarrotType);
             Destroy(gameObject);
+            if (ECarrotType == "Green")
+            {
+                PlayerInfo.GetArr++;
+            }
         }
         else if (Dist < 0.8 && HitCheckDot < 0)
         {
-            PlayerInfo.CarrotArrowDamage(ForATKtype);
+            PlayerInfo.CarrotArrowDamage(ForATKtype , ECarrotType);
             Destroy(gameObject);
+            if (ECarrotType == "Green")
+            {
+                PlayerInfo.GetArr++;
+            }
         }
         
         else if(MaxTimer > 3)
@@ -171,7 +199,6 @@ public class CarrotController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("s                      "+skillAttack);
         Recycle(skillAttack);
     }
     private void FixedUpdate()

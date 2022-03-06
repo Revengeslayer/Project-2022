@@ -31,12 +31,32 @@ public class PlayerInfo : MonoBehaviour
     static float playerMaxDizzy = 50;
     //Â½ºuµL¼Ä
     private static bool dodgeInv;
+
+    //ÄÝ©Êª¬ºA
+    private static int CurrentStates;
+    private static bool bGreen;
+    private static bool bBlue;
+    private static bool bRed;
+
+    //Timer
+    private static float tGreen;
+    private static float tBlue;
+    private static float tRed;
+
+    public static int GetArr;
+
+
     void Start()
     {
         DizzyCount = 0;
         playerHp = playerMaxHp;
         playerHpbar = GameObject.Find("PlayerHpBar");
         PlayerDizzyBar = GameObject.Find("PlayerDizzyBar");
+
+        tGreen = 0;
+        tBlue = 0;
+        tRed = 0;
+        GetArr = 0;
     }
 
     // Update is called once per frame
@@ -81,6 +101,7 @@ public class PlayerInfo : MonoBehaviour
         {
             this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
         }
+        ElementSystem();
     }
 
     private void CheckDamageType()
@@ -270,13 +291,14 @@ public class PlayerInfo : MonoBehaviour
 
     }
 
-    public static void CarrotArrowDamage(string ATKtype)
+    public static void CarrotArrowDamage(string ATKtype , string ECarrotType)
     {
         if (!dodgeInv && ATKtype == "A")
         {
             playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 10) / playerMaxHp;
             playerHp = playerHp - 10;
             DizzyCount++;
+            GetCurrentStates(ECarrotType);
             if (DizzyCount % 3 == 1 || DizzyCount % 50 == 0)
             {
                 FSM.isGitHit = true;
@@ -286,6 +308,7 @@ public class PlayerInfo : MonoBehaviour
         {
             playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 15) / playerMaxHp;
             playerHp = playerHp - 15;
+            GetCurrentStates(ECarrotType);
             DizzyCount++;
             if (DizzyCount % 3 == 1 || DizzyCount % 50 == 0)
             {
@@ -296,6 +319,7 @@ public class PlayerInfo : MonoBehaviour
         {
             playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 25) / playerMaxHp;
             playerHp = playerHp - 25;
+            GetCurrentStates(ECarrotType);
             DizzyCount++;
             if (DizzyCount % 3 == 1 || DizzyCount % 50 == 0)
             {
@@ -306,6 +330,7 @@ public class PlayerInfo : MonoBehaviour
         {
             playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 40) / playerMaxHp;
             playerHp = playerHp - 40;
+            GetCurrentStates(ECarrotType);
             DizzyCount++;
             if (DizzyCount % 3 == 1 || DizzyCount % 50 == 0)
             {
@@ -315,6 +340,71 @@ public class PlayerInfo : MonoBehaviour
         if (playerHpbar.GetComponent<Image>().fillAmount <= 0)
         {
             FSM.isDeath = true;
+        }
+    }
+
+    private static void GetCurrentStates(string ECarrotType)
+    {
+        if (ECarrotType == "Green")
+        {
+            CurrentStates = 1;
+            bGreen = true;
+            tGreen = 0;
+            Debug.Log(ECarrotType);
+        }
+        if (ECarrotType == "Blue")
+        {
+            CurrentStates = 2;
+            bBlue = true;
+            tBlue = 0;
+            Debug.Log(ECarrotType);
+        }
+        if (ECarrotType == "Red")
+        {
+            CurrentStates = 3;
+            bRed = true;
+            tRed = 0;
+            Debug.Log(ECarrotType);
+        }
+        if (ECarrotType == "Normal")
+        {
+            CurrentStates = 4;
+            Debug.Log(ECarrotType);
+        }
+    }
+    private void ElementSystem()
+    {
+        if(bGreen)
+        {
+            tGreen += Time.deltaTime;
+            if(tGreen > 3)
+            {
+                tGreen = 0;
+                bGreen = false;
+            }
+        }
+        if(bBlue)
+        {
+            tBlue += Time.deltaTime;
+            FSM.moveSpeed = 2f;
+
+            if (tBlue > 3)
+            {
+                FSM.moveSpeed = 4;
+                tBlue = 0;
+                bBlue = false;
+            }
+        }
+        if(bRed)
+        {
+            tRed += Time.deltaTime;
+            //GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
+            //Explosion.transform.position = gameObject.transform.position + new Vector3(0, 0.4f, 0);
+            if(tRed > 3)
+            {
+                tRed = 0;
+                bRed = false;
+            }
         }
     }
 

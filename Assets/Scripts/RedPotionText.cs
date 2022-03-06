@@ -49,7 +49,6 @@ public class RedPotionText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("test               "+HealEffect.name);
         playerHp = PlayerInfo.playerHp;
 
         if (Input.GetKeyDown(KeyCode.R))

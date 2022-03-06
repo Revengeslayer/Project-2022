@@ -26,6 +26,8 @@ public class EarthElementalFSM : MonoBehaviour
     private Vector3 HitBox1;
     public GameObject HitBox2;
     public GameObject HitBox3;
+    public GameObject ImmortalVTX;
+    public GameObject NormalVTX;
     private float HitBoxDist1;
     private float HitBoxDist2;
     private float HitBoxDist3;
@@ -41,6 +43,7 @@ public class EarthElementalFSM : MonoBehaviour
     float monsterTotalHp;
     float monsterMaxHp;
     GameObject Smoke;
+    
 
     private FSMState mCurrentState;
 
@@ -87,6 +90,8 @@ public class EarthElementalFSM : MonoBehaviour
     private bool Alife;
     private bool bHpCharge;
     private bool immortal;
+    private bool bImmortalVTX;
+    private bool Location;
 
     private GameObject Win;
     public enum FSMState
@@ -151,6 +156,7 @@ public class EarthElementalFSM : MonoBehaviour
 
         //Bool
         immortal = true;
+        bImmortalVTX = true;
 
         //Timer
 
@@ -183,6 +189,14 @@ public class EarthElementalFSM : MonoBehaviour
     private void CheckActivateState()
     {
         ActivateTime += Time.deltaTime;
+        if(ActivateTime > 4.0)
+        {
+            NormalVTX.SetActive(true);
+        }
+        if(ActivateTime > 4.5f)
+        {
+            ImmortalVTX.SetActive(false);
+        }
         if (ActivateTime > 5.2f)
         {
             EEAnim.SetBool("isActivate", false);
@@ -525,6 +539,8 @@ public class EarthElementalFSM : MonoBehaviour
             hpImage2.fillAmount = 1;
             bHpCharge = false;
             immortal = false;
+            bImmortalVTX = false;
+            
         }
     }
     private void GetHitBox()
@@ -803,6 +819,23 @@ public class EarthElementalFSM : MonoBehaviour
         }
     }
 
+    private void LocationBehavior()
+    {
+        Ray ray = new Ray(HitBox1, gameObject.transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 3))
+        {
+            Debug.Log("碰撞物件: " + hit.collider.name);
+            Debug.Log("碰撞物件: " + hit.collider.tag);
+            if (hit.collider.tag == ("EEArea"))
+            {
+                Location = true;
+            }
+
+            Debug.DrawLine(ray.origin, hit.point, Color.red);
+        }
+    }
+
     private float EEdamageCul(float damage)
     {
         return 1.0f;
@@ -830,6 +863,8 @@ public class EarthElementalFSM : MonoBehaviour
 
     private void Update()
     {
+        LocationBehavior();
+
         //Damage
         if (zAttack != 0 || skillAttack != 0)
         {
@@ -864,9 +899,9 @@ public class EarthElementalFSM : MonoBehaviour
         }
         GetHitBox();
 
-        Debug.Log(hpImage.fillAmount);
-        Debug.Log(monsterTotalHp);
-        Debug.Log(bHpCharge);
+        //Debug.Log(hpImage.fillAmount);
+        //Debug.Log(monsterTotalHp);
+        //Debug.Log(bHpCharge);
         Debug.Log("目前狀態          " + mCurrentState);
         
         mCheckState();

@@ -587,6 +587,11 @@ public class GreenRBFSM : MonoBehaviour
         ca.Carrot = carrotIns;
         CarrotContainer.Add(ca);
     }
+    private void ExplosionController()
+    {
+        GameObject Explosion = Instantiate(Resources.Load("VTX/Star_B_Variant")) as GameObject;
+        Explosion.transform.position = gameObject.transform.position + new Vector3 (0,0.3f,0);
+    }
 
     private void PlayerAttack(float zAttack, float skillAttack)
     {
@@ -598,6 +603,7 @@ public class GreenRBFSM : MonoBehaviour
         if (zAttack == 1 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
+            ExplosionController();
             //dogAnimator.SetBool("gethit", true);
             zAttack = 0;
             getHurt = true;
@@ -606,6 +612,7 @@ public class GreenRBFSM : MonoBehaviour
         else if (zAttack == 2 && cosValue >= 0.7 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
             hpImage.fillAmount = hpImage.fillAmount - (25.0f / monsterHp);
+            ExplosionController();
             getHurt = true;
             zAttack = 0;
             //Debug.Log("z2");
@@ -613,6 +620,7 @@ public class GreenRBFSM : MonoBehaviour
         else if (cosValue >= 0.7 && zAttack == 3 && hpImage.fillAmount > 0 && DisToTarget <= 3.0f)
         {
             hpImage.fillAmount = hpImage.fillAmount - (50.0f / monsterHp);
+            ExplosionController();
             getHurt = true;
             zAttack = 0;
             //Debug.Log("z3");
@@ -624,6 +632,7 @@ public class GreenRBFSM : MonoBehaviour
             if (cosValue >= 0.8f && hpImage.fillAmount > 0 && DisToTarget <= 2.8f)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (40.0f / monsterHp);
+                ExplosionController();
                 getHurt = true;
                 skillAttack = 0;
                 //dogAnimator.SetBool("Attack01", false);
@@ -647,6 +656,7 @@ public class GreenRBFSM : MonoBehaviour
             //dogMonsterkDistance = Vector3.Distance(playrerAtkPosition, objMonster.transform.position);
             //前方一段距離的圓傷害判定用
             hpImage.fillAmount = hpImage.fillAmount - (60.0f / monsterHp);
+            ExplosionController();
             getHurt = true;
             skillAttack = 0;
             //dogAnimator.SetBool("Attack01", false);
@@ -661,6 +671,7 @@ public class GreenRBFSM : MonoBehaviour
             if (hpImage.fillAmount > 0)
             {
                 hpImage.fillAmount = hpImage.fillAmount - (20.0f / monsterHp);
+                ExplosionController();
                 getHurt = true;
                 skillAttack = 0;
                 //dogAnimator.SetBool("Attack01", false);
@@ -681,12 +692,14 @@ public class GreenRBFSM : MonoBehaviour
                 if (cosValue2 >= 0.98)
                 {
                     hpImage.fillAmount = hpImage.fillAmount - (150.0f / monsterHp);
+                    ExplosionController();
                     getHurt = true;
                     skillAttack = 0;
                 }
                 else if (cosValue2 >= 0.95)
                 {
                     hpImage.fillAmount = hpImage.fillAmount - (80.0f / monsterHp);
+                    ExplosionController();
                     getHurt = true;
                     skillAttack = 0;
                 }

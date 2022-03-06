@@ -210,10 +210,10 @@ public class EarthElementalFSM : MonoBehaviour
     {
         CheckDistToTarget();
         CheckActionTimer();
-        if (Alife)
-        {
-            return;
-        }
+        //if (Alife)
+        //{
+        //    return;
+        //}
         if (playerHp <= 0)
         {
             return;

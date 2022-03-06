@@ -78,7 +78,6 @@ public class FSM : MonoBehaviour
 
 	public static bool BossAlive;
 	private float disappearTime;
-	private Color temp;
 	// Start is called before the first frame update
 	public enum FSMState
 	{
@@ -927,14 +926,6 @@ public class FSM : MonoBehaviour
 		if(BossAlive == false)
 		{
 			StartCoroutine(Wait2());
-			temp =DeadBody.GetComponent<Renderer>().material.color = new Color
-			(
-				DeadBody.GetComponent<Renderer>().material.color.r,
-				DeadBody.GetComponent<Renderer>().material.color.g,
-				DeadBody.GetComponent<Renderer>().material.color.b,
-				DeadBody.GetComponent<Renderer>().material.color.a
-			);
-			disappearTime = Time.time;
 			StartCoroutine(Wait3());
 		}
 		mCheckState();

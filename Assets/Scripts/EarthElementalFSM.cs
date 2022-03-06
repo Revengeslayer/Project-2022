@@ -111,6 +111,7 @@ public class EarthElementalFSM : MonoBehaviour
 
     void Start()
     {
+
         Win = GameObject.Find("GameWin");
         Win.SetActive(false);
         EEAnim = GetComponent<Animator>();
@@ -209,6 +210,10 @@ public class EarthElementalFSM : MonoBehaviour
     {
         CheckDistToTarget();
         CheckActionTimer();
+        if (Alife)
+        {
+            return;
+        }
         if (playerHp <= 0)
         {
             return;
@@ -562,7 +567,7 @@ public class EarthElementalFSM : MonoBehaviour
             gameObject.SetActive(false);
             G.SetActive(true);
 
-            FSM.BossAlive = false ;
+            FSM.BossAlive = false;
         }
     }
     private void PlayerAttack(float zAttack, float skillAttack , Vector3 HitBoxPos)
@@ -853,9 +858,9 @@ public class EarthElementalFSM : MonoBehaviour
         ////Gizmos.color = Color.cyan;
         ////Gizmos.DrawWireSphere(this.transform.position, DisForRockShoot);
         ////Gizmos.DrawWireSphere(this.transform.position, DisForCHASE);
-        //Gizmos.DrawWireSphere(HitBox1, 1.2f);
-        //Gizmos.DrawWireSphere(HitBox2.transform.position, 1);
-        //Gizmos.DrawWireSphere(HitBox3.transform.position, 1);
+        Gizmos.DrawWireSphere(HitBox1, 1.2f);
+        Gizmos.DrawWireSphere(HitBox2.transform.position, 1);
+        Gizmos.DrawWireSphere(HitBox3.transform.position, 1);
         ////Debug.DrawRay(HitBox1, Target.transform.position - HitBox1 , Color.blue , 2 , false);
         //Gizmos.color = Color.cyan;
         //Gizmos.DrawLine(HitBox1, HitBox1 +(Target.transform.position - HitBox1).normalized * 3);
@@ -871,8 +876,32 @@ public class EarthElementalFSM : MonoBehaviour
         if (zAttack != 0 || skillAttack != 0)
         {
             PlayerAttack(zAttack, skillAttack , HitBox1);
+            if(getHurt)
+            {
+                GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
+                Explosion.transform.position = HitBox1;
+                Debug.Log("1");
+                getHurt = false;
+                return;
+            }
             PlayerAttack(zAttack, skillAttack, HitBox2.transform.position);
+            if (getHurt)
+            {
+                GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
+                Explosion.transform.position = HitBox2.transform.position;
+                Debug.Log("2");
+                getHurt = false;
+                return;
+            }
             PlayerAttack(zAttack, skillAttack, HitBox3.transform.position);
+            if (getHurt)
+            {
+                GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
+                Explosion.transform.position = HitBox3.transform.position;
+                Debug.Log("3");
+                getHurt = false;
+                return;
+            }
             getHurt = false;
         }
 

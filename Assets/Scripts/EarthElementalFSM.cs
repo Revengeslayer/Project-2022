@@ -94,6 +94,10 @@ public class EarthElementalFSM : MonoBehaviour
     private bool Location;
 
     private GameObject Win;
+
+    AudioSource[] Audios;
+    AudioSource GetHit;
+
     public enum FSMState
     {
         NONE = -1,
@@ -111,7 +115,8 @@ public class EarthElementalFSM : MonoBehaviour
 
     void Start()
     {
-
+        Audios = gameObject.GetComponents<AudioSource>();
+        GetHit = Audios[7];
         Win = GameObject.Find("GameWin");
         Win.SetActive(false);
         EEAnim = GetComponent<Animator>();
@@ -882,6 +887,8 @@ public class EarthElementalFSM : MonoBehaviour
                 Explosion.transform.position = HitBox1;
                 Debug.Log("1");
                 getHurt = false;
+
+                GetHit.Play();
                 return;
             }
             PlayerAttack(zAttack, skillAttack, HitBox2.transform.position);
@@ -891,6 +898,8 @@ public class EarthElementalFSM : MonoBehaviour
                 Explosion.transform.position = HitBox2.transform.position;
                 Debug.Log("2");
                 getHurt = false;
+
+                GetHit.Play();
                 return;
             }
             PlayerAttack(zAttack, skillAttack, HitBox3.transform.position);
@@ -900,6 +909,8 @@ public class EarthElementalFSM : MonoBehaviour
                 Explosion.transform.position = HitBox3.transform.position;
                 Debug.Log("3");
                 getHurt = false;
+
+                GetHit.Play();
                 return;
             }
             getHurt = false;

@@ -73,6 +73,9 @@ public class EliteArcher : MonoBehaviour
     private bool toCHASE;
     private bool toATTACK;
     private bool canATTACK;
+
+    AudioSource[] Audios;
+    AudioSource GetHit;
     public enum FSMState
     {
         NONE = -1,
@@ -97,6 +100,9 @@ public class EliteArcher : MonoBehaviour
 
     void Start()
     {
+        Audios = gameObject.GetComponents<AudioSource>();
+        GetHit = Audios[2];
+
         rabaAnim = GetComponent<Animator>();
         rabaRig = GetComponent<Rigidbody>();
         monsterHp = 470;
@@ -592,6 +598,7 @@ public class EliteArcher : MonoBehaviour
     {
         GameObject Explosion = Instantiate(Resources.Load("VTX/Star_B_Variant")) as GameObject;
         Explosion.transform.position = gameObject.transform.position + new Vector3(0, 0.5f, 0);
+        GetHit.Play();
     }
     private void PlayerAttack(float zAttack, float skillAttack)
     {

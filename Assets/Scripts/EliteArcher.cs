@@ -18,6 +18,8 @@ public class EliteArcher : MonoBehaviour
     public Image hpImage;
     public Image hpImage0;
     public GameObject Target;
+    public GameObject PAVTX;
+    public GameObject ATKVTX;
 
     //Add
     public static float zAttack;
@@ -126,8 +128,8 @@ public class EliteArcher : MonoBehaviour
         PATimer = 0;
 
         //Dist
-        DisForCHASE = 16;
-        DisForSIGHT = 13;
+        DisForCHASE = 20;
+        DisForSIGHT = 16;
         DisForATTACK = 12;
         DisForESCAPE = 3;
     }
@@ -375,6 +377,8 @@ public class EliteArcher : MonoBehaviour
     {
         PAshooted = true;
         canPA = false;
+        PAVTX.SetActive(false);
+        ATKVTX.SetActive(true);
         NextAttack = false;
         PATimer = 0;
         AttackTimer = 0;
@@ -579,6 +583,8 @@ public class EliteArcher : MonoBehaviour
         if (PATimer > 5)
         {
             canPA = true;
+            PAVTX.SetActive(true);
+            ATKVTX.SetActive(false);
         }
     }
 

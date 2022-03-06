@@ -105,7 +105,7 @@ public class BlueRBFSM : MonoBehaviour
 
         rabaAnim = GetComponent<Animator>();
         rabaRig = GetComponent<Rigidbody>();
-        monsterHp = 100;
+        monsterHp = 220;
 
         mCurrentState = FSMState.Spawn;
         mCheckState = CheckSpawnState;
@@ -346,7 +346,7 @@ public class BlueRBFSM : MonoBehaviour
         {
             //var turnX = Vector3.Dot(gameObject.transform.forward, Vec);
             //var turnZ = Vector3.Dot(gameObject.transform.right, Vec);
-            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward + (gameObject.transform.right * 0.1f), Vec, 1 * Time.deltaTime);
+            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward + (gameObject.transform.right * 0.01f), Vec, 1 * Time.deltaTime);
             gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 2;
             toCHASE = false;
             toMOVE = false;

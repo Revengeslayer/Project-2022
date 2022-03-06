@@ -333,9 +333,8 @@ public class GreenRBFSM : MonoBehaviour
     private void DoMoveState()
     {
         var Vec = Target.transform.position - gameObject.transform.position;
-        if (doESC)  //fix : esc for N sceonds && use updated forward && normalized speed
+        if (doESC && rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("MOVE"))  //fix : esc for N sceonds && use updated forward && normalized speed
         {
-            Debug.Log("esc");
             CheckESC();
             gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, -Vec, 0.95f);
             gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 3;
@@ -345,10 +344,9 @@ public class GreenRBFSM : MonoBehaviour
         }
         else if (toCHASE)
         {
-            Debug.Log("chase");
             //var turnX = Vector3.Dot(gameObject.transform.forward, Vec);
             //var turnZ = Vector3.Dot(gameObject.transform.right, Vec);
-            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward + (gameObject.transform.right * 0.1f), Vec, 1 * Time.deltaTime);
+            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward + (gameObject.transform.right * 0.01f), Vec, 1 * Time.deltaTime);
             gameObject.transform.position += gameObject.transform.forward * Time.deltaTime * 2;
             toCHASE = false;
             toMOVE = false;

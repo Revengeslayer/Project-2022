@@ -287,6 +287,7 @@ public class EarthElementalFSM : MonoBehaviour
             mCheckState = CheckWalkState;
             mDoState = DoWalkState;
             CheckWalkTurn();
+            Location = false;
         }
         else if (DisToTarget < DisForCHASE && ActionBool && Time.time > RollCDTimer)
         {
@@ -447,11 +448,11 @@ public class EarthElementalFSM : MonoBehaviour
         var a = (Target.transform.position - gameObject.transform.position).normalized;
         a.y = 0;
         //Smoke.SetActive(true);
-        //if (WalkForTurn)
+        if (Location)
         {
-            //gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 3f;
+            gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 3f;
         }
-        //else
+        else
         {
             gameObject.transform.forward += (a + new Vector3(0.1f, 0, 0)) * Time.deltaTime * 0.8f;
         }
@@ -610,20 +611,20 @@ public class EarthElementalFSM : MonoBehaviour
             if (monsterTotalHp > monsterHp + monsterHp1)
             {
                 hpImage2.fillAmount = ((monsterHp2 - 25.0f) / (monsterMaxHp / 3));
-                monsterHp2 -= 2500.0f;
+                monsterHp2 -= 25.0f;
             }
             else if (monsterTotalHp > monsterHp)
             {
                 hpImage1.fillAmount = ((monsterHp1 - 25.0f) / (monsterMaxHp / 3));
-                monsterHp1 -= 2500.0f;
+                monsterHp1 -= 25.0f;
             }
             else if (monsterTotalHp >= 0)
             {
                 hpImage.fillAmount = ((monsterHp - 25.0f) / (monsterMaxHp / 3));
-                monsterHp -= 2500.0f;
+                monsterHp -= 25.0f;
             }
             //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
-            monsterTotalHp -= 2500.0f;
+            monsterTotalHp -= 25.0f;
             zAttack = 0;
             getHurt = true;
         }
@@ -839,8 +840,6 @@ public class EarthElementalFSM : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 3))
         {
-            Debug.Log("碰撞物件: " + hit.collider.name);
-            Debug.Log("碰撞物件: " + hit.collider.tag);
             if (hit.collider.tag == ("EEArea"))
             {
                 Location = true;
@@ -887,7 +886,6 @@ public class EarthElementalFSM : MonoBehaviour
             {
                 GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
                 Explosion.transform.position = HitBox1;
-                Debug.Log("1");
                 getHurt = false;
 
                 GetHit.Play();
@@ -898,7 +896,6 @@ public class EarthElementalFSM : MonoBehaviour
             {
                 GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
                 Explosion.transform.position = HitBox2.transform.position;
-                Debug.Log("2");
                 getHurt = false;
 
                 GetHit.Play();
@@ -909,7 +906,6 @@ public class EarthElementalFSM : MonoBehaviour
             {
                 GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
                 Explosion.transform.position = HitBox3.transform.position;
-                Debug.Log("3");
                 getHurt = false;
 
                 GetHit.Play();
@@ -944,9 +940,9 @@ public class EarthElementalFSM : MonoBehaviour
         GetHitBox();
 
         //Debug.Log(hpImage.fillAmount);
-        Debug.Log(monsterTotalHp);
+        //Debug.Log(monsterTotalHp);
         //Debug.Log(bHpCharge);
-        Debug.Log("目前狀態          " + mCurrentState);
+        //Debug.Log("目前狀態          " + mCurrentState);
         
         mCheckState();
         //狀態做甚麼

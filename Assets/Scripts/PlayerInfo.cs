@@ -42,8 +42,16 @@ public class PlayerInfo : MonoBehaviour
     private static float tGreen;
     private static float tBlue;
     private static float tRed;
+    private float RedDamageTimer;
+
+    //Speed
+    private float NormalSpeed;
+    private float BluedSpeed;
+    private float GreenedSpeed;
+
 
     public static int GetArr;
+    private Animator anim;
 
 
     void Start()
@@ -56,7 +64,9 @@ public class PlayerInfo : MonoBehaviour
         tGreen = 0;
         tBlue = 0;
         tRed = 0;
+        RedDamageTimer = 0;
         GetArr = 0;
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -377,9 +387,20 @@ public class PlayerInfo : MonoBehaviour
         if(bGreen)
         {
             tGreen += Time.deltaTime;
+            anim.speed = 0.8f;
+            if(bBlue)
+            {
+                FSM.moveSpeed = 2f;
+            }
+            else
+            {
+                FSM.moveSpeed = 3f;
+            }
             if(tGreen > 3)
             {
+                anim.speed = 1f;
                 tGreen = 0;
+                FSM.moveSpeed = 4f;
                 bGreen = false;
             }
         }
@@ -400,10 +421,17 @@ public class PlayerInfo : MonoBehaviour
             tRed += Time.deltaTime;
             //GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
             //Explosion.transform.position = gameObject.transform.position + new Vector3(0, 0.4f, 0);
-            if(tRed > 3)
+            RedDamageTimer += Time.deltaTime;
+            if(RedDamageTimer > 0.5)
+            {
+                playerHp -= 5f;
+                RedDamageTimer = 0;
+            }
+            if (tRed > 3)
             {
                 tRed = 0;
                 bRed = false;
+                RedDamageTimer = 0;
             }
         }
     }

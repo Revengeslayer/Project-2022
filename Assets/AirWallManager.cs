@@ -15,7 +15,7 @@ public class AirWallManager : MonoBehaviour
     }
     public void SetWalls(GameObject[] walls ,string airWallType)
     {
-        Debug.Log("牆壁數量            ="+ walls.Length);
+        //Debug.Log("牆壁數量            ="+ walls.Length);
         AirWallState container = new AirWallState();
         for(int i=0; i< walls.Length; i++)
         {

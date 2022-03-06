@@ -94,7 +94,7 @@ public class EarthElementalFSM : MonoBehaviour
     private bool Location;
 
     private GameObject Win;
-
+    
     AudioSource[] Audios;
     AudioSource GetHit;
 
@@ -125,7 +125,7 @@ public class EarthElementalFSM : MonoBehaviour
 
         Fever = 1;
         Alife = true;
-        monsterMaxHp = 3000;
+        monsterMaxHp = 3003;
         monsterTotalHp = 0;
         monsterHp = monsterMaxHp / 3;
         monsterHp1 = monsterMaxHp / 3;
@@ -566,6 +566,7 @@ public class EarthElementalFSM : MonoBehaviour
     {
         GameObject G = (GameObject)Instantiate(DieAnim, gameObject.transform.position, gameObject.transform.rotation);
         G.transform.localScale = new Vector3(3, 3, 3);
+        FSM.DeadBody = G;
         //if (DieTimer > 0.5)
         {
             monsterHpbar.SetActive(false);
@@ -573,6 +574,7 @@ public class EarthElementalFSM : MonoBehaviour
             G.SetActive(true);
 
             FSM.BossAlive = false;
+
         }
     }
     private void PlayerAttack(float zAttack, float skillAttack , Vector3 HitBoxPos)
@@ -608,20 +610,20 @@ public class EarthElementalFSM : MonoBehaviour
             if (monsterTotalHp > monsterHp + monsterHp1)
             {
                 hpImage2.fillAmount = ((monsterHp2 - 25.0f) / (monsterMaxHp / 3));
-                monsterHp2 -= 25.0f;
+                monsterHp2 -= 2500.0f;
             }
             else if (monsterTotalHp > monsterHp)
             {
                 hpImage1.fillAmount = ((monsterHp1 - 25.0f) / (monsterMaxHp / 3));
-                monsterHp1 -= 25.0f;
+                monsterHp1 -= 2500.0f;
             }
             else if (monsterTotalHp >= 0)
             {
                 hpImage.fillAmount = ((monsterHp - 25.0f) / (monsterMaxHp / 3));
-                monsterHp -= 25.0f;
+                monsterHp -= 2500.0f;
             }
             //hpImage.fillAmount = ((monsterHp - 25.0f) / monsterMaxHp);
-            monsterTotalHp -= 25.0f;
+            monsterTotalHp -= 2500.0f;
             zAttack = 0;
             getHurt = true;
         }
@@ -942,7 +944,7 @@ public class EarthElementalFSM : MonoBehaviour
         GetHitBox();
 
         //Debug.Log(hpImage.fillAmount);
-        //Debug.Log(monsterTotalHp);
+        Debug.Log(monsterTotalHp);
         //Debug.Log(bHpCharge);
         Debug.Log("¥Ø«eª¬ºA          " + mCurrentState);
         

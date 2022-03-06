@@ -74,7 +74,11 @@ public class FSM : MonoBehaviour
 	private GameObject GameOverText;
 	private GameObject GameOverText2;
 
+	public static GameObject DeadBody;
+
 	public static bool BossAlive;
+	private float disappearTime;
+	private Color temp;
 	// Start is called before the first frame update
 	public enum FSMState
 	{
@@ -91,6 +95,8 @@ public class FSM : MonoBehaviour
 
 	private void Start()
 	{
+		disappearTime = 0;
+
 		isGitHit = false;
 		isDeath = false;
 
@@ -919,6 +925,15 @@ public class FSM : MonoBehaviour
 		if(BossAlive == false)
 		{
 			StartCoroutine(Wait2());
+			temp =DeadBody.GetComponent<Renderer>().material.color = new Color
+			(
+				DeadBody.GetComponent<Renderer>().material.color.r,
+				DeadBody.GetComponent<Renderer>().material.color.g,
+				DeadBody.GetComponent<Renderer>().material.color.b,
+				DeadBody.GetComponent<Renderer>().material.color.a
+			);
+			disappearTime = Time.time;
+			StartCoroutine(Wait3());
 		}
 		mCheckState();
 		//ª¬ºA°µ¬Æ»ò
@@ -970,6 +985,23 @@ public class FSM : MonoBehaviour
 		if (Input.anyKey)
 		{
 			SceneManager.LoadScene(0);
+		}
+	}
+	IEnumerator Wait3()
+	{
+		yield return new WaitUntil(AlphaToZero);
+
+	}
+
+	bool AlphaToZero()
+	{
+		if (true)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 }

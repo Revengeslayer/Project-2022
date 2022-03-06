@@ -53,7 +53,7 @@ public class FSM : MonoBehaviour
 	//is Move?
 	public bool isMove;
 	public bool canMove;
-	public float moveSpeed;
+	public static float moveSpeed;
 	public bool ChangeForword =false;
 	// is AtkToMove
 	public bool isAtkToMove;
@@ -115,6 +115,8 @@ public class FSM : MonoBehaviour
 		mCheckState = CheckIdleState;
 		mDoState = DoIdleState;
 		anim = GetComponent<Animator>();
+
+		moveSpeed = 4;
 	}
 
 	#region check

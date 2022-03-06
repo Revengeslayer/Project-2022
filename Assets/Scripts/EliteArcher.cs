@@ -333,7 +333,7 @@ public class EliteArcher : MonoBehaviour
     private void DoMoveState()
     {
         var Vec = Target.transform.position - gameObject.transform.position;
-        if (doESC)  //fix : esc for N sceonds && use updated forward && normalized speed
+        if (doESC && rabaAnim.GetCurrentAnimatorStateInfo(0).IsName("MOVE"))  //fix : esc for N sceonds && use updated forward && normalized speed
         {
             Debug.Log("esc");
             rabaAnim.SetBool("isPA", false);

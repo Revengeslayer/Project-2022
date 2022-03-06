@@ -261,10 +261,10 @@ public class InstantiateManager : MonoBehaviour
             if(SpawnPos.Area == "SpawnA")
             {
                 RabbitArcherSteeringFSM.SpawnArea = SpawnPos.Area;
-                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 3);
-                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 2);
-                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 1);
-                SetSpawnPos(RAInsGoDataContainer1, SpawnPosList, 1);
+                SetSpawnPos(RAInsGoDataContainer3, SpawnPosList , 9);
+                SetSpawnPos(RAInsGoDataContainer4, SpawnPosList , 0);
+                SetSpawnPos(RAInsGoDataContainer2, SpawnPosList , 0);
+                SetSpawnPos(RAInsGoDataContainer1, SpawnPosList, 0);
                 //SetSpawnPos(DKInsGoDataContainer1, SpawnPosList, 3);
             }
             else if (SpawnPos.Area == "SpawnB")

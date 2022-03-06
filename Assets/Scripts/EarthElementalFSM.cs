@@ -111,7 +111,6 @@ public class EarthElementalFSM : MonoBehaviour
 
     void Start()
     {
-
         Win = GameObject.Find("GameWin");
         Win.SetActive(false);
         EEAnim = GetComponent<Animator>();
@@ -559,8 +558,11 @@ public class EarthElementalFSM : MonoBehaviour
         G.transform.localScale = new Vector3(3, 3, 3);
         //if (DieTimer > 0.5)
         {
+            monsterHpbar.SetActive(false);
             gameObject.SetActive(false);
             G.SetActive(true);
+
+            FSM.BossAlive = false ;
         }
     }
     private void PlayerAttack(float zAttack, float skillAttack , Vector3 HitBoxPos)

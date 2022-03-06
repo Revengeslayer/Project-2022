@@ -72,6 +72,9 @@ public class FSM : MonoBehaviour
 
 	private GameObject GameOver;
 	private GameObject GameOverText;
+	private GameObject GameOverText2;
+
+	public static bool BossAlive;
 	// Start is called before the first frame update
 	public enum FSMState
 	{
@@ -96,6 +99,9 @@ public class FSM : MonoBehaviour
 		GameOverText = GameObject.Find("GameOverText");
 		GameOverText.SetActive(false);
 
+		BossAlive = true;
+		GameOverText2 = GameObject.Find("GameOverText2");
+		GameOverText2.SetActive(false);
 
 		katana = GameObject.Find("Hoshi_katana");
 		katana.SetActive(false);
@@ -909,6 +915,11 @@ public class FSM : MonoBehaviour
 		{
 			katana.SetActive(false);
 		}
+		//Boss ¦º¤`
+		if(BossAlive == false)
+		{
+			StartCoroutine(Wait2());
+		}
 		mCheckState();
 		//ª¬ºA°µ¬Æ»ò
 		mDoState();
@@ -946,6 +957,16 @@ public class FSM : MonoBehaviour
 	{
 		yield return new WaitForSeconds(5.0f);
 		GameOverText.SetActive(true);
+		if (Input.anyKey)
+		{
+			SceneManager.LoadScene(0);
+		}
+	}
+
+	IEnumerator Wait2()
+	{
+		yield return new WaitForSeconds(5.0f);
+		GameOverText2.SetActive(true);
 		if (Input.anyKey)
 		{
 			SceneManager.LoadScene(0);

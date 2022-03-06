@@ -20,6 +20,7 @@ public class Trigger : MonoBehaviour
     private GameObject AirManager;
     private GameObject BossCollider;
     // Start is called before the first frame update
+    private GameObject BossAirWall;
 
 
     // Update is called once per frame
@@ -37,6 +38,7 @@ public class Trigger : MonoBehaviour
         //09-add 
         AirManager= GameObject.Find("AirManager");
         BossCollider= GameObject.Find("BossLightWall");
+        BossAirWall = GameObject.Find("AirWall12");
 
     }
     void OnTriggerEnter(Collider other)
@@ -149,8 +151,8 @@ public class Trigger : MonoBehaviour
         }
         else if (colliderTag == "AreaBoss")
         {
-            //StartCoroutine(BossArea());
-            Destroy(other.gameObject);
+            StartCoroutine(BossArea(other));
+            
         }
         //else if (colliderTag == "SpawnC")
         //{
@@ -195,10 +197,12 @@ public class Trigger : MonoBehaviour
         }
     }
 
-    IEnumerator BossArea()
+    IEnumerator BossArea(Collider other)
     {
-        BossCollider.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        Destroy(other.gameObject);
+        yield return new WaitForSeconds(0.5f);
+        BossAirWall.GetComponent<BoxCollider>().isTrigger = false;
+        BossAirWall.transform.GetChild(0).gameObject.SetActive(true);
 
     }
 }

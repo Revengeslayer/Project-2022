@@ -10,10 +10,15 @@ public class RedPotionText : MonoBehaviour
     private GameObject[] redPotions;
     private float playerHp;
     private float playerMaxHp;
+    AudioSource[] Audios;
+    AudioSource Heal;
+    public GameObject HealEffect;
     // Start is called before the first frame update
 
     private void Awake()
     {
+        Audios = gameObject.GetComponents<AudioSource>();
+        Heal = Audios[10];
         redPotions = GameObject.FindGameObjectsWithTag("redPotion");
         redPotions[0] = GameObject.Find("redPotion");
         redPotions[1] = GameObject.Find("redPotion (1)");
@@ -44,6 +49,7 @@ public class RedPotionText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("test               "+HealEffect.name);
         playerHp = PlayerInfo.playerHp;
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -54,7 +60,10 @@ public class RedPotionText : MonoBehaviour
             }
             if (currentNums > 0)
             {
+                HealEffect.SetActive(true);
+                StartCoroutine(Timer());
                 PlayerInfo.playerHp += 300;
+                Heal.Play();
                 redPotions[currentNums-1].SetActive(false);
                 currentNums--;
             }
@@ -75,6 +84,12 @@ public class RedPotionText : MonoBehaviour
         {
             redPotions[i].SetActive(true);
         }
+    }
+
+    IEnumerator Timer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        HealEffect.SetActive(false);
     }
 
 }

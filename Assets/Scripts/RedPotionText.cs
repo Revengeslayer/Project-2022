@@ -61,7 +61,7 @@ public class RedPotionText : MonoBehaviour
             {
                 HealEffect.SetActive(true);
                 StartCoroutine(Timer());
-                PlayerInfo.playerHp += 500;
+                PlayerInfo.playerHp += 600;
                 Heal.Play();
                 redPotions[currentNums-1].SetActive(false);
                 currentNums--;

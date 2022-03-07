@@ -79,6 +79,11 @@ public class PlayerInfo : MonoBehaviour
         RedDamageTimer = 0;
         GetArr = 0;
         anim = GetComponent<Animator>();
+
+        bRed = false;
+        bGreen = false;
+        bBlue = false;
+        bVoid = false;
     }
 
     // Update is called once per frame
@@ -99,31 +104,65 @@ public class PlayerInfo : MonoBehaviour
             FSM.isDeath = true;
         }
 
-        if (attack1)
-        {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6;
-        }
-        if (attack2)
-        {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6;
-        }
-        if (attack3)
-        {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
-        }
-        if (skill_X)
-        {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6;
-        }
-        if (skill_V)
-        {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
-        }
-        if (dodge)
-        {
-            this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8;
-        }
         ElementSystem();
+        EAttackMove();
+    }
+    private void EAttackMove()
+    {
+        if (bVoid)
+        {
+            if (attack1)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6 * 0.1f;
+            }
+            if (attack2)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6 * 0.1f;
+            }
+            if (attack3)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8 * 0.1f;
+            }
+            if (skill_X)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6 * 0.1f;
+            }
+            if (skill_V)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8 * 0.1f;
+            }
+            if (dodge)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8 * 0.1f;
+            }
+        }
+        else
+        {
+            if (attack1)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6 ;
+            }
+            if (attack2)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6 ;
+            }
+            if (attack3)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8 ;
+            }
+            if (skill_X)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 6 ;
+            }
+            if (skill_V)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8 ;
+            }
+            if (dodge)
+            {
+                this.transform.position = this.transform.position + this.transform.forward * Time.deltaTime * 8 ;
+            }
+        }
     }
 
     private void CheckDamageType()
@@ -191,7 +230,8 @@ public class PlayerInfo : MonoBehaviour
     private void Attack2MoveOpen()
     {
         attack2 = true;
-    }    private void Attack2MoveClose()
+    }    
+    private void Attack2MoveClose()
     {
         attack2 = false;
     }
@@ -229,13 +269,17 @@ public class PlayerInfo : MonoBehaviour
     {
         dodge = false;
     }
-    private void DodgeCheckOpen()
+    private void DodgeCheck()
     {
-        dodgeInv = true;
-    }
-    private void DodgeCheckClose()
-    {
-        dodgeInv = false;
+        if (dodgeInv == false)
+        {
+            dodgeInv = true;
+        }
+        else
+        {
+            dodgeInv = false;
+        }
+
     }
     private void AtkMove()
     {
@@ -410,8 +454,6 @@ public class PlayerInfo : MonoBehaviour
                 FSM.moveSpeed = 4;
                 bVoid = false;
                 GetVoid.SetActive(false);
-
-                Die();//關閉所有的位移
                 tVoid = 0;
             }
         }

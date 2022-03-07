@@ -269,17 +269,13 @@ public class PlayerInfo : MonoBehaviour
     {
         dodge = false;
     }
-    private void DodgeCheck()
+    private void DodgeCheckOpen()
     {
-        if (dodgeInv == false)
-        {
-            dodgeInv = true;
-        }
-        else
-        {
-            dodgeInv = false;
-        }
-
+            dodgeInv = true; 
+    }
+    private void DodgeCheckClose()
+    {
+            dodgeInv = false;      
     }
     private void AtkMove()
     {

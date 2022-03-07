@@ -125,7 +125,7 @@ public class EarthElementalFSM : MonoBehaviour
 
         Fever = 1;
         Alife = true;
-        monsterMaxHp = 3003;
+        monsterMaxHp = 4806;
         monsterTotalHp = 0;
         monsterHp = monsterMaxHp / 3;
         monsterHp1 = monsterMaxHp / 3;

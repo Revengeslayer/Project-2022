@@ -60713,7 +60713,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.06666667
-    functionName: DodgeCheck
+    functionName: DodgeCheckOpen
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -60762,7 +60762,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1
-    functionName: DodgeCheck
+    functionName: DodgeCheckClose
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

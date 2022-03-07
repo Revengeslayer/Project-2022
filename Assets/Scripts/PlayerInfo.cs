@@ -229,17 +229,13 @@ public class PlayerInfo : MonoBehaviour
     {
         dodge = false;
     }
-    private void DodgeCheck()
+    private void DodgeCheckOpen()
     {
-        if (dodgeInv == false)
-        {
-            dodgeInv = true;
-        }
-        else
-        {
-            dodgeInv = false;
-        }
-
+        dodgeInv = true;
+    }
+    private void DodgeCheckClose()
+    {
+        dodgeInv = false;
     }
     private void AtkMove()
     {
@@ -414,6 +410,8 @@ public class PlayerInfo : MonoBehaviour
                 FSM.moveSpeed = 4;
                 bVoid = false;
                 GetVoid.SetActive(false);
+
+                Die();//關閉所有的位移
                 tVoid = 0;
             }
         }

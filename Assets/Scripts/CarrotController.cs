@@ -161,7 +161,7 @@ public class CarrotController : MonoBehaviour
         var ToTargetVec = TargetPos- gameObject.transform.position;
         var HitCheckDot = Vector3.Dot(ToTargetVec, gameObject.transform.forward);
         MaxTimer += Time.deltaTime;
-        if (Dist <= 3f && skillAttack == 3)
+        if (Dist <= 4f && skillAttack == 3)
         {
             Destroy(gameObject);
         }

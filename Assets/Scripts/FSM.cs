@@ -78,6 +78,8 @@ public class FSM : MonoBehaviour
 
 	public static bool BossAlive;
 	private float disappearTime;
+
+
 	// Start is called before the first frame update
 	public enum FSMState
 	{
@@ -931,6 +933,7 @@ public class FSM : MonoBehaviour
 		mCheckState();
 		//ª¬ºA°µ¬Æ»ò
 		mDoState();
+
 	}
 
 	private void FixedUpdate()

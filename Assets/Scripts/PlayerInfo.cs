@@ -10,7 +10,7 @@ public class PlayerInfo : MonoBehaviour
     private static GameObject playerHpbar;
     private static GameObject PlayerDizzyBar;
     //public Image hpImage;
-    public static float playerMaxHp = 800;
+    public static float playerMaxHp = 1000;
     public static float playerHp;
     float playerDistance;//人物與怪物的距離
     //傳Skill給怪物
@@ -34,14 +34,25 @@ public class PlayerInfo : MonoBehaviour
 
     //屬性狀態
     private static int CurrentStates;
+    public GameObject GetRed;
+    public GameObject GetBlue;
+    public GameObject GetGreen;
+    public GameObject GetVoid;
+
+
+
+    //Bool
     private static bool bGreen;
     private static bool bBlue;
     private static bool bRed;
+    public static bool bVoid;
+
 
     //Timer
     private static float tGreen;
     private static float tBlue;
     private static float tRed;
+    private static float tVoid;
     private float RedDamageTimer;
 
     //Speed
@@ -64,6 +75,7 @@ public class PlayerInfo : MonoBehaviour
         tGreen = 0;
         tBlue = 0;
         tRed = 0;
+        tVoid = 0;
         RedDamageTimer = 0;
         GetArr = 0;
         anim = GetComponent<Animator>();
@@ -329,7 +341,10 @@ public class PlayerInfo : MonoBehaviour
         {
             playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 25) / playerMaxHp;
             playerHp = playerHp - 25;
-            GetCurrentStates(ECarrotType);
+
+            bRed = true;
+            tRed = 0;
+
             DizzyCount++;
             if (DizzyCount % 3 == 1 || DizzyCount % 50 == 0)
             {
@@ -340,7 +355,10 @@ public class PlayerInfo : MonoBehaviour
         {
             playerHpbar.GetComponent<Image>().fillAmount = (playerHp - 40) / playerMaxHp;
             playerHp = playerHp - 40;
-            GetCurrentStates(ECarrotType);
+
+            bVoid = true;
+            tVoid = 0;
+
             DizzyCount++;
             if (DizzyCount % 3 == 1 || DizzyCount % 50 == 0)
             {
@@ -384,10 +402,37 @@ public class PlayerInfo : MonoBehaviour
     }
     private void ElementSystem()
     {
-        if(bGreen)
+        if (bVoid)
+        {
+            tVoid += Time.deltaTime;
+            GetVoid.SetActive(true);
+            anim.speed = 0.1f;
+            FSM.moveSpeed = 0.1f;
+            if (tVoid > 1.5f)
+            {
+                anim.speed = 1f;
+                FSM.moveSpeed = 4;
+                bVoid = false;
+                GetVoid.SetActive(false);
+                tVoid = 0;
+            }
+        }
+        if (bGreen)
         {
             tGreen += Time.deltaTime;
-            anim.speed = 0.8f;
+            GetGreen.SetActive(true);
+            if(bVoid)
+            {
+                return;
+            }
+            if(bVoid)
+            {
+                anim.speed = 0.1f;
+            }
+            else
+            {
+                anim.speed = 0.8f;
+            }
             if(bBlue)
             {
                 FSM.moveSpeed = 2f;
@@ -396,42 +441,54 @@ public class PlayerInfo : MonoBehaviour
             {
                 FSM.moveSpeed = 3f;
             }
-            if(tGreen > 3)
+            if(tGreen > 8)
             {
                 anim.speed = 1f;
                 tGreen = 0;
                 FSM.moveSpeed = 4f;
                 bGreen = false;
+                GetGreen.SetActive(false);
             }
         }
         if(bBlue)
         {
             tBlue += Time.deltaTime;
+            GetBlue.SetActive(true);
+            if (bVoid)
+            {
+                return;
+            }
+
             FSM.moveSpeed = 2f;
 
-            if (tBlue > 3)
+            if (tBlue > 8)
             {
                 FSM.moveSpeed = 4;
                 tBlue = 0;
                 bBlue = false;
+                GetBlue.SetActive(false);
             }
         }
         if(bRed)
         {
             tRed += Time.deltaTime;
-            //GameObject Explosion = Instantiate(Resources.Load("VTX/Explosion_A_Variant")) as GameObject;
-            //Explosion.transform.position = gameObject.transform.position + new Vector3(0, 0.4f, 0);
             RedDamageTimer += Time.deltaTime;
+            GetRed.SetActive(true);
+
             if(RedDamageTimer > 0.5)
             {
-                playerHp -= 5f;
+                GameObject Explosion = Instantiate(Resources.Load("VTX/RedState")) as GameObject;
+                Explosion.transform.position = GetRed.transform.position;
+                RedStateController.TargetPos = gameObject.transform.position;
+                playerHp -= 3f;
                 RedDamageTimer = 0;
             }
-            if (tRed > 3)
+            if (tRed > 5)
             {
                 tRed = 0;
                 bRed = false;
                 RedDamageTimer = 0;
+                GetRed.SetActive(false);
             }
         }
     }

@@ -40,7 +40,7 @@ public class RedPotionText : MonoBehaviour
     {
         //redPotions = GameObject.FindGameObjectsWithTag("redPotion") ;
         Nums = redPotions.Length;
-        currentNums = 2;
+        currentNums = 7;
         SetCurrentPotions();
         playerHp = PlayerInfo.playerHp;
         playerMaxHp = PlayerInfo.playerMaxHp;
@@ -61,7 +61,7 @@ public class RedPotionText : MonoBehaviour
             {
                 HealEffect.SetActive(true);
                 StartCoroutine(Timer());
-                PlayerInfo.playerHp += 300;
+                PlayerInfo.playerHp += 500;
                 Heal.Play();
                 redPotions[currentNums-1].SetActive(false);
                 currentNums--;

@@ -105,7 +105,7 @@ public class GreenRBFSM : MonoBehaviour
 
         rabaAnim = GetComponent<Animator>();
         rabaRig = GetComponent<Rigidbody>();
-        monsterHp = 100;
+        monsterHp = 220;
 
         mCurrentState = FSMState.Spawn;
         mCheckState = CheckSpawnState;

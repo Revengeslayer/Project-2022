@@ -478,6 +478,7 @@ public class EarthElementalFSM : MonoBehaviour
     }
     private void DoDieState()
     {
+        EEAnim.speed = 1;
         EEAnim.Play("Die");
         
     }
